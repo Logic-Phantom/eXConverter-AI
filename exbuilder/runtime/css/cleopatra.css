@@ -267,6 +267,7 @@ body {
 .cl-gridfilter .cl-filterdlg .cl-filterdlg-header {
   background-image: linear-gradient(#FCFEFF, #E0E1E2);
   height: 25px;
+  align-items: center;
 }
 .cl-gridfilter .cl-filterdlg .cl-filterdlg-header .cl-text {
   font-weight: bold;
@@ -292,6 +293,7 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   width: 16px;
+  height: 16px;
   cursor: pointer;
 }
 .cl-gridfilter .cl-filterdlg .cl-filterdlg-search {
@@ -608,7 +610,7 @@ body {
   outline: none;
   background-color: transparent;
   border: 0;
-  padding: 0 1px 0 0;
+  padding: 0px 2px;
   color: inherit;
   font-family: inherit;
   font-size: 1em;
@@ -629,6 +631,7 @@ body {
 }
 .cl-numbereditor .cl-numbereditor-clear {
   width: 1em;
+  min-height: 16px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -644,6 +647,7 @@ body {
 .cl-numbereditor .cl-numbereditor-buttons {
   border-left: solid 1px #bbb;
   width: 16px;
+  min-height: 16px;
   /* 증가 버튼 */
   /* en : increase button */
   /* ja : 増加ボタン */
@@ -723,10 +727,7 @@ body {
 }
 .cl-dateinput .cl-text {
   border: 0px;
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding: 0px 2px;
   outline: none;
   background-color: transparent;
   vertical-align: middle;
@@ -749,6 +750,7 @@ body {
 }
 .cl-dateinput .cl-dateinput-clear {
   width: 1em;
+  min-height: 16px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -767,6 +769,7 @@ body {
 .cl-dateinput .cl-dateinput-spinbuttons {
   border-left: solid 1px #bbb;
   width: 16px;
+  min-height: 16px;
 }
 .cl-dateinput .cl-dateinput-spinbuttons .cl-dateinput-increase {
   background-image: url(icons/up-spin.png);
@@ -804,6 +807,7 @@ body {
 }
 .cl-dateinput .cl-dateinput-button {
   width: 16px;
+  min-height: 16px;
   border: 0px;
   background-image: url(icons/calendar-button.png);
   background-repeat: no-repeat;
@@ -1130,8 +1134,8 @@ body {
   border-top: none;
   border-left: none;
 }
-.cl-calendar.cl-anniversaries .cl-calendar-content-day.cl-calendar-content-sat,
-.cl-calendar.cl-anniversaries .cl-other-month.cl-calendar-content-sat {
+.cl-calendar.cl-anniversaries .cl-calendar-content-day.cl-last-column,
+.cl-calendar.cl-anniversaries .cl-other-month.cl-last-column {
   border-right: none;
 }
 .cl-calendar.cl-focus {
@@ -1168,6 +1172,13 @@ body {
 }
 .cl-calendar.cl-disabled .cl-calendar-header .cl-calendar-header-text:hover,
 .cl-calendar.cl-disabled .cl-calendar-header .cl-calendar-header-text.cl-hover {
+  color: inherit;
+}
+.cl-calendar .cl-calendar-header .cl-calendar-header-text.cl-disabled {
+  cursor: default;
+}
+.cl-calendar .cl-calendar-header .cl-calendar-header-text.cl-disabled:hover,
+.cl-calendar .cl-calendar-header .cl-calendar-header-text.cl-disabled.cl-hover {
   color: inherit;
 }
 .cl-listbox {
@@ -1488,11 +1499,6 @@ body {
 .cl-menu .cl-menu-list .cl-menu-item.cl-folder > .cl-menu-arrow-wrapper .cl-menu-arrow {
   background-image: url(icons/drill-down.png);
 }
-.cl-menu .cl-menu-list .cl-menu-item:not(.cl-disabled):not(.cl-selected):hover,
-.cl-menu .cl-menu-list .cl-menu-item:not(.cl-disabled).cl-hover {
-  background-color: #DAEFFC;
-  color: #333435;
-}
 .cl-menu .cl-menu-list .cl-menu-item.cl-disabled {
   color: #666;
 }
@@ -1511,8 +1517,13 @@ body {
 .cl-menu.cl-focus .cl-menu-list {
   border-color: #1369C5;
 }
-.cl-menu:not(.cl-disabled) .cl-menu-item:not(.cl-disabled) {
+.cl-menu:not(.cl-disabled) .cl-menu-list .cl-menu-item:not(.cl-disabled) {
   cursor: pointer;
+}
+.cl-menu:not(.cl-disabled) .cl-menu-list .cl-menu-item:not(.cl-disabled):not(.cl-selected):hover,
+.cl-menu:not(.cl-disabled) .cl-menu-list .cl-menu-item:not(.cl-disabled).cl-hover {
+  background-color: #DAEFFC;
+  color: #333435;
 }
 .cl-menu.cl-disabled .cl-menu-item {
   color: #666;
@@ -1893,7 +1904,7 @@ body {
   width: calc(100% - 1px);
   height: 100%;
   border: 0;
-  padding: 0;
+  padding: 0px 2px;
   background-color: transparent;
   color: inherit;
   font-family: inherit;
@@ -1913,6 +1924,7 @@ body {
 }
 .cl-inputbox .cl-inputbox-clear {
   width: 1em;
+  min-height: 16px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -1958,7 +1970,7 @@ body {
 }
 .cl-searchinput .cl-text {
   border: 0px;
-  padding: 0 3px 0 3px;
+  padding: 0px 2px;
   outline: none;
   height: 100%;
   background-color: transparent;
@@ -2022,6 +2034,7 @@ body {
 }
 .cl-searchinput .cl-searchinput-search {
   width: 1em;
+  min-height: 16px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2032,6 +2045,7 @@ body {
 }
 .cl-searchinput .cl-searchinput-clear {
   width: 1em;
+  min-height: 16px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2237,7 +2251,7 @@ body {
   outline: none;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0px;
+  padding: 0px 2px;
   white-space: pre-wrap;
   vertical-align: top;
 }
@@ -2342,15 +2356,13 @@ body {
   background-image: url(icons/radio-hover-selected.png);
 }
 .cl-radiobutton .cl-radiobutton-item.cl-disabled {
+  color: #666;
   cursor: default;
   /* disabled 라디오아이템 hover시 아이콘 스타일 */
   /* 선택된 disabled 라디오아이템 아이콘 스타일 */
 }
 .cl-radiobutton .cl-radiobutton-item.cl-disabled * {
   cursor: default;
-}
-.cl-radiobutton .cl-radiobutton-item.cl-disabled .cl-text {
-  color: #666;
 }
 .cl-radiobutton .cl-radiobutton-item.cl-disabled:hover .cl-radiobutton-icon,
 .cl-radiobutton .cl-radiobutton-item.cl-disabled.cl-hover .cl-radiobutton-icon {
@@ -2536,15 +2548,13 @@ body {
   background-image: url(icons/checkbox-hover-selected.png);
 }
 .cl-checkbox.cl-disabled {
+  color: #666;
   cursor: default;
   /* disabled 체크박스 hover시 아이콘 스타일 */
   /* 체크된 disabled 체크박스 아이콘 스타일 */
 }
 .cl-checkbox.cl-disabled * {
   cursor: default;
-}
-.cl-checkbox.cl-disabled .cl-text {
-  color: #666;
 }
 .cl-checkbox.cl-disabled:hover .cl-checkbox-icon,
 .cl-checkbox.cl-disabled.cl-hover .cl-checkbox-icon {
@@ -2639,6 +2649,7 @@ body {
   outline: none;
 }
 .cl-checkboxgroup.cl-disabled {
+  color: #666;
   cursor: default;
   /* disabled 체크박스그룹에 체크박스 스타일 */
 }
@@ -2648,9 +2659,6 @@ body {
 .cl-checkboxgroup.cl-disabled .cl-checkbox {
   /* disabled 체크박스그룹에 체크박스 hover시 아이콘 스타일 */
   /* disabled 체크박스그룹 내에 체크된 체크박스 아이콘 스타일 */
-}
-.cl-checkboxgroup.cl-disabled .cl-checkbox .cl-text {
-  color: #666;
 }
 .cl-checkboxgroup.cl-disabled .cl-checkbox:hover .cl-checkbox-icon,
 .cl-checkboxgroup.cl-disabled .cl-checkbox.cl-hover .cl-checkbox-icon {
@@ -2775,7 +2783,7 @@ body {
   width: calc(100% - 1px);
   height: 100%;
   border: 0;
-  padding: 0;
+  padding: 0 2px;
   color: inherit;
   font-family: inherit;
   font-size: 1em;
@@ -2792,6 +2800,7 @@ body {
 }
 .cl-maskeditor .cl-maskeditor-clear {
   width: 1em;
+  min-height: 16px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2826,7 +2835,7 @@ body {
 .cl-combobox .cl-text {
   border: 0;
   outline: none;
-  padding: 0px 3px;
+  padding: 0px 2px;
   background-color: transparent;
   font-family: inherit;
   font-size: 1em;
@@ -2851,6 +2860,7 @@ body {
 }
 .cl-combobox .cl-combobox-button {
   width: 16px;
+  min-height: 16px;
   border: 0px;
   background-image: url(icons/chevron.png);
   background-repeat: no-repeat;
@@ -2927,16 +2937,16 @@ body {
   color: #666;
 }
 .cl-combobox-list .cl-combobox-item.cl-disabled.cl-selected {
-  color: #777;
   background-color: #ccc;
+  color: #777;
 }
 .cl-combobox-list .cl-combobox-item:not(.cl-disabled) {
   cursor: pointer;
 }
 .cl-combobox-list .cl-combobox-item:not(.cl-disabled):not(.cl-selected):hover,
 .cl-combobox-list .cl-combobox-item:not(.cl-disabled):not(.cl-selected).cl-hover {
-  color: #333435;
   background-color: #DAEFFC;
+  color: #333435;
 }
 .cl-combobox-list .cl-combobox-item.cl-treeitem {
   padding: 0px 10px 0px 0px;
@@ -2970,6 +2980,9 @@ body {
 .cl-combobox-list .cl-combobox-item.cl-treeitem .cl-treeicon-line {
   padding: 3px 0px 3px 0px;
 }
+.cl-combobox-list .cl-combobox-item.cl-treeitem .cl-empty {
+  width: 20px;
+}
 .cl-combobox-list .cl-combobox-item.cl-treeitem.cl-expanded .cl-treeicon {
   background-image: url('icons/node-expanded-black.png');
 }
@@ -2987,16 +3000,19 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   image-rendering: pixelated;
+  width: 20px;
 }
 .cl-combobox-list .cl-combobox-item.cl-treeitem .cl-treeicon-line {
   background-image: url('icons/tree-line-child.png');
   background-position: center;
   background-repeat: no-repeat;
   image-rendering: pixelated;
+  width: 20px;
 }
 .cl-combobox-list .cl-combobox-item.cl-treeitem.cl-last .cl-treeicon-line {
   background-image: url('icons/tree-line-child-last.png');
   image-rendering: pixelated;
+  width: 20px;
 }
 .cl-combobox-list .cl-combobox-item.cl-treeitem.cl-first .cl-treeicon-line {
   background-image: url('icons/tree-line-first.png');
@@ -3011,8 +3027,8 @@ body {
   color: inherit;
 }
 .cl-combobox-list.cl-multi-select .cl-combobox-item:not(.cl-disabled).cl-selected:hover {
-  color: #333435;
   background-color: #DAEFFC;
+  color: #333435;
 }
 .cl-combobox-list.cl-multi-select .cl-combobox-item:not(.cl-disabled).cl-hover.cl-selected {
   background-color: #DAEFFC;
@@ -3038,7 +3054,7 @@ body {
   width: 20px;
 }
 .cl-linkedcombobox .cl-linkedcombobox-combo .cl-text {
-  padding: 0px 3px;
+  padding: 0px 2px;
   border: 0;
   outline: none;
   color: inherit;
@@ -3066,6 +3082,7 @@ body {
 }
 .cl-linkedcombobox .cl-linkedcombobox-combo .cl-linkedcombobox-button {
   width: 16px;
+  min-height: 16px;
   border: 0px;
   cursor: pointer;
   background-image: url(icons/chevron.png);
@@ -3959,18 +3976,6 @@ body {
 .cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index {
   cursor: pointer;
 }
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first:not(.cl-selected).cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-last:not(.cl-selected).cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-prev:not(.cl-selected).cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-next:not(.cl-selected).cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index:not(.cl-selected).cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first:not(.cl-selected):hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-last:not(.cl-selected):hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-prev:not(.cl-selected):hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-next:not(.cl-selected):hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index:not(.cl-selected):hover {
-  background-color: #DAEFFC;
-}
 .cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first.cl-disabled,
 .cl-pageindexer:not(.cl-disabled) .cl-pageindexer-last.cl-disabled,
 .cl-pageindexer:not(.cl-disabled) .cl-pageindexer-prev.cl-disabled,
@@ -3978,17 +3983,19 @@ body {
 .cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index.cl-disabled {
   cursor: default;
 }
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first.cl-disabled.cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-last.cl-disabled.cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-prev.cl-disabled.cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-next.cl-disabled.cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index.cl-disabled.cl-hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first.cl-disabled:hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-last.cl-disabled:hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-prev.cl-disabled:hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-next.cl-disabled:hover,
-.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index.cl-disabled:hover {
-  background-color: #ccc;
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first:not(.cl-disabled).cl-hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-last:not(.cl-disabled).cl-hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-prev:not(.cl-disabled).cl-hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-next:not(.cl-disabled).cl-hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first:not(.cl-disabled):hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-last:not(.cl-disabled):hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-prev:not(.cl-disabled):hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-next:not(.cl-disabled):hover {
+  background-color: #DAEFFC;
+}
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index:not(.cl-selected).cl-hover,
+.cl-pageindexer:not(.cl-disabled) .cl-pageindexer-index:not(.cl-selected):hover {
+  background-color: #DAEFFC;
 }
 .cl-pageindexer:not(.cl-disabled) .cl-pageindexer-first:active {
   background-image: url("icons/first-selected.png");
@@ -4161,6 +4168,12 @@ body {
 .cl-image-area-item:active {
   stroke-opacity: 1;
 }
+.cl-image-area-item.cl-image-area-polyline {
+  stroke-opacity: 1;
+  fill: none;
+  cursor: default;
+  pointer-events: none;
+}
 /*video*/
 .cl-video {
   border: 1px solid #bbb;
@@ -4194,8 +4207,6 @@ body {
   background-color: #fff;
   overflow: hidden;
   text-align: center;
-  min-width: 50px;
-  min-height: 20px;
 }
 .cl-fileinput .cl-text {
   white-space: nowrap;
@@ -4215,6 +4226,7 @@ body {
 }
 .cl-fileinput .cl-fileinput-clear {
   width: 1em;
+  min-height: 16px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

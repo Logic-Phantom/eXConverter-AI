@@ -1,0 +1,7 @@
+{
+  "templateId": "P1-1",
+  "type": "SEARCH_GRID",
+  "source": "templates/P1_Single Pattern/버티컬/Single Pattern P1-1.clx",
+  "components": ["output", "inputbox", "dateinput", "combobox", "searchinput", "button", "grid"],
+  "layouts": ["formlayout", "flowlayout", "verticallayout"]
+}

@@ -1,0 +1,173 @@
+{
+	"bomFormat": "CycloneDX",
+	"specVersion": "1.6",
+	"serialNumber": "urn:uuid:f7b3a9e6-efdc-475f-a396-e2dcf3107927",
+	"version": 1,
+	"metadata": {
+		"timestamp": "2026-09-11T06:26:28.314Z",
+		"supplier": {
+			"name": "TOMATO SYSTEM Co., Ltd.",
+			"url": [
+				"https://www.tomatosystem.co.kr"
+			]
+		},
+		"component": {
+			"type": "framework",
+			"bom-ref": "exbuilder6-client-runtime@1.0.6190",
+			"supplier": {
+				"name": "TOMATO SYSTEM Co., Ltd.",
+				"url": [
+					"https://www.tomatosystem.co.kr"
+				]
+			},
+			"name": "eXBuilder6 Client Runtime",
+			"version": "1.0.6190",
+			"licenses": [
+				{
+					"license": {
+						"name": "TOMATO SYSTEM Commercial License (proprietary)"
+					}
+				}
+			],
+			"properties": [
+				{
+					"name": "tomatosystem:build:branch",
+					"value": "b2026-37"
+				},
+				{
+					"name": "tomatosystem:build:commit",
+					"value": "fb8aff72130f26dbd20b67bcf8748beb6ce49d99"
+				}
+			]
+		}
+	},
+	"components": [
+		{
+			"type": "library",
+			"bom-ref": "pkg:npm/underscore@1.13.8",
+			"name": "underscore",
+			"version": "1.13.8",
+			"purl": "pkg:npm/underscore@1.13.8",
+			"licenses": [
+				{
+					"license": {
+						"id": "MIT"
+					}
+				}
+			],
+			"properties": [
+				{
+					"name": "tomatosystem:bundle:file",
+					"value": "underscore.js"
+				}
+			]
+		},
+		{
+			"type": "library",
+			"bom-ref": "pkg:npm/moment@2.30.1",
+			"name": "moment",
+			"version": "2.30.1",
+			"purl": "pkg:npm/moment@2.30.1",
+			"licenses": [
+				{
+					"license": {
+						"id": "MIT"
+					}
+				}
+			],
+			"properties": [
+				{
+					"name": "tomatosystem:bundle:file",
+					"value": "min/moment-with-locales.js"
+				}
+			]
+		},
+		{
+			"type": "library",
+			"bom-ref": "pkg:npm/decimal.js-light@2.0.2",
+			"name": "decimal.js-light",
+			"version": "2.0.2",
+			"purl": "pkg:npm/decimal.js-light@2.0.2",
+			"licenses": [
+				{
+					"license": {
+						"id": "MIT"
+					}
+				}
+			],
+			"properties": [
+				{
+					"name": "tomatosystem:bundle:file",
+					"value": "decimal.js"
+				}
+			]
+		},
+		{
+			"type": "library",
+			"bom-ref": "pkg:npm/es6-promise@4.1.0",
+			"name": "es6-promise",
+			"version": "4.1.0",
+			"purl": "pkg:npm/es6-promise@4.1.0",
+			"licenses": [
+				{
+					"license": {
+						"id": "MIT"
+					}
+				}
+			],
+			"properties": [
+				{
+					"name": "tomatosystem:bundle:file",
+					"value": "dist/es6-promise.auto.js"
+				}
+			]
+		},
+		{
+			"type": "library",
+			"bom-ref": "pkg:npm/browser-detect@0.2.28",
+			"name": "browser-detect",
+			"version": "0.2.28",
+			"purl": "pkg:npm/browser-detect@0.2.28",
+			"licenses": [
+				{
+					"license": {
+						"id": "MIT"
+					}
+				}
+			],
+			"properties": [
+				{
+					"name": "tomatosystem:bundle:file",
+					"value": "dist/browser-detect.umd.js"
+				}
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"ref": "exbuilder6-client-runtime@1.0.6190",
+			"dependsOn": [
+				"pkg:npm/underscore@1.13.8",
+				"pkg:npm/moment@2.30.1",
+				"pkg:npm/decimal.js-light@2.0.2",
+				"pkg:npm/es6-promise@4.1.0",
+				"pkg:npm/browser-detect@0.2.28"
+			]
+		},
+		{
+			"ref": "pkg:npm/underscore@1.13.8"
+		},
+		{
+			"ref": "pkg:npm/moment@2.30.1"
+		},
+		{
+			"ref": "pkg:npm/decimal.js-light@2.0.2"
+		},
+		{
+			"ref": "pkg:npm/es6-promise@4.1.0"
+		},
+		{
+			"ref": "pkg:npm/browser-detect@0.2.28"
+		}
+	]
+}
