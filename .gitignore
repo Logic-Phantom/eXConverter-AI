@@ -2,11 +2,6 @@
 target/
 *.class
 
-# Eclipse
-.classpath
-.project
-.settings/
-
 # IDE
 .idea/
 .vscode/
