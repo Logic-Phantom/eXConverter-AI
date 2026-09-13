@@ -1,0 +1,25 @@
+{
+  "screen": { "name": "값-라벨 혼동 보정 검증" },
+  "regions": [
+    { "type": "search", "fields": [
+      { "label": "성명", "component": "inputbox", "value": "" },
+      { "label": "김길동", "component": "inputbox", "value": "" },
+      { "label": "이메일", "component": "inputbox", "value": "" },
+      { "label": "kim@test.co.kr", "component": "inputbox", "value": "" },
+      { "label": "연락처", "component": "inputbox", "value": "" },
+      { "label": "010-1234-5678", "component": "inputbox", "value": "" }
+    ], "buttons": ["초기화", "조회"] },
+    { "type": "form", "title": "오탐 방지(모두 라벨 유지)", "fields": [
+      { "label": "성명", "component": "inputbox", "value": "" },
+      { "label": "사용자", "component": "inputbox", "value": "" },
+      { "label": "권한", "component": "combobox", "value": "" },
+      { "label": "담당자명", "component": "inputbox", "value": "" },
+      { "label": "이름", "component": "inputbox", "value": "홍길동" },
+      { "label": "남궁민수", "component": "inputbox", "value": "" },
+      { "label": "구분", "component": "combobox", "value": "" },
+      { "label": "이메일", "component": "inputbox", "value": "" },
+      { "label": "등록일", "component": "dateinput", "value": "" }
+    ] },
+    { "type": "grid", "columns": ["번호", "성명", "이메일"] }
+  ]
+}

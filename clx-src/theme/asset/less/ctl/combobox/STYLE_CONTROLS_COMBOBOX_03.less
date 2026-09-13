@@ -1,0 +1,37 @@
+.cl-combobox.open-combo {
+	background-color: #ffffff;
+	border: 1px solid #babfc7;
+	border-radius: 3px;
+	color: #333333;
+	
+	/* 콤보박스 버튼 스타일 */
+	.cl-combobox-button {
+		background-image: url("../../../images/ctl/combobox/icon-arrow-down-s-line.svg");
+	}
+	
+	/* 콤보박스 리스트가 열렸을 때에 대한 스타일 */
+	&.cl-opened {
+		.cl-combobox-button {
+			background-image: url("../../../images/ctl/combobox/icon-arrow-up-s-line.svg");
+		}
+		
+		/* 콤보박스 리스트가 위에 열렸을 때에 대한 스타일 */
+		&.cl-opened-top {
+			border-top-left-radius: 0px;
+			border-top-right-radius: 0px;
+			border-top-color: transparent;
+		}
+		
+		/* 콤보박스 리스트가 아래에 열렸을 때에 대한 스타일 */
+		&.cl-opened-bottom {
+			border-bottom-left-radius: 0px;
+			border-bottom-right-radius: 0px;
+			border-bottom-color: transparent;
+		}
+	}
+	
+	/* 콤보박스 포커스 스타일 */
+	&.cl-focus {
+		border-color: darkGray;
+	}
+}

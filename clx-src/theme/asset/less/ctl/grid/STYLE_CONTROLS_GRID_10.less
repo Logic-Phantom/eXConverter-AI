@@ -1,0 +1,180 @@
+/* 그리드 필터 사용시 필터 다이얼로그가 펼쳐지는 영역 스타일*/
+.cl-gridfilter {
+	
+	/* 필터 다이얼로그 뒤에 비활성화 영역을 표현하기 위해 덮히는 막 */
+	&.cl-overlay {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	
+	/* 필터 다이얼로그 */
+	.cl-filterdlg {
+		background-color: #ffffff;
+		border: 1px solid #000000;
+		border-radius: 3px;
+		color: #333333;
+		padding: 2px;
+		width: 350px;
+
+		
+		/* 필터 다이얼로그 - 타이틀 영역 */
+		.cl-filterdlg-header {
+			background-image: none;
+			background-color: #1070f1;
+			color: #ffffff;
+			height: 28px;
+			/* 필터 다이얼로그 - 타이틀 영역의 글자 스타일 */
+			/* 필터 다이얼로그 - 타이틀 영역의 닫기 버튼 스타일 */
+		}
+		
+		/* 필터 다이얼로그 - 하단에 버튼 영역 */
+		.cl-filterdlg-buttons {
+			background-color: transparent;
+			margin: 5px 3px 3px 0px;
+			height: 28px;
+			/* 필터 다이얼로그 - 하단에 버튼 영역의 버튼 스타일 */
+		}
+		
+		.cl-filterdlg-buttons .cl-button {
+			font: 400 14px "Spoqa Han Sans Neo", "Noto Sans KR", "Nanum Gothic", "Apple SD Gothic Neo", "dotum", "Malgun Gothic", "맑은 고딕", sans-serif;
+			background-image: none;
+			background-color: #ffffff;
+			border: 1px solid #bebebe;
+			border-radius: 3px;
+			color: #333333;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, background-image 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+			text-shadow: none;
+		}
+		
+		.cl-filterdlg-buttons .cl-button:hover {
+			background-color: #ffffff;
+			border-color: #1070f1;
+			color: #333333;
+		}
+		
+		/* 필터 다이얼로그 - 버튼 영역의 확인 버튼 스타일 */
+		/* 필터 다이얼로그 - 버튼 영역의 취소 버튼 스타일 */
+		.cl-filterdlg-buttons .cl-button.cl-select,
+		.cl-filterdlg-buttons .cl-button.cl-cancel {
+			padding: 4px 12px;
+		}
+		
+		.cl-filterdlg-buttons .cl-button.cl-select {
+			background-color: #1070f1;
+			border-color: #1070f1;
+			color: #ffffff;
+		}
+		
+		.cl-filterdlg-buttons .cl-button.cl-select:hover {
+			background-color: #4a97ff;
+			border-color: #4a97ff;
+			color: #ffffff;
+		}
+		
+		.cl-filterdlg-buttons .cl-button.cl-cancel {
+			margin-left: 5px;
+		}
+		
+		/* 필터 다이얼로그 - 타이틀 영역의 글자 스타일 */
+		.cl-text {
+			padding-left: 0px;
+		}
+		
+		.cl-filterdlg-sortable {
+			background-image: url("../../../images/ctl/grid/ic_sort.png") !important;
+			background-position: left center;
+			width: 14px;
+			
+			&.cl-filterdlg-asc {
+				background-image: url("../../../images/ctl/grid/ic_sort_asc.png") !important;
+			}
+			
+			&.cl-filterdlg-desc {
+				background-image: url("../../../images/ctl/grid/ic_sort_desc.png") !important;
+			}
+		}
+		
+		/* 필터 다이얼로그 - 타이틀 영역의 닫기 버튼 스타일 */
+		.cl-filterdlg-close {
+			background-image: url("../../../images/ctl/dialog/ic_close.png") !important;
+			width: 20px  !important;
+		}
+		
+		/* 필터 다이얼로그 - 검색 영역 */
+		.cl-filterdlg-search {
+			margin: 5px 5px 0px 5px;
+		}
+		
+		.cl-filterdlg-search .cl-search-input {
+			font: 400 14px "Spoqa Han Sans Neo", "Noto Sans KR", "Nanum Gothic", "Apple SD Gothic Neo", "dotum", "Malgun Gothic", "맑은 고딕", sans-serif;
+			background-color: #ffffff;
+			border: 1px solid #bebebe;
+			border-radius: 3px;
+			color: #333333;
+			padding: 0px 6px;
+			height: 28px;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, background-image 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+		
+		.cl-filterdlg-search .cl-search-input:focus {
+			outline: none;
+			border-color: #1070f1;
+		}
+		
+		.cl-filterdlg-search .cl-search-input::placeholder {
+			color: #6c757d;
+		}
+		
+		.cl-filterdlg-search .cl-search-input::-webkit-input-placeholder {
+			color: #6c757d;
+		}
+		
+		.cl-filterdlg-search .cl-search-input:-ms-input-placeholder {
+			color: #6c757d;
+		}
+		
+		/* 필터 다이얼로그 - 필터 아이템 리스트 영역의 아이템 스타일 */
+		.cl-filterdlg-item {
+			height: 28px;
+			
+			/* 필터 다이얼로그 - 아이템 체크박스 스타일 */
+			.cl-checkbox-icon {
+				background-image: url("../../../images/ctl/checkbox/icon-checkbox.png");
+			}
+			
+			/* 필터 다이얼로그 - 아이템 체크박스가 체크되었을 때의 스타일 */
+			&.cl-checked .cl-checkbox-icon {
+				background-image: url("../../../images/ctl/checkbox/icon-checkbox-selected.png");
+			}
+		}
+		
+		//하단에 나오는 아이템 체크박스
+		.cl-checkbox {
+			.cl-checkbox-icon {
+				background-image: url("../../../images/ctl/checkbox/icon-checkbox.png");
+			}
+			
+			&.cl-checked {
+				.cl-checkbox-icon {
+					background-image: url("../../../images/ctl/checkbox/icon-checkbox-selected.png");
+				}
+			}
+		}
+		
+		/* 필터 다이얼로그 - 하단에 버튼 영역 */
+		.cl-filterdlg-buttons {
+			margin: 0px;
+			padding: 0px 5px;
+			height: 36px;
+			display: inline-flex;
+			justify-content: flex-end;
+			align-items: center;
+			
+			/* 필터 다이얼로그 - 하단에 버튼 영역의 버튼 스타일 */
+			.cl-button {
+				height: 28px;
+				margin-left: 6px;
+				padding: 3px 12px !important;
+			}
+		}
+	}
+}

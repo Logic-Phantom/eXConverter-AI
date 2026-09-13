@@ -1,42 +1,53 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 /* 인풋 박스 루트 */
 .cl-inputbox {
-	font: @default-font;
-	color: @default-text-color;
-	border: 1px solid @default-border-color;
-	background-color: #fff;
-
+	font: @font-base;
+	background-image: @component-background-image;
+	background-color: @component-background-color;
+	border: @component-border-base;
+	border-radius: @component-border-radius;
+	color: @component-text-color;
+	
 	/* 인풋 박스 텍스트 */
-	.cl-text {}
+	.cl-text {
+		padding: @input-padding-0 @input-padding-x;
+		
+		&.cl-placeholder {
+			color: @input-placeholder-text-color !important;
+		}
+	}
 
 	/* 인풋 박스 - 포커스 상태 */
 	&.cl-focus {
-		border-color: @focus-border-color;
+		border-color: @component-focus-transparent-color;
+		outline: 2px solid @primary;
+		outline-offset: -2px;
 	}
 
 	/* 인풋 박스 - 클리어 버튼 */
 	.cl-inputbox-clear {
-		//background-image: url(icons/clear-button.png);
+		background: url("../images/controls/inputbox/ic_btn_clear.svg") no-repeat center / contain;
+		width: 1rem;
+		margin: 0px (@input-padding-x / 2) 0px 0px;
 	}
 
 	/* 인풋 박스 - disabled 상태 */
 	&.cl-disabled {
-		border-color: @disabled-border-color;
-		background-color: @disabled-selection-background;
-		color: @disabled-text-color;
+		background-color: @component-disabled-background-color;
+		border-color: @component-disabled-border-color;
+		color: @component-disabled-text-color;
 
 		.cl-inputbox-clear {
-			// background-image: url(icons/clear-button-disabled.png);
 		}
 	}
 
 	&:not(.cl-disabled) {
-
-		/* 클리어 버튼 hover상태 */
-		.cl-inputbox-clear:hover {}
-
-		/* 클리어 버튼 active상태 */
-		.cl-inputbox-clear:active {}
+		/* 클리어 버튼 hover, active 상태 */
+		.cl-inputbox-clear:hover,
+		.cl-inputbox-clear:active {
+			background-image: url("../images/controls/inputbox/ic_btn_clear.svg");
+			opacity: 1;
+		}
 	}
 }

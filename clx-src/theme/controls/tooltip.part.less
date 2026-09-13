@@ -1,12 +1,14 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 .cl-tooltip {
-	// background-color: #fff;
-	// border-radius: 4px;
-	// box-shadow:
-	// 	0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-	// 	0px 1px 1px 0px rgba(0, 0, 0, 0.14),
-	// 	0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-	// max-width: 600px;
-	// padding: 5px 10px 5px 10px;
+	background-color: #152035;
+	border: 1px solid #152035;
+	border-radius: @component-border-radius;
+	box-shadow: @box-shadow-none;
+	padding: 2px 8px 1px 8px;
+	
+	.cl-control {
+		color: #ffffff;
+		font-weight: @font-weight-medium;
+	}
 }

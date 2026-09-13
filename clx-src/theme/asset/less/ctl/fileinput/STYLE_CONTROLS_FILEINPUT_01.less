@@ -1,0 +1,52 @@
+.cl-fileinput.file-browser {
+	background-image: none; // 기본 그라데이션 스타일 제거
+	background-color: #ffffff;
+	border: 1px solid #babfc7;
+	border-radius: 3px;
+	color: #333333;
+	text-align: left;
+	transition: color .15s ease-in-out, background-color .15s ease-in-out, background-image .15s ease-in-out, border-color .15s ease-in-out;
+	
+	/* 파일 인풋 플레이스홀더 스타일 */	
+	.cl-text {
+		padding: 0px 75px 0px 5px;
+	
+		/* 파일 인풋 플레이스홀더 스타일 */	
+		&.cl-placeholder {
+			color: #cfd2d8 !important;
+		}
+	}
+	
+	/* 파일 인풋 포커스 스타일 */	
+	&:focus {
+		border-color: #1E9FF2;
+		
+		&:after {
+			content: "Browse";
+			border-color: #1E9FF2;
+		}
+	}
+	
+	/* 파일 브라우저 스타일 */
+	&:after {
+		content: "Browse";
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		
+		right: 1px;
+		top: 1px;
+		bottom: 1px;
+		width: 70px;
+		
+		background-color: #f1f5fa;
+		border-left: 1px solid #babfc7;
+		border-top-right-radius: 3px;
+		border-bottom-right-radius: 3px;
+		color: #333333;
+		line-height: 24px;
+		text-align: center;
+		transition: color .15s ease-in-out, background-color .15s ease-in-out, background-image .15s ease-in-out, border-color .15s ease-in-out;
+	}
+}

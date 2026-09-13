@@ -1,0 +1,58 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 로그인
+ * → 
+ ************************************************/
+
+.cl-container._login {
+	background: fade(@primary, 6%);
+	
+	.cl-container.login-box {
+		background: #ffffff;
+		border-radius: @border-radius-2xl;
+		box-shadow: @box-shadow-md;
+		padding: 48px 36px 36px 36px;
+		
+		.cl-output.logo {
+			background: url("../images/com/main/logo.png") no-repeat center / contain;
+		}
+		
+		.cl-output.label {
+			color: #7f7f83;
+		}
+		
+		.cl-inputbox.form-control {
+			font-size: @font-size-base;
+			
+			.cl-text {
+				padding: 0 16px;
+			}
+		}
+		
+		.cl-button.btn-submit {
+			font-size: @font-size-lg;
+		}
+		
+		.cl-container.util-button-group {
+			> .cl-layout > .cl-layout-content > .cl-layout-wrap:not(:first-child) {
+				&:before {
+					content: "";
+					position: absolute;
+					top: calc(50% - 2px);
+					left: -14px;
+					width: 4px;
+					height: 4px;
+					border-radius: @border-radius-full;
+					background: #a8a8ac;
+				}
+			}
+			
+			.cl-button {
+				.btn-transparent();
+				
+				color: #68666b;
+			}
+		}
+	}
+}

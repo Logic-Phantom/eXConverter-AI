@@ -1,0 +1,282 @@
+
+/* 피벗 도우미 패널 루트 */
+.cl-container.pivot-panel {
+	border: 1px solid #d6d6d6;
+	
+	
+	/* 피벗 도우미 헤더 스타일 */
+	.cl-container.pivot-helper-header {
+		background-color: #ffffff;
+		
+		/* 피벗 도우미 헤더 내 버튼 스타일 (공통) */
+		.cl-button {
+			background-image: none !important;
+			background-color: white;
+			border: none;
+			border-radius: 0;
+			text-shadow: none;
+			
+			.cl-icon {
+				width: 20px;
+				height: 20px;
+				background-size : auto;
+			}
+			
+			/* 피벗 도우미 헤더 내 버튼 호버 스타일 (공통) */
+			&:not(.cl-disabled).cl-hover,
+			&:not(.cl-disabled):hover,
+			&:not(.cl-disabled).cl-activated,
+			&:not(.cl-disabled):active {
+			}
+			
+			&.btn-reset {
+				padding: 0px;
+				background-image: url("../images/icon/pivot/refresh.png");
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: auto;
+			}
+			
+			&.btn-run {
+				padding: 0px;
+				background-image: url("../images/icon/pivot/ic_chevrons_right.png");
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: auto;
+			}
+			
+			&.btn-toggle {
+				padding: 0px;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: auto;
+				
+				/* 펼치기 */
+				&.expand {
+					background-image: url("../images/icon/pivot/ic_plus.png");
+				}
+				
+				/* 접기 */
+				&.collapse {
+					background-image: url("../images/icon/pivot/ic_minus.png");
+				}
+			}
+			
+		}
+		
+		
+		.cl-checkbox {
+			padding: 0px;
+			
+			.cl-checkbox-icon {
+				width: 16px;
+				min-height: 16px;
+				margin: 1px;
+			}
+			
+		}
+		
+		
+		/* 자동 실행 체크박스 스타일 */
+		.cl-checkbox.auto-update {
+			padding: 0;
+//			border: 1px solid @transparent;
+			vertical-align: top;
+			
+			/* 자동 실행 체크박스 아이콘 스타일 */
+			.cl-checkbox-icon {
+				background-image: url("../images/icon/pivot/icon-progress-close-black.svg");
+				background-size: 20px;
+				width: 20px;
+				min-width: 20px;
+				min-height: 20px;
+				margin: 0px;
+			}
+			
+			&.cl-checked {
+				/* 자동 실행 체크박스 체크 상태 아이콘 스타일 */
+				.cl-checkbox-icon {
+					background-image: url("../images/icon/pivot/icon-progress-check-black.svg");
+				}
+			}
+			
+			/* 자동 실행 체크박스 텍스트 스타일 */
+			.cl-text {
+				padding: 0;
+			}
+			
+			/* 자동 실행 체크박스 호버 상태 스타일 */
+			&:hover,
+			&.cl-hover {
+				.cl-checkbox-icon {
+				}
+			}
+			
+			/* 자동 실행 체크박스 포커스 상태 스타일 */
+			&.cl-focus {
+				.cl-checkbox-icon {
+					outline: none;
+				}
+			}
+		}
+	}
+	
+	/* 피벗 도우미 바디 스타일 */
+	.cl-container.pivot-helper-body {
+		/* 피벗 필드 타이틀 스타일 (공통) */
+		.cl-output {
+			background-repeat: no-repeat;
+			background-size: 18px;
+			background-position: 3px center;
+			padding-left: 21px;
+		}
+		
+		/* 전체 필드 타이틀 스타일 */
+		.cl-output.list-field {
+			background-image: url("../images/icon/pivot/icon-grid.svg");
+		}
+		
+		/* 컬럼 필드 타이틀 스타일 */
+		.cl-output.column-field {
+			background-image: url("../images/icon/pivot/icon-view-column.svg");
+		}
+		
+		/* 로우 필드 타이틀 스타일 */
+		.cl-output.row-field {
+			background-image: url("../images/icon/pivot/icon-view-sequential.svg");
+		}
+		
+		/* 값 필드 타이틀 스타일 */
+		.cl-output.value-field {
+			background-image: url("../images/icon/pivot/icon-sigma.svg");
+		}
+		
+		/* 필드 컨텐츠 영역 스타일 */
+		.cl-container.field-content {
+			/* 각 필드 스타일 */
+			.cl-button.field {
+				background-repeat: no-repeat;
+				background-position: 5px center;
+				background-color: white !important;
+				background-image : none;
+				border: 1px solid #d6d6d6;
+				border-radius: 3px;
+				color: #222222;
+				padding: 0px 5px;
+				text-align: left;
+				
+				.cl-text {
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
+				
+				/* 전체 필드 스타일 */
+				&.list {
+				}
+				
+				/* 컬럼과 로우 필드 스타일 */
+				&.column, &.row {
+					padding-left: 25px;
+					
+					/* 필드 오름차순 스타일 */
+					&.asc {
+						background-image: url("../images/icon/pivot/arrow-down-circle.svg");
+					}
+					
+					/* 필드 내림차순 스타일 */
+					&.desc {
+						background-image: url("../images/icon/pivot/arrow-up-circle.svg");
+					}
+				}
+				
+				/* 값 필드 스타일 */
+				&.value {
+					padding-left: 30px;
+					
+					/* 값 필드 합계 상태 스타일 */
+					&.sum {
+						background-image: url("../images/icon/pivot/pv_sum.png");
+					}
+					
+					/* 값 필드 평균 상태 스타일 */
+					&.avg {
+						background-image: url("../images/icon/pivot/pv_avg.png");
+					}
+					
+					/* 값 필드 개수 상태 스타일 */
+					&.count {
+						background-image: url("../images/icon/pivot/pv_cnt.png");
+					}
+					
+					/* 값 필드 최솟값 상태 스타일 */
+					&.min {
+						background-image: url("../images/icon/pivot/pv_min.png");
+					}
+					
+					/* 값 필드 최댓값 상태 스타일 */
+					&.max {
+						background-image: url("../images/icon/pivot/pv_max.png");
+					}
+				}
+				
+				/* 각 필드 호버 상태 스타일 */
+				&:not(.cl-disabled).cl-hover,
+				&:not(.cl-disabled):hover {
+					color: #4d91ff;
+				}
+			}
+		}
+	}
+	
+	/* 피벗 도우미 폼 레이아웃 구분선 스타일 */
+	.cl-formlayout-vertical-separator,
+	.cl-formlayout-horizontal-separator {
+		background-color: #d6d6d6;
+	}
+	
+	/* 피벗 도우미(세로) 스타일 */
+	&.vertical {
+		/* 피벗 도우미(세로) 구분선 스타일 */
+		.cl-formlayout-horizontal-separator {
+			&.cl-nth-of-row-1,
+			&.cl-nth-of-row-3,
+			&.cl-nth-of-row-5,
+			&.cl-nth-of-row-7 {
+				background-color: transparent;
+			}
+		}
+	}
+	
+	
+	
+}
+
+/* 
+ * 피벗 그리드 관련 행 그룹 시, 그룹행에 대한 배경색 지정 및 그룹 접고 펼치기 영역 사이즈 조정
+ */
+.cl-grid.pivot {
+	.cl-grid-detail {
+		/* 소계(rowGroup)으로 확인 시, 소계 영역 배경색 지정 */
+		.cl-rowgroup-header {
+			background-color: #f0f6ff;
+			
+			/* 소계(rowGroup)으로 확인 시, 그룹을 펼쳤을 때 텍스트의 너비 조정 */
+			.cl-grid-cell-inherit.cl-expander {
+				& + .cl-grid-cell-inherit {
+					.cl-default-cell {
+						table-layout: auto !important;
+					}
+				}
+			}
+		}
+		
+		.cl-grid-cell.rowGroup {
+			background-color: #f0f6ff;
+		}
+	}
+	
+	.cl-grid-cell.pfooter{
+		background-color : #f0f6ff;
+	}
+	
+}

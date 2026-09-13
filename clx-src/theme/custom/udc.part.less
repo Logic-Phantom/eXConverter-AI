@@ -1,0 +1,184 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * [UDC] AppHeader
+ * --> udc.com.udcComAppHeader
+ ************************************************/
+
+.cl-container.app-header {
+	margin-bottom: 16px;
+	
+	.cl-output.tit {
+	}
+	
+	.cl-checkbox.fav {
+		.cl-checkbox-icon {
+			background: url("../images/com/udc/ic_btn_fav.svg") no-repeat center / 20px;
+			width: 24px;
+			height: 24px;
+		}
+		
+		&.cl-checked {
+			.cl-checkbox-icon {
+				background-image: url("../images/com/udc/ic_btn_fav_on.svg");
+			}
+		}
+	}
+	.cl-output.breadcrumb {
+		color: @gray-600;
+		font-size: 13px;
+		
+		.cl-text {
+			word-break:keep-all;
+		}
+	}
+}
+
+/************************************************
+ * [UDC] Grid/Form Title
+ * --> udc.com.udcComGridTitle
+ * --> udc.com.udcComFormTitle
+ ************************************************/
+ 
+.cl-container.title-area {
+	.cl-output.tit {
+		font-size: @font-size-lg;
+		
+		.cl-text {
+			padding: 0 0 0 12px;
+		}
+		
+		&:before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			width: 4px;
+			height: 16px;
+			background: linear-gradient(to bottom, @primary 50%, @secondary 50%);
+			border-radius: @border-radius-lg;
+			transform: translateY(-50%);
+		}
+	}
+	
+	.cl-output.table-row-count {
+		color: #565659;
+		padding: 0 4px;
+		
+		span {
+			color: @primary;
+			font-weight: @font-weight-medium;
+		}
+	}
+	
+	.cl-button {
+		.btn-transparent();
+		.btn-i-only();
+		
+		font-size: 18px;
+		
+		.cl-icon {
+		}
+		
+		&.btn-setting {
+			.cl-icon {
+				background-image: url("../images/com/udc/ic_btn_setting.svg") !important;
+			}
+		}
+		
+		&.btn-excel {
+			.cl-icon {
+				background-image: url("../images/com/udc/ic_btn_excel.svg") !important;
+			}
+		}
+		
+		&.cl-disabled {
+			
+		}
+	}
+}
+
+/************************************************
+ * [UDC] MDI 분할버튼
+ * --> udc.com.udcComMdiDiv
+ ************************************************/
+
+.cl-button.btn-tab-div {
+	background-image: url("../images/com/udc/ic_mdi_div.svg");
+	background-size: 16px;
+	border-color: #ced4da;
+	border-radius: @border-radius-full;
+	padding: 0;
+						
+	&:focus, &.cl-focus,
+	&:not(.cl-disabled):hover,
+	&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+		background-color: #ffffff;
+		background-image: url("../images/com/udc/ic_mdi_div.svg");
+	}
+	
+	&.horizontal {
+		background-image: url("../images/com/udc/ic_mdi_div_v.svg");
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: url("../images/com/udc/ic_mdi_div_v.svg");
+		}
+	}
+	
+	&.vertical {
+		background-image: url("../images/com/udc/ic_mdi_div_h.svg");
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: url("../images/com/udc/ic_mdi_div_h.svg");
+		}
+	}
+	
+	&.division {
+		background-image: url("../images/com/udc/ic_mdi_div_d.svg");
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: url("../images/com/udc/ic_mdi_div_d.svg");
+		}
+	}
+	
+	&.window {
+		background-image: url("../images/com/udc/ic_mdi_div_w.svg");
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: url("../images/com/udc/ic_mdi_div_w.svg");
+		}
+	}
+}
+	
+
+/************************************************
+ * [UDC] 로드 마스크
+ * --> udc.com.udcComLoadmask
+ * --> udc.com.udcComLoadmaskpgs
+ ************************************************/
+ 
+.loader-overlay {
+	background-color: @modal-overlay-background-color;
+	
+	.cl-container.loader-box {
+		background-color: @transparent;
+		border-radius: @border-radius-lg;
+		padding: 20px 36px 24px 36px;
+		
+		.cl-output.table-row-count {
+			text-align: right;
+			
+			span {
+				color: @primary;
+				font-weight: @font-weight-bold;
+			}
+		}
+	}
+}

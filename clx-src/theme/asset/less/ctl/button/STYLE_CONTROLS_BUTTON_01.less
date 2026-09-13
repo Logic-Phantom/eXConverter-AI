@@ -1,0 +1,32 @@
+.cl-button.btn-soft-primary {
+	background-image: none; // 기본 버튼 그라데이션 제거
+	background-color: rgba(23,97,253,0.1);
+	border: none;
+	color: #1761fd;
+	text-shadow: none; // 기본 버튼 텍스트 그림자 제거
+	
+	/* 버튼 호버 스타일 */
+	&:not(.cl-disabled):hover {
+		background-color: #1761fd;
+		color: #ffffff;
+    }
+    
+	/* 버튼 포커스 스타일 */
+    &:focus, &.cl-focus{
+		background-color: rgba(23,97,253,0.8);
+    	box-shadow: 0 0 0 2px rgba(23, 97, 253, 0.2);
+    	color: #ffffff;
+    }
+    
+	/* 버튼 액티브 스타일 */
+    &:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+    	background-image: none; // 기본 버튼 그라데이션 제거
+		background-color: rgba(23,97,253,0.8);
+    	color: #ffffff;
+    }
+    
+    /* 버튼 비활성화 스타일 */
+    &.cl-disabled {
+    	opacity: 0.7;
+    }
+}

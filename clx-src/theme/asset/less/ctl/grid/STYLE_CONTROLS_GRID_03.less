@@ -1,0 +1,25 @@
+.cl-treecell.treecell-levels {
+	.cl-treecell-item {
+		color: #333333;
+		
+		/* 트리 셀 포커스 스타일 */
+		&:focus {
+			outline: none; // 포커스 링 삭제
+		}
+		
+		/* 트리 셀 1레벨 스타일 */
+		&.tree-item-level-1 {
+			background-color: rgba(244, 67, 54, 0.15);
+		}
+			
+		/* 트리 셀 2레벨 스타일 */
+		&.tree-item-level-2 {
+			background-color: rgba(49, 203, 114, 0.15);
+		}
+		
+		/* 트리 셀 3레벨 스타일 */
+		&.tree-item-level-3 {
+			background-color: rgba(33, 150, 243, 0.15);
+		}
+	}
+}

@@ -1,0 +1,188 @@
+.cl-tree.tree-linemenu,
+.cl-tree:not(.cl-disabled).tree-linemenu {
+	border: 1px solid #E1E1E1;
+	background-color: #FFFFFF;
+	
+	/* 트리 내부 외곽 스타일 */
+	.cl-tree-list {
+		padding: 20px;
+	}
+	
+	/* 트리 아이템 기본 스타일(공통) */
+	.cl-tree-item,
+	.cl-tree-item:not(.cl-disabled) {
+		height: 38px;
+		border-radius: 5px;
+		padding: 0px;
+		font-weight: 500;
+		
+		/* 트리 아이템의 트리 아이콘 및 아이템 아이콘 스타일 */
+		.cl-tree-treeicon,
+		.cl-tree-itemicon {
+			background-image: none;
+			width: 0px;
+		}
+
+		/* 트리 아이템 텍스트 스타일 */
+		.cl-text {
+			background-repeat: no-repeat;
+			background-position: right center;
+			padding: 0px;
+			line-height: 38px;
+		}			
+		
+		/* 하위 자식을 가진 트리 아이템에 대한 스타일 */
+		&.cl-folder {
+			/* 접힌 트리 아이템 스타일 */
+			&.cl-collapsed {
+				.cl-text {
+					background-image: url("../../../images/ctl/tree/arrow-drop-right-line.svg");
+				}
+			}
+			
+			/* 펼쳐진 트리 아이템 스타일 */
+			&.cl-expanded {
+				background-color: #353B47;
+				color: #ffffff;
+				
+				.cl-text {
+					background-image: url("../../../images/ctl/tree/arrow-drop-down-line.svg");
+				}
+			}
+		}
+		
+		/* 트리 아이템 호버 스타일 */
+		&:not(.cl-selected).cl-hover,
+		&:not(.cl-selected):hover {
+			background-color: inherit;
+			color: #333333;
+		}
+		
+		/* 뎁스1 메뉴인 트리 아이템 스타일 */
+		&.tree-item-level-1 {
+			height: 45px;
+			
+			/* 1뎁스 메뉴 트리 아이템 스타일 */
+			// 새롭게 추가된 퍼블리싱 포인트로 대체 (2021-03-11)
+			&:not(.cl-first-node) {
+				margin-top: 5px;
+			}
+			
+			.cl-tree-itemicon {
+				background-size: 24px;
+				width: 40px;
+				height: 40px;
+			}
+			
+			/* 트리 아이템 선택 스타일 */
+			&.cl-selected {
+				background-color: #353B47;
+				color: #ffffff;
+				
+				&.cl-folder {
+					&.cl-collapsed {
+						.cl-text {
+							background-image: url("../../../images/ctl/tree/arrow-drop-right-line-on.svg");
+						}
+					}
+				}
+			}
+			
+			&.cl-folder {
+				&.cl-expanded {
+					&:not(.cl-selected).cl-hover,
+					&:not(.cl-selected):hover {
+						background-color: #353B47;
+						color: #ffffff;
+					}
+					
+					+ .sub-items {
+						margin: 10px 0px;
+					}
+				}
+			}
+		}
+		
+		/* 뎁스2 메뉴인 트리 아이템 스타일 */
+		&.tree-item-level-2 {
+			.cl-text {
+				padding-left: 5px;
+			}
+			
+			&.cl-selected {
+				background-color: transparent;
+				.cl-text {
+					background-color: #F5F5F5;
+					border-radius: 5px;
+					color: #333333;
+				}
+			}
+		}
+		
+		/* 트리 아이템 아이콘 */
+		&.home {
+			.cl-tree-itemicon {
+				background-image: url("../../../images/ctl/tree/home-8-line.svg");
+			}
+			
+			&.cl-selected,
+			&.cl-folder.cl-expanded {
+				.cl-tree-itemicon {
+					background-image: url("../../../images/ctl/tree/home-8-line-on.svg");
+				}
+			}
+		}
+		&.folder {
+			.cl-tree-itemicon {
+				background-image: url("../../../images/ctl/tree/folder-line.svg");
+			}
+			
+			&.cl-selected,
+			&.cl-folder.cl-expanded {
+				.cl-tree-itemicon {
+					background-image: url("../../../images/ctl/tree/folder-line-on.svg");
+				}
+			}
+		}
+		&.database {
+			.cl-tree-itemicon {
+				background-image: url("../../../images/ctl/tree/database-2-line.svg");
+			}
+			
+			&.cl-selected,
+			&.cl-folder.cl-expanded {
+				.cl-tree-itemicon {
+					background-image: url("../../../images/ctl/tree/database-2-line-on.svg");
+				}
+			}
+		}
+		&.file {
+			.cl-tree-itemicon {
+				background-image: url("../../../images/ctl/tree/file-list-2-line.svg");
+			}
+			
+			&.cl-selected,
+			&.cl-folder.cl-expanded {
+				.cl-tree-itemicon {
+					background-image: url("../../../images/ctl/tree/file-list-2-line-on.svg");
+				}
+			}
+		}
+	}
+	
+	/* 라인트리 사용 시 라인에 대한 스타일 */
+	&.cl-tree-lines {
+		.cl-tree-item {
+			.cl-tree-iconline {
+				margin-left: 5px;
+			}
+				
+			.cl-tree-line,
+			.cl-tree-iconline,
+			&.cl-last .cl-tree-iconline,
+			&.cl-first .cl-tree-iconline {
+				background-image: url("../../../images/ctl/tree/tree-line.png");
+			}
+		}
+	}
+}

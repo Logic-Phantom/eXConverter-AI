@@ -1,0 +1,62 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 인풋계열 컨트롤 유효성 스타일
+ * → required
+ * → invalid
+ ************************************************/
+ 
+.cl-inputbox,
+.cl-searchinput,
+.cl-maskeditor,
+.cl-numbereditor,
+.cl-dateinput,
+.cl-fileinput,
+.cl-textarea,
+.cl-combobox {
+	&.required {
+		background-color: #f5f8fe;
+		border-color: @primary;
+	}
+	
+	&.invalid {
+		background-color: #fdf3f2;
+		border-color: @danger;
+	}
+}
+
+
+/************************************************
+ * 라인 탭
+ * → required
+ * → invalid
+ ************************************************/
+ 
+.cl-tabfolder.tab {
+	.cl-tabfolder-header.cl-top {
+		background: #ffffff;
+		box-shadow: inset 0 -1px 0 0 #efeff0;
+		padding: 0 12px;
+		
+		.cl-empty-area:not(:last-child) {
+			background: linear-gradient(#e2e2e3, #e2e2e3) no-repeat center center / 1px 12px;
+		}
+		
+		.cl-tabfolder-item {
+			background: 0;
+			border: 0;
+			border-radius: 0;
+			color: #8e8e93;
+			font-size: @font-size-lg;
+			padding: 0;
+			
+			.cl-text {
+				line-height: 48px;
+			}
+			
+			&.cl-selected {
+				color: #111111;
+			}
+		}
+	}
+}

@@ -1,0 +1,28 @@
+.cl-calendar {
+	.cl-calendar-content {
+		// 캘린더의 현재 주차에 스타일을 적용합니다.
+		.cl-calendar-content-day {
+			&.cl-default-week {
+				background-color: rgb(216, 255, 240);
+			}
+		}
+		
+		.cl-default-week {
+			background-color: rgb(216, 255, 240);
+		}
+		
+		// 캘린더의 특정 월에 스타일을 적용합니다.
+		.cl-calendar-content-month {
+			&.cl-month-1 {
+				background-color: rgb(216, 255, 240);
+			}
+		}
+		
+		// 캘린더의 특정 연도에 스타일을 적용합니다.
+		.cl-calendar-content-year {
+			&.cl-year-2024 {
+				background-color: rgb(216, 255, 240);
+			}
+		}
+	}
+}

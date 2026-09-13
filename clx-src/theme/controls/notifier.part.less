@@ -1,62 +1,84 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 /* 알림 아이템 */
 .cl-notifier-item {
-	font: @default-font;
-
+	font: @font-base;
+	background: @component-background-color;
+	border: none;
+	color: @component-text-color;
+	border-radius: @border-radius-none;
+	font-weight: @font-weight-medium;
+	font-size: @font-size-base;
+	padding: 4px 24px;
+	
 	/* 알림 아이템 텍스트 */
-	.cl-text {}
+	.cl-text {
+		padding: 0 0 0 (@input-padding-x / 2);
+	}
 
 	/* 알림 아이템 아이콘 */
-	.cl-notifier-icon {}
+	.cl-notifier-icon {
+		background-size: 20px;
+		width: 20px;
+	}
 
 	/* 알림 아이템 닫기 버튼 */
 	.cl-notifier-closebutton {
-		// background-image: url("icons/notifier-close.png");
+		background: url("../images/controls/notifier/ic_btn_close.svg") no-repeat center / contain;
 	}
 
 	/* 알림 아이템 기본 스타일 */
 	&.cl-notifier-default {
-
+		background-color: #eff8ff;
+		color: @primary;
+		
 		/* 알림 아이템 기본 아이콘 */
 		.cl-notifier-default-icon {
-			// background-image: url("icons/notifier-default.png");
+			background-image: url("../images/controls/notifier/ic_notifier.svg");
 		}
 	}
 
 	/* 알림 아이템 success 스타일 */
 	&.cl-notifier-success {
+		background-color: #ecfff0;
+		color: @success;
 
 		/* 알림 아이템 success 아이콘 */
 		.cl-notifier-success-icon {
-			// background-image: url("icons/notifier-success.png");
+			background-image: url("../images/controls/notifier/ic_success.svg");
 		}
 	}
 
 	/* 알림 아이템 info 스타일 */
 	&.cl-notifier-info {
-
+		background-color: #f0faff;
+		color: @info;
+		
 		/* 알림 아이템 info 아이콘 */
 		.cl-notifier-info-icon {
-			// background-image: url("icons/notifier-info.png");
+			background-image: url("../images/controls/notifier/ic_info.svg");
 		}
 	}
 
 	/* 알림 아이템 warning 스타일 */
 	&.cl-notifier-warning {
+		background-color: #fffce7;
+		color: @warning;
 
 		/* 알림 아이템 warning 아이콘 */
 		.cl-notifier-warning-icon {
-			// background-image: url("icons/notifier-warning.png");
+			background-image: url("../images/controls/notifier/ic_warning.svg");
 		}
 	}
 
 	/* 알림 아이템 danger 스타일 */
 	&.cl-notifier-danger {
+		background-color: #fff0f1;
+		color: @danger;
 
 		/* 알림 아이템 danger 아이콘 */
 		.cl-notifier-danger-icon {
-			// background-image: url("icons/notifier-danger.png");
+			background-image: url("../images/controls/notifier/ic_danger.svg");
 		}
 	}
 }

@@ -1,0 +1,128 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 커스텀 스크롤 스타일
+ * → useCustomScrollbar=true
+ ************************************************/
+ 
+.cl-customscrollbar {
+	&.cl-with-hscrollbar {
+	}
+	
+	&.cl-with-vscrollbar {
+	}
+}
+
+.cl-vscrollbar {
+	background-color: transparent;
+	width: 7px;
+
+	&.cl-with-vscrollbar {
+		top: 0px;
+		bottom: 0px;
+	}
+
+	.cl-arrow-up,
+	.cl-arrow-down {
+		background-image: none;
+		width: 0px;
+		height: 0px;
+	}
+	
+	.cl-track {
+		top: 0px;
+		bottom: 0px;
+		width: 7px;
+		right: 0px;
+		
+		.cl-thumb {
+			background-color: #cdcdcd;
+			border-radius: 5px;
+		}
+	}
+}
+
+.cl-hscrollbar {
+	background-color: transparent;
+	height: 7px;
+	
+	&.cl-with-hscrollbar {
+		right: 0px;
+		left: 0px;
+	}
+
+	.cl-arrow-left,
+	.cl-arrow-right {
+		background-image: none;
+		width: 0px;
+		height: 0px;
+	}
+	
+	.cl-track {
+		left: 0px;
+		right: 0px;
+		height: 7px;
+		
+		.cl-thumb {
+			background-color: #cdcdcd;
+			border-radius: 5px;
+		}
+	}
+}
+
+/************************************************
+ * 컨트롤별 스크롤바 스타일
+ * → 컨트롤별로 많은 스타일을 적용하는 경우 성능저하의 원인이
+ * 	 될 수 있으므로 필요한 경우에만 사용할 것
+ ************************************************/
+ 
+.cl-control {
+	.cl-vscrollbar {
+		width: 7px;
+	}
+	
+	.cl-hscrollbar {
+		height: 7px;
+	}
+	
+	// 텍스트에리어 내 스크롤 위치
+	&.cl-textarea {
+		.cl-vscrollbar {
+			.cl-track {
+				top: 11px;
+				right: 11px;
+				bottom: 11px;
+			}
+		}
+		
+		&:has(.cl-vscrollbar) {
+			.cl-text {
+				padding-right: 32px !important;
+			}
+		}
+	}
+	
+	&.cl-dialog {
+		.cl-vscrollbar {
+			width: 4px;
+			
+			.cl-track {
+				width: 4px;
+
+				.cl-thumb {
+				}
+			}
+		}
+		
+		.cl-hscrollbar {
+			height: 4px;
+			
+			.cl-track {
+				height: 4px;
+
+				.cl-thumb {
+				}
+			}
+		}
+	}
+}

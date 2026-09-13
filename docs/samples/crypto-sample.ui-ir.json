@@ -1,0 +1,29 @@
+{
+  "screen": { "name": "암호화 데이터 송수신", "sourceWidth": 1578 },
+  "regions": [
+    { "type": "title", "text": "타이틀을 입력하세요" },
+    { "type": "description", "text": "CryptoJS 라이브러리를 활용한 데이터 암/복호화 샘플입니다.\nCryptoJS 에서 제공하고 있는 다양한 암/복호화 알고리즘(AES, DES, TripleDES, Rabbit, RC4, RC4Drop 등) 중 AES-CBC 알고리즘을 적용하는 방법을 설명합니다.\nCryptoJS 는 v4.1.1 버전을 적용합니다.\n\n본 예제을 확인 하기 위해서는 eXCFrame-thirdparty-web 프로젝트를 서버에 연동 후 확인하시기 바랍니다." },
+    { "type": "sectionTitle", "text": "암호화 데이터 송수신" },
+    { "type": "description", "text": "서브미션을 통해 요청/응답 데이터를 송수신합니다.\n송수신 되는 데이터는 AES-CBC 암호화 알고리즘을 적용합니다.\n아래 조회영역의 조회 버튼을 클릭한 뒤, 개발자도구의 네트워크 탭에서 list.do 를 눌러 확인 할 수 있습니다." },
+    { "type": "search", "fields": [ { "label": "성명", "component": "inputbox", "value": "김길동" }, { "label": "이메일", "component": "inputbox", "value": "kimgildong@google.com" } ], "buttons": ["초기화", "조회"] },
+    { "type": "grid", "title": "", "columns": [
+      { "header": "암호화 데이터 표시", "editor": "checkbox", "width": 118, "cellText": "" },
+      { "header": "번호", "editor": "rowindex", "width": 60, "cellText": "#" },
+      { "header": "성별", "editor": "numbereditor", "width": 90, "cellText": "" },
+      { "header": "성명", "editor": "output", "width": 90, "cellText": "FNM" },
+      { "header": "사업자등록번호", "editor": "inputbox", "width": 172, "cellText": "BZNO" },
+      { "header": "주민등록번호", "editor": "output", "width": 172, "cellText": "RRNO" },
+      { "header": "계좌번호", "editor": "maskeditor", "width": 208, "cellText": "ACNO_____" },
+      { "header": "이메일", "editor": "inputbox", "width": 208, "cellText": "EMAIL" },
+      { "header": "카드번호", "editor": "maskeditor", "width": 248, "cellText": "CDNO____" },
+      { "header": "연락처", "editor": "maskeditor", "width": 188, "cellText": "___-____-____" }
+    ] },
+    { "type": "grid", "columns": [
+      { "header": "", "editor": "rowindex", "width": 38 },
+      { "header": "이벤트/함수명", "editor": "output", "width": 386 },
+      { "header": "설명", "editor": "output", "width": 938 },
+      { "header": "동작", "editor": "button", "width": 192, "cellText": "실행" }
+    ] },
+    { "type": "textarea", "buttons": ["복사"] }
+  ]
+}

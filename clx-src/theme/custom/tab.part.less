@@ -1,0 +1,151 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 탭 내 배지
+ * → badge.part.less 상의 클래스 상속받음
+ ************************************************/
+ 
+.cl-tabfolder {
+	.cl-tabfolder-header {
+		.cl-tabfolder-item {
+			.badge {
+				background-color: @secondary;
+				border-radius: @component-border-radius;
+				font-weight: @font-weight-regular;
+				padding: 0px 6px;
+			}
+		}
+	}
+}
+
+/************************************************
+ * 탭 폴더 2레벨 스타일
+ * → 탭 폴더 내 배치되는 탭 폴더 스타일
+ ************************************************/
+ 
+.cl-tabfolder.tab-filled {
+	.cl-tabfolder-header {
+		.cl-tabfolder-item {
+			background-color: #ffffff;
+			border: 1px solid #c8e1ff;
+			border-radius: @border-radius-circle;
+			padding: 3px 12px 4px 12px;
+			
+			&.cl-selected {
+				background-color: #eef3fb;
+				border-color: #c8e1ff;
+				color: @primary;
+			}
+			
+			&:not(.cl-selected):hover {
+				background-color: @list-item-hover-background-color;
+				border-color: #c8e1ff;
+				color: @list-item-hover-text-color;
+			}
+		}
+	}
+}
+
+/************************************************
+ * 탭 폴더 필터 형태 스타일 (Chips)
+ * → 데이터에 대한 필터 기능을 사용하는 경우
+ ************************************************/
+ 
+.cl-tabfolder.tab-chips,
+.cl-container.tab-chips {
+	.cl-button.btn-add {
+		background: url("../images/controls/button/ic_btn_plus.svg") no-repeat center / 10px;
+		background-color: #eff0f2;
+		border-color: #e9e9ea;
+		border-radius: @border-radius-circle;
+		
+		&:not(.cl-disabled):hover,
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-color: #e9e9ea;
+			border-color: #e9e9ea;
+		}
+	}
+	
+	.cl-button.btn-prev,
+	.cl-button.btn-next {
+		background-color: @btn-background-color;
+		background-size: 6px;
+		border: @btn-border-base;
+		border-radius: @btn-border-radius;
+		padding: 0px;
+		min-width: 20px;
+		
+		&.cl-disabled {
+			background-color: @btn-disabled-background-color;
+			border-color: @btn-disabled-border-color;
+		}
+	}
+	
+	.cl-button.btn-prev {
+		background-image: url("../images/controls/tabfolder/ic_btn_prev.svg");
+		background-position: calc(50% - 1px) center;
+	}
+	
+	.cl-button.btn-next {
+		background-image: url("../images/controls/tabfolder/ic_btn_next.svg");
+		background-position: calc(50% + 1px) center;
+	}
+}
+ 
+.cl-tabfolder.tab-chips {
+	.cl-tabfolder-header {
+		height: 24px;
+		
+		.cl-tabfolder-item {
+			background-color: #eff0f2;
+			border: none;
+			border-radius: @border-radius-circle;
+			color: @component-text-color;
+			padding: 1px 8px 2px 8px;
+			
+			&.cl-selected {
+				background: url("../images/controls/checkbox/ic_check_circle_on.svg") no-repeat 8px center / 12px;
+				background-color: @info-dim;
+				color: @component-text-color;
+				padding: 1px 8px 2px 24px;
+			}
+			
+			&:not(.cl-selected):hover {
+				background-color: #eff0f2;
+				color: @component-text-color;
+			}
+		}
+	}
+}
+
+.cl-container.tab-chips {
+	.cl-button {
+		background-color: #eff0f2;
+		border: none;
+		border-radius: @border-radius-circle;
+		color: @component-text-color;
+		padding: 1px 8px 2px 8px;
+		
+		.cl-icon {
+			background-image: url("../images/controls/inputbox/ic_btn_clear.svg") !important;
+			background-size: 12px;
+			width: 12px;
+			height: 12px;
+		}
+		
+		&.selected {
+			background: url("../images/controls/checkbox/ic_check_circle_on.svg") no-repeat 8px center / 12px;
+			background-color: @info-dim;
+			color: @component-text-color;
+			padding: 1px 8px 2px 24px;
+		}
+		
+		&:not(.cl-disabled):hover,
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-color: #eff0f2;
+			color: @component-text-color;
+		}
+	}
+}

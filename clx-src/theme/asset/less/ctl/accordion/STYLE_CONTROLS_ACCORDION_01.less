@@ -1,0 +1,66 @@
+.cl-accordion.accordion-card {
+	background-color: transparent;
+	border: none;
+	padding: 0px;
+	
+	/* 아코디언 헤더 스타일 */
+	.cl-accordion-header {
+		background-color: #ffffff;
+		border: 1px solid #babfc7;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+		color: #6b6f82;
+		font-size: 16px;
+		padding: 10px 5px 10px 10px;
+		
+		/* 아코디언 헤더 펼침 버튼 스타일 */
+		.cl-accordion-expander {
+			background-image: url("../../../images/ctl/accordion/icon-arrow-right-s-line.svg");
+			background-size: 24px;
+			width: 24px;
+		}
+		
+		/* 아코디언 헤더 호버 스타일 */
+		&:hover:not(.cl-disabled) {
+			background-color: #ffffff;
+		}
+		
+		/* 아코디언 헤더 포커스 스타일 */
+		&:focus {
+			text-decoration: none; // 포커스링 제거
+		}
+		
+		/* 아코디언 헤더 비활성화 스타일 */
+		&.cl-disabled {
+		}
+		
+		/* 아코디언 헤더 선택 스타일 */
+		&.cl-activated {
+			background-color: #ffffff;
+			color: #3f87fd;
+			font-weight: bold;
+			
+			/* 아코디언 헤더 닫힘 버튼 스타일 */
+			.cl-accordion-expander {
+				background-image: url("../../../images/ctl/accordion/icon-arrow-down-s-line.svg");
+			}
+		}
+	}
+	
+	/* 아코디언 컨텐츠 스타일 */
+	.cl-accordion-section:not(.cl-accordion-placeholder) {
+		margin-top: -1px;
+		
+		.cl-accordion-content {
+			background-color: #ffffff;
+			border: 1px solid #babfc7;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+		}
+	}
+	
+	/* 아코디언 섹션 간의 간격 */
+	.cl-accordion-section +.cl-accordion-header {
+		margin-top: 5px;
+	}
+}

@@ -1,324 +1,570 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 /* 캘린더 */
 .cl-calendar {
-	border: 1px solid @default-border-color;
-	background-color: #fff;
-
+	font: @font-base;
+	background-color: @calendar-background-color;
+	border-color: @calendar-border-color;
+	border-radius: @border-radius-lg;
+	color: @calendar-text-color;
+	padding: 16px;
+	
 	/* 이전 년도 버튼 */
 	&:not(.cl-disabled) .cl-calendar-header-before {
-		// cursor: pointer;
-
-		/* 호버 상태 */
-		&:hover, &.cl-hover{
-			// background-image: url(icons/fast-rewind-hover.png);
+		&:hover,
+		&.cl-hover {
+			background-image: url("../images/controls/dateinput/ic_btn_before.svg");
 		}
 	}
-
+	
 	/* 다음 년도 버튼 */
 	&:not(.cl-disabled) .cl-calendar-header-after {
-		// cursor: pointer;
-		&:hover, &.cl-hover{
-			// background-image: url(icons/fast-foward-hover.png);
+		&:hover,
+		&.cl-hover {
+			background-image: url("../images/controls/dateinput/ic_btn_after.svg");
 		}
 	}
-
+	
 	/* 이전 달 버튼 */
 	&:not(.cl-disabled) .cl-calendar-header-prev {
-		// cursor: pointer;
-		&:hover, &.cl-hover{
-			// background-image: url(icons/rewind-hover.png);
+		&:hover,
+		&.cl-hover {
+			background-image: url("../images/controls/dateinput/ic_btn_prev.svg");
 		}
 	}
-
+	
 	/* 다음 달 버튼 */
 	&:not(.cl-disabled) .cl-calendar-header-next {
-		// cursor: pointer;
-		&:hover, &.cl-hover{
-			// background-image: url(icons/foward-hover.png);
+		&:hover,
+		&.cl-hover {
+			background-image: url("../images/controls/dateinput/ic_btn_next.svg");
 		}
 	}
-
+	
 	/* 캘린더 헤더 */
 	.cl-calendar-header {
+		background-color: @calendar-header-background-color;
+		border-bottom: @calendar-content-border-color;
+		padding: 0 0 16px 0;
+		
+		/* 년도 버튼 공통 */
+		.cl-calendar-header-before,
+		.cl-calendar-header-after,
+		.cl-calendar-header-prev,
+		.cl-calendar-header-next {
+		}
 		
 		/* 이전 년도 버튼 */
 		.cl-calendar-header-before {
-			// background-image: url(icons/fast-rewind.png);
+			background-image: url("../images/controls/dateinput/ic_btn_before.svg");
 		}
 		
 		/* 다음 년도 버튼 */
 		.cl-calendar-header-after {
-			// background-image: url(icons/fast-foward.png);
+			background-image: url("../images/controls/dateinput/ic_btn_after.svg");
 		}
-
+		
 		/* 이전 달 버튼 */
 		.cl-calendar-header-prev {
-			// background-image: url(icons/rewind.png);
+			background-image: url("../images/controls/dateinput/ic_btn_prev.svg");
 		}
-
+		
 		/* 다음 달 버튼 */
 		.cl-calendar-header-next {
-			// background-image: url(icons/foward.png);
+			background-image: url("../images/controls/dateinput/ic_btn_next.svg");
 		}
-
+		
 		/* 헤더 텍스트 */
 		.cl-calendar-header-text {
-			&:hover, &.cl-hover{
-				color: @selection-background;
+			color: @calendar-header-text-color;
+			font-weight: @font-weight-semibold;
+			font-size: @font-size-lg;
+			text-align: center;
+			
+			&:hover,
+			&.cl-hover {
+				color: @calendar-header-text-color;
+			}
+			
+			// 버튼이 우측 정렬이 된 경우
+			&:first-child {
+				text-align: left;
+			}
+			
+			// 버튼이 좌측 정렬이 된 경우
+			&:last-child {
+				text-align: right;
 			}
 		}
 	}
-
+	
 	/* 캘린더 컨텐츠의 일, 월, 년 스타일 */
 	&:not(.cl-disabled) .cl-calendar-content-day,
-	&:not(.cl-disabled)	.cl-calendar-content-month,
-	&:not(.cl-disabled)	.cl-calendar-content-year,
-	&:not(.cl-disabled)	.cl-other-month {
+	&:not(.cl-disabled) .cl-calendar-content-month,
+	&:not(.cl-disabled) .cl-calendar-content-year,
+	&:not(.cl-disabled) .cl-other-month {
+		overflow: visible;
+		
+		/* 일, 월, 년 스타일 공통 */
+		&:not(.cl-disabled):hover,
+		&.cl-selected,
+		&.cl-calendar-current,
+		&.cl-calendar-anniversary,
+		&.cl-disabled {
+		}
 		
 		/* 셀 호버 스타일 */
 		&:not(.cl-disabled):hover {
-			// cursor: pointer;
-			// background-color:#656565;
-			// color: white;
+			background-color: @calendar-date-hover-background-color;
+			color: @calendar-date-hover-text-color;
 		}
-
-		/* 셀 숨김 스타일 */
-		&.cl-hidden{
-			&:hover{
-				// cursor: default;
-				// background-color: white;
-			}
+		
+		/* 기본 날짜 - 오늘 날짜 셀 */
+		&.cl-calendar-defaultdate {
+			background-color: @calendar-default-date-background-color;
+			color: @calendar-default-date-text-color;
+			font-weight: @font-weight-medium;
+			font-size: @font-size-base;
+		}
+		
+		/* range 선택에서 선택된 날짜 스타일 */
+		&.cl-range-selected,
+		&.cl-range-selected:not(.cl-disabled):hover {
+			background-color: fade(@calendar-date-selected-background-color, 50%);
+			color: @calendar-date-selected-text-color;
 		}
 		
 		/* 선택된 날짜 셀 */
-		&.cl-selected{
-			background-color: @selection-background;
-			color: @selection-foreground;
+		&.cl-selected,
+		&.cl-selected:not(.cl-disabled):hover,
+		&.cl-selected.cl-calendar-current {
+			background-color: @calendar-date-selected-background-color;
+			color: @calendar-date-selected-text-color;
+		}
+		
+		/* 키보드 날짜 이동 스타일 */
+		&.cl-calendar-current {
+			background-color: @calendar-current-date-background-color;
+			box-shadow: @calendar-current-date-box-shadow;
+			color: @calendar-current-date-text-color;
+		}
+		
+		/* 셀 숨김 스타일 */
+		&.cl-hidden {
+			&:hover {
+				background-color: @transparent;
+			}
+		}
+		
+		/* 비활성화 셀 */
+		&.cl-disabled {
+		}
+		
+		/* 기념일 전역 스타일 */
+		&.cl-calendar-anniversary {
+			box-shadow: @box-shadow-none;
+			color: @danger;
 		}
 	}
-
+	
+	.cl-calendar-content .cl-calendar-content-day,
+	.cl-calendar-content .cl-calendar-content-month,
+	.cl-calendar-content .cl-calendar-content-year,
+	.cl-calendar-content .cl-other-month {
+		border: none;
+		border-radius: @border-radius-full;
+	}
+	
+	/* 캘린더별 콘텐츠 스타일 공통 */
+	&:not(.cl-anniversaries) {
+		&.cl-calendar-day .cl-calendar-content > *,
+		&.cl-calendar-month .cl-calendar-content-wrapper > *,
+		&.cl-calendar-year .cl-calendar-content-wrapper > * {
+			grid-gap: 4px 4px;
+		}
+	}
+	
 	/* 캘린더 컨텐츠 스타일 */
 	.cl-calendar-content {
-
 		/* week of year의 스타일 */
-		.cl-calendar-content-week{
-			&.cl-hidden{}
-		}
-
-		/* 날짜 달력의 헤더 스타일 */
-		.cl-calendar-content-header{
-			// overflow:hidden;
-			// height: 30px;
+		.cl-calendar-content-week {
+			background-color: fade(#787880, 8%);
+			color: @calendar-date-text-color;
 			
-			// border-width: 1px 0 0 1px;
-			// border-style: solid;
-			// border-color: transparent;
-
-			// font-weight: normal;
-			// text-align: center;
-			// vertical-align: middle;
-			// background-color: #f5f5f5;
-			// cursor:default;
+			&:nth-child(1 of .cl-calendar-content-week) {
+				border-top-left-radius: @component-border-radius;
+				border-top-right-radius: @component-border-radius;
+			}
+			
+			&:nth-last-child(1 of .cl-calendar-content-week) {
+				border-bottom-left-radius: @component-border-radius;
+				border-bottom-right-radius: @component-border-radius;
+			}
+			
+			&.cl-hidden {
+			}
+			
 		}
-
+		
+		.cl-calendar-content-day, .cl-other-month {
+			 + .cl-calendar-content-week {
+				box-shadow: 0 -4px 0 0 fade(#787880, 8%);
+			}
+		}
+		
+		/* 날짜 달력의 헤더 스타일 */
+		.cl-calendar-content-header {
+			background-color: @calendar-content-header-background-color;
+			border: none;
+			color: @calendar-content-header-text-color;
+			font-weight: @font-weight-medium;
+			padding: 0 0 6px 0;
+			height: auto;
+		}
+		
+		/* 날짜 스타일 공통 */
+		.cl-calendar-content-day,
+		.cl-calendar-content-month,
+		.cl-calendar-content-year,
+		.cl-other-month {
+		}
+		
 		/* 날짜 선택 모드시 날짜 스타일 */
 		.cl-calendar-content-day {
-
 			/* 일요일 셀 */
 			&.cl-calendar-content-sun {
-				// color: #a7a6a6;
+				color: @calendar-date-sun-text-color;
 			}
-
+			
 			/* 토요일 셀 */
 			&.cl-calendar-content-sat {
-				// color: #a7a6a6;
+				color: @calendar-date-sat-text-color;
 			}
 		}
-
+		
 		/* 이전 달 또는 다음 달의 날짜 */
-		.cl-other-month { 
-
+		.cl-other-month {
+			background-color: @calendar-other-date-background-color;
+			color: @calendar-other-date-text-color;
+			
 			/* 비활성화 상태 */
-			&.cl-disabled{
-				// background-color: #f2f2f2;
-				// color: #a7a6a6;
+			&.cl-disabled {
+				color: @calendar-date-disabled-text-color;
 			}
 		}
-	
-		.cl-calendar-content-day, 
+		
+		.cl-calendar-content-day,
 		.cl-calendar-content-month,
-		.cl-calendar-content-year{
-			// overflow:hidden;
-			// border-width:1px 0 0 1px;
-			// border-style:solid;
-			// border-color:#fff;
-
-			/* 기본 날짜 - 오늘 날짜 셀 */
-			&.cl-calendar-defaultdate {
-				// background-color: #8A8A8B;
-				// color: white;
-			}
-
-			/* range 선택에서 선택된 날짜 스타일 */
-			&.cl-range-selected {}
-
-			&.cl-selected{}
-
-			&.cl-disabled{}
-
-			/* 기념일 전역 스타일 */
-			&.cl-calendar-anniversary {
-				// box-shadow: inset 0 -0.25rem 0 red;
-				// color:red;
-			}
+		.cl-calendar-content-year {
 		}
 	}
-
-	/* 캘린더 푸터 날짜 호버 스타일 */
-	&:not(.cl-disabled) .cl-calendar-footer-text {
-		&:hover{
-			// cursor: pointer;
-			// text-decoration: underline;
-		}
-	}
-
+	
 	/* 캘린더 푸터 */
 	.cl-calendar-footer {
+		background-color: @calendar-footer-background-color;
+		border-top: 1px solid @calendar-content-border-color;
+		height: auto;
+		margin: 12px 0 0 0;
+		padding: 6px 0 0 0;
+		vertical-align: middle;
 		
 		.cl-calendar-footer-text {
-			// display: inline-block;
+			font: @font-base;
+			background-color: @btn-background-color;
+			border: 1px solid @btn-border-color;
+			border-radius: @btn-border-radius;
+			color: @btn-text-color;
+			padding: @btn-padding-y @btn-padding-x;
+			float: left;
 		}
-		&.cl-hover {
-			.cl-calendar-footer-text {
-				// text-decoration: underline;
-			}
+		
+		&.cl-hover:not(.cl-disabled) .cl-calendar-footer-text,
+		.cl-calendar-footer-text:hover {
+			background-color: @btn-hover-background-color;
+			border-color: @btn-hover-border-color;
+			color: @btn-hover-text-color;
+			text-decoration: none;
 		}
 	}
-
-	/* font-size로 디테일과 날짜와의 간격을 설정합니다. */
-	.cl-calendar-detail{}
 	
-	/* font-size로 이벤트 막대와의 간격을 설정합니다. 막대의 height보다 커야 합니다. */
-	.cl-calendar-item-wrap,.cl-anniversary-wrap,.cl-calendar-more-wrap{}
-
-	/* height로 막대의 높이를 설정합니다. */
-	.cl-calendar-item,.cl-anniversary,.cl-calendar-more{
-
-		/* line-height로 텍스트의 위치를 정렬합니다. height와 값이 같으면 가운데 정렬입니다. */
-		.cl-text{}
-	}
-
-	/* 캘린더 아이템, 기념일 스타일 */
-	.cl-calendar-item,.cl-anniversary{
-
-		/* 숨김 상태 */
-		&.cl-hidden{
-			//display: none;
-		}
-
-		/* 선택 상태 */
-		&.cl-selected{
-			// 선택된 상태
-			// box-shadow: inset 0px 0px 0px 1px #656565;
-		}
-	}
-
-	/* 기념일을 표시하는 캘린더 스타일 */
-	&.cl-anniversaries {
-		
-		.cl-calendar-content-day {
-			&.cl-calendar-anniversary {
-				// box-shadow: none;
-				// color:inherit;
-			}
-			
-		}
-
-		/* 년월일 달력 스타일 */
-		.cl-calendar-content-day,.cl-other-month.cl-calendar-content-mon,.cl-other-month.cl-calendar-content-tue,.cl-other-month.cl-calendar-content-wed,.cl-other-month.cl-calendar-content-thu,.cl-other-month.cl-calendar-content-fri,.cl-other-month.cl-calendar-content-sat,.cl-other-month.cl-calendar-content-sun{
-			// border-bottom: 1px solid @default-border-color;
-			// border-right:1px solid @default-border-color;
-			// border-top: none;
-			// border-left: none;
-			
-			/* 기념일 텍스트 스타일 */
-			.cl-anniversary {
-			}
-		}
-
-		.cl-calendar-content-day, .cl-other-month{	
-			&.cl-calendar-content-sat{
-				// border-right:none;
-			}
-			
-		}
-		
-	}
-
 	/* 포커스 상태 */
 	&.cl-focus {
-		border-color: @focus-border-color;
-		.cl-calendar-content{
-
-			/* 키보드 날짜 이동 스타일 */
-			.cl-calendar-current{
-				//box-shadow: inset 0px 0px 0px 0.125rem #656565;
-			}	
+		border-color: @component-focus-transparent-color;
+		outline: 2px solid @primary;
+		outline-offset: -2px;
+	}
+	
+	/* 기념일을 표시하는 캘린더 스타일 */
+	&.cl-anniversaries {
+		background-color: @transparent;
+		border: none;
+		border-radius: @border-radius-none;
+		padding: 0;
+		
+		.cl-calendar-header {
+			.cl-calendar-header-text {
+				pointer-events: none;
+			}
+		}
+		
+		.cl-calendar-content {
+			.cl-calendar-content-header {
+				background-color: @table-header-background-color;
+				border: 1px solid @calendar-content-border-color;
+				border-width: 1px 1px 0 0;
+				padding: 6px 0;
+			}
+		}
+		
+		/* 년월일 달력 스타일 */
+		.cl-calendar-content-day,
+		.cl-other-month.cl-calendar-content-mon,
+		.cl-other-month.cl-calendar-content-tue,
+		.cl-other-month.cl-calendar-content-wed,
+		.cl-other-month.cl-calendar-content-thu,
+		.cl-other-month.cl-calendar-content-fri,
+		.cl-other-month.cl-calendar-content-sat,
+		.cl-other-month.cl-calendar-content-sun {
+			border: 1px solid @calendar-content-border-color;
+			border-width: 1px 1px 0 0;
+			border-radius: @border-radius-none;
+			margin: 0;
+			padding: 6px;
+			text-align: right;
+			
+			&.cl-last-column {
+				border-right: none;
+			}
+			
+			&.cl-last-row {
+				border-bottom: 1px solid @calendar-content-border-color;
+			}
+			
+			&.cl-calendar-defaultdate,
+			&.cl-selected.cl-calendar-defaultdate {
+				background-color: #fffce7;
+			}
+			
+			&:not(.cl-disabled):hover,
+			&.cl-selected,
+			&.cl-selected:not(.cl-disabled):hover,
+			&.cl-selected.cl-calendar-current {
+				background-color: @transparent;
+				
+				&.cl-other-month {
+					color: @calendar-other-date-text-color;
+				}
+			}
+		}
+		
+		.cl-calendar-content-day {
+			color: @calendar-date-text-color;
+			
+			&.cl-calendar-anniversary,
+			&.cl-calendar-content-sat,
+			&.cl-calendar-content-sun {
+				color: @calendar-date-text-color;
+			}
+			
+			&.cl-selected,
+			&.cl-selected:not(.cl-disabled):hover,
+			&.cl-selected.cl-calendar-current {
+				color: @calendar-date-text-color !important;
+			}
+			
+			&.cl-disabled {
+				background-color: @component-disabled-background-color;
+			}
+		}
+		
+		/* font-size로 디테일과 날짜와의 간격을 설정합니다. */
+		.cl-calendar-detail {
+			font-size: @font-size-4xl;
+		}
+		
+		/* font-size로 이벤트 막대와의 간격을 설정합니다. 막대의 height보다 커야 합니다. */
+		.cl-calendar-item-wrap,
+		.cl-anniversary-wrap,
+		.cl-calendar-more-wrap {
+			font-size: @font-size-3xl;
+		}
+		
+		/* height로 막대의 높이를 설정합니다. */
+		.cl-calendar-item,
+		.cl-anniversary,
+		.cl-calendar-more {
+			background-color: @transparent;
+			border-radius: @border-radius-none;
+			font-weight: @font-weight-normal;
+			height: 20px;
+			margin: 0 1px 0 0;
+			padding: 0 8px;
+						
+			/* line-height로 텍스트의 위치를 정렬합니다. height와 값이 같으면 가운데 정렬입니다. */
+			.cl-text {
+				line-height: 20px;
+			}
+		}
+		
+		/* 캘린더 아이템, 기념일 스타일 */
+		.cl-calendar-item,
+		.cl-anniversary {
+			
+			/* 숨김 상태 */
+			&.cl-hidden {
+				//display: none;
+			}
+			
+			/* 선택 상태 */
+			&.cl-selected {
+				box-shadow: @box-shadow-none;
+			}
+		}
+		
+		.cl-calendar-item {
+			background-color: #dbeffe;
+		}
+		
+		.cl-anniversary {
+			color: @danger;
+		}
+		
+		.cl-calendar-more {
+			height: auto;
+			font-weight: @font-weight-semibold;
+			padding-top: 4px;
+			
+			.cl-text {
+				line-height: 100%;
+			}
+			
+			&:hover {
+				background-color: @transparent;
+				color: @component-focus-color;
+			}
 		}
 	}
-
+	
+	.cl-calendar-content-header.cl-calendar-content-sat,
+	.cl-calendar-content-day,
+	.cl-other-month {
+		&.cl-calendar-content-sat {
+			border-right: none;
+		}
+	}
+	
+	.cl-calendar-content-day {
+		
+	}
+	
 	/* 데이트인풋 등에 팝업으로 나타날때 스타일 */
 	&.cl-popup {
-		// box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, .3);
-
+		border-color: @calendar-border-color;
+		box-shadow: @box-shadow-md;
+		
 		/* 년도 캘린더 */
-		&.cl-calendar-year{
-			// width: 220px;
-			// height: 160px;
+		&.cl-calendar-year {
+			width: 242px;
+			height: 155px;
 		}
-	
+		
 		/* 년월 캘린더 */
 		&.cl-calendar-month {
-			// width: 220px;
-			// height: 160px;
+			width: 242px;
+			height: 155px;
 		}
-	
+		
 		/* 년월일 캘린더 */
 		&.cl-calendar-day {
-			// width: 240px;
-			// height: 270px;
+			width: 240px;
+			height: 266px;
 		}
 		
 		/* 데이트인풋 위에 표시될때 상태 */
-		&.cl-top {}
-
+		&.cl-top {
+			margin-top: -4px;
+		}
+		
 		/* 데이트인풋 아래에 표시될때 상태 */
-		&.cl-bottom {}
-
-		.cl-calendar-content-day,
-		.cl-calendar-content-month,
-		.cl-calendar-content-year{
-
-			/* 데이트인풋 캘린더 키보드로 날짜 이동 스타일  */
-			&.cl-calendar-current{
-				// box-shadow: inset 0px 0px 0px 0.125rem #656565;
-			}
+		&.cl-bottom {
+			margin-top: 4px;
 		}
 	}
 }
 
 /* 캘린더 disabled 상태 */
 .cl-calendar.cl-disabled {
-
-	.cl-calendar-header{
+	background-color: @component-disabled-background-color;
+	border-color: @component-disabled-border-color;
+	color: @component-disabled-text-color;
+	opacity: 1;
+	
+	.cl-calendar-header {
+		background-color: @component-disabled-background-color;
+		
 		.cl-calendar-header-text {
+			color: @component-disabled-text-color;
 			
-			&:hover, &.cl-hover{
-				
+			&:hover,
+			&.cl-hover {
+				color: @component-disabled-text-color;
 			}
 		}
-
+	}
+	
+	.cl-calendar-content {
+		.cl-calednar-conten-header {
+			background-color: @transparent;
+			border-bottom-color: @component-disabled-border-color;
+			color: @component-disabled-text-color;
+		}
+		
+		.cl-calendar-content-week:not(.cl-calendar-content-header) {
+			background-color: #ebf0f3;
+			color: @calendar-date-text-color;
+		}
+		
+		.cl-calendar-content-day {
+			&.cl-calendar-content-sun {
+				/* 일요일 셀 */
+				color: @component-disabled-text-color;
+			}
+			
+			&.cl-calendar-content-sat {
+				/* 토요일 셀 */
+				color: @component-disabled-text-color;
+			}
+		}
+	}
+	
+	.cl-calendar-content-day,
+	.cl-calendar-content-month,
+	.cl-calendar-content-year,
+	.cl-other-month {
+		background-color: @transparent;
+		color: @component-disabled-text-color;
+		
+		/* 셀 호버 스타일 */
+		&:not(.cl-disabled):hover,
+		&.cl-selected {
+			background-color: @transparent;
+		}
+		
+		&.cl-selected {
+			color: @component-disabled-selected-text-color;
+		}
+		
+		&.cl-calendar-defaultdate {
+			background-color: @transparent;
+			color: @component-disabled-text-color;
+		}
+	}
+	
+	.cl-calendar-footer {
+		.cl-calendar-footer-text {
+			background-color: @btn-disabled-background-color;
+			border-color: @btn-disabled-border-color;
+			color: @btn-disabled-text-color;
+		}
 	}
 }
-

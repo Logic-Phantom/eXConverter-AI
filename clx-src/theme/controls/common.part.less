@@ -1,10 +1,15 @@
 @charset "UTF-8";
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 /* 모든 UIControl 공통 스타일 */
 .cl-control {
-	font: @default-font;
-	color: @default-text-color;
+	font: @font-base;
+	color: @component-text-color;
+	line-height: 1.5;
+	
+	.cl-text {
+		line-height: inherit;
+	}
 }
 
 /* 오류 발생시 표시되는 메시지 스타일 */

@@ -1,0 +1,102 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 타이틀
+ * → 
+ ************************************************/
+ 
+.cl-output.tit {
+	line-height: 1.25;
+	font-weight: @font-weight-semibold;	
+	
+	&.h1,
+	&.h2,
+	&.h3 {
+		font-weight: @font-weight-bold;
+	}
+	
+	&.h1 {
+		font-size: @font-size-5xl;
+		letter-spacing: -0.68px;
+	}
+	
+	&.h2 {
+		font-size: @font-size-4xl;
+		letter-spacing: -0.56px;
+	}
+	
+	&.h3 {
+		font-size: @font-size-3xl;
+		letter-spacing: -0.48px;
+	}
+	
+	&.h4 {
+		font-size: @font-size-2xl;
+		letter-spacing: -0.36px;
+	}
+	
+	&.h5 {
+		font-size: @font-size-xl;
+		letter-spacing: -0.32px;
+	}
+	
+	&.h6 {
+		font-size: @font-size-lg;
+		letter-spacing: -0.28px;
+	}
+}
+
+/************************************************
+ * 캡션
+ * → 
+ ************************************************/
+ 
+.caption {
+	color: #7f7f83;
+	
+	&.caption-blue {
+		color: #207de9;
+	}
+	
+	&.caption-red {
+		color: #d70015;
+	}
+}
+
+/************************************************
+ * 안내 텍스트 (지시문/안내문)
+ * → 일반
+ * → 강조
+ ************************************************/
+
+.cl-output.info-txt,
+.cl-output.info-txt-highlighted {
+	background-repeat: no-repeat;
+	background-position: left 0px;
+	background-size: 16px;
+	line-height: 1.2;
+	
+	.cl-text {
+		padding: 0 0 0 20px;
+	}
+}
+
+.cl-output.info-txt {
+	background-image: url("../images/controls/output/ic_info.svg");
+	color: #7f7f83;
+}
+
+.cl-output.info-txt-highlighted {
+	background-image: url("../images/controls/output/ic_info_on.svg");
+	color: #207de9;
+}
+
+/************************************************
+ * 카드
+ * → 
+ ************************************************/
+ 
+.cl-container.card {
+	border: @component-border-base;
+	padding: 10px;
+}

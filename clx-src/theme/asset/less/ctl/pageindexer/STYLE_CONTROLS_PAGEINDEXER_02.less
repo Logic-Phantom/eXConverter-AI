@@ -1,0 +1,98 @@
+.cl-pageindexer.pagination-basic {
+	color: #333333;
+	padding: 0px;
+	overflow: visible !important;
+	
+	/* 페이지 인덱서 인덱스 영역 및 텍스트 영역 크기 설정 */
+	.cl-pageindexer-index-area,
+	.cl-text-wrapper {
+		min-height: 35px;
+	}
+	
+	/* 페이지 인덱서 버튼 공통 */
+	.cl-pageindexer-first,
+	.cl-pageindexer-last,
+	.cl-pageindexer-prev,
+	.cl-pageindexer-next,
+	.cl-pageindexer-index {
+		border: 1px solid #babfc7;
+		height: 35px;
+		min-height: 35px;
+		margin: 0px;
+		transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+		
+		/* 버튼 호버 스타일 */
+		&:not(.cl-selected) {
+			&:hover,
+			&.cl-hover {
+				background-color: #f5f6f8;
+			}
+		}
+		
+		/* 버튼 포커스 스타일 */
+		&:focus {
+			outline: none; // 포커스링 해제
+			box-shadow: 0 0 0 2px rgba(91, 115, 232, .25);
+			position: relative; // z-index 적용을 위해 추가
+			z-index: 1;
+		}
+	}
+	
+	/* 페이지 인덱서 <<, <, >, >> 버튼 스타일 */
+	.cl-pageindexer-first,
+	.cl-pageindexer-last,
+	.cl-pageindexer-prev,
+	.cl-pageindexer-next {
+		width: 35px;
+	}
+	
+	.cl-pageindexer-first {
+		background-image: url("../../../images/ctl/pageindexer/icon-chevrons-left.png");
+		border-radius: 5px 0px 0px 5px;
+		
+		&:hover, &:active {
+			background-image: url("../../../images/ctl/pageindexer/icon-chevrons-left-active.png");
+		}
+	}
+	
+	.cl-pageindexer-last {
+		background-image: url("../../../images/ctl/pageindexer/icon-chevrons-right.png");
+		border-radius: 0px 5px 5px 0px;
+
+		&:hover, &:active {
+			background-image: url("../../../images/ctl/pageindexer/icon-chevrons-right-active.png");
+		}
+	}
+	
+	.cl-pageindexer-prev {
+		background-image: url("../../../images/ctl/pageindexer/icon-chevron-left.png");
+		&:hover, &:active {
+			background-image: url("../../../images/ctl/pageindexer/icon-chevron-left-active.png");
+		}
+	}
+	
+	.cl-pageindexer-next {
+		background-image: url("../../../images/ctl/pageindexer/icon-chevron-right.png");
+		&:hover, &:active {
+			background-image: url("../../../images/ctl/pageindexer/icon-chevron-right-active.png");
+		}
+	}
+	
+	/* 페이지 인덱서 인덱스 버튼 스타일 */
+	.cl-pageindexer-index {
+		/* 페이지 인덱서 인덱스 버튼 선택 스타일 */
+		&.cl-selected {
+			background-color: #f5f6f8;
+			border-color: #babfc7;
+			color: #1e9ff2;
+		}
+	}
+	
+	/* 페이지 인덱서 버튼 보더 이중으로 보이지 않게 추가 */
+	.cl-pageindexer-prev,
+	.cl-pageindexer-index,
+	.cl-pageindexer-next,
+	.cl-pageindexer-last {
+		margin-left: -1px;
+	}
+}

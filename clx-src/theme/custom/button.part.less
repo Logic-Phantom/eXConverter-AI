@@ -1,0 +1,362 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 버튼 아이콘 공통 스타일
+ * → 
+ ************************************************/
+ 
+.cl-button {
+	&.cl-icon-align-left {
+		.cl-icon {
+			margin-right: 4px;
+		}
+	}
+	
+	&.cl-icon-align-right {
+		.cl-icon {
+			margin-left: 4px;
+		}
+	}
+	
+	&.cl-icon-align-top {
+		.cl-icon {
+			margin-bottom: 4px;
+		}
+	}
+	
+	&.cl-icon-align-bottom {
+		.cl-icon {
+			margin-top: 4px;
+		}
+	}
+}
+
+/************************************************
+ * 공통 버튼 스타일
+ * → MIXIN 함수
+ ************************************************/
+
+.btn-transparent {
+	background-color: @transparent;
+	border: none;
+	border-radius: @border-radius-none;
+	padding: 0;
+	
+	&:focus, &.cl-focus,
+	&:not(.cl-disabled):hover,
+	&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+		background-color: @transparent;
+	}
+}
+
+.btn-i-only {
+	padding: 0 4px !important;
+	
+	.cl-icon {
+		margin: 0 !important;
+	}
+}
+
+/************************************************
+ * 버튼 스타일
+ * → 기본/보조/주요
+ ************************************************/
+ 
+.cl-button.btn-base {
+	background-color: #ffffff;
+	border-color: #bbbbbe;
+	color: #111111;
+	
+	&:focus, &.cl-focus {
+		background-color: #efeff0;
+		border-color: #afafaf;
+		color: #000000;
+	}
+	
+	&:not(.cl-disabled):hover {
+		background-color: #efeff0;
+		border-color: #afafaf;
+		color: #111111;
+	}
+	
+	&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+		background-color: #efeff0;
+		border-color: #afafaf;
+		color: #000000;
+	}
+	
+	&.cl-disabled {
+		background-color: @btn-disabled-background-color;
+		border-color: @btn-disabled-border-color;
+		color: @btn-disabled-text-color;
+	}
+}
+
+.cl-button.btn-submit {
+	background-image: linear-gradient(45deg, #4dc1b9, #207de9);
+	background-size: 200% auto;
+	border: none;
+	color: #ffffff;
+	padding: @btn-padding-y (@btn-padding-x + 1);
+//	transition: @component-transition-base;
+	
+	&:focus, &.cl-focus,
+	&:not(.cl-disabled):hover,
+	&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+		background-image: linear-gradient(to right, #4dc1b9, #207de9);
+		background-position: right center;
+		color: #ffffff;
+	}
+	
+	&.cl-disabled {
+		background-image: none;
+		background-color: @btn-disabled-background-color;
+		border-color: @btn-disabled-border-color;
+		color: @btn-disabled-text-color;
+	}
+}
+
+.cl-button.btn-inline {
+	background-color: #282828;
+	border-color: #282828;
+	color: #ffffff;
+	font-weight: @font-weight-normal;
+	font-size: @font-size-xs;
+	padding: 0px 6px;
+	
+	&:focus, &.cl-focus {
+		background-color: #0f1524;
+		border-color: #0f1524;
+		color: #ffffff;
+	}
+	
+	&:not(.cl-disabled):hover {
+		background-color: #494e5b;
+		border-color: #494e5b;
+		color: #ffffff;
+	}
+	
+	&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+		background-color: #0f1524;
+		border-color: #0f1524;
+		color: #ffffff;
+	}
+	
+	&.cl-disabled {
+		background-color: @btn-disabled-background-color;
+		border-color: @btn-disabled-border-color;
+		color: @btn-disabled-text-color;
+	}
+}
+
+
+/************************************************
+ * 아이콘 버튼 스타일
+ * → .cl-icon 영역 사용하므로 버튼의 icon 속성 이용
+ ************************************************/
+
+.cl-button.btn-insert,
+.cl-button.btn-revert,
+.cl-button.btn-delete,
+.cl-button.btn-print,
+.cl-button.btn-pop,
+.cl-button.btn-excel,
+.cl-button.btn-check,
+.cl-button.btn-cancel {
+	background-color: #ffffff;
+	border-color: #bbbbbe;
+	color: #111111;
+	
+	&:focus, &.cl-focus {
+		background-color: #efeff0;
+		border-color: #afafaf;
+		color: #000000;
+	}
+	
+	&:not(.cl-disabled):hover {
+		background-color: #efeff0;
+		border-color: #afafaf;
+		color: #111111;
+	}
+	
+	&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+		background-color: #efeff0;
+		border-color: #afafaf;
+		color: #000000;
+	}
+	
+	&.cl-disabled {
+		background-color: @btn-disabled-background-color;
+		border-color: @btn-disabled-border-color;
+		color: @btn-disabled-text-color;
+	}
+}
+
+.cl-button.btn-search,
+.cl-button.btn-save,
+.cl-button.btn-add,
+.cl-button.btn-remove,
+.cl-button.btn-upload,
+.cl-button.btn-download {
+	background-image: linear-gradient(45deg, #4dc1b9, #207de9);
+	background-size: 200% auto;
+	border: none;
+	color: #ffffff;
+	padding: @btn-padding-y (@btn-padding-x + 1);
+//	transition: @component-transition-base;
+	
+	&:focus, &.cl-focus,
+	&:not(.cl-disabled):hover,
+	&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+		background-image: linear-gradient(to right, #4dc1b9, #207de9);
+		background-position: right center;
+		color: #ffffff;
+	}
+	
+	&.cl-disabled {
+		background-image: none;
+		background-color: @btn-disabled-background-color;
+		border-color: @btn-disabled-border-color;
+		color: @btn-disabled-text-color;
+	}
+}
+
+// 행추가
+.cl-button.btn-insert {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_insert.svg") !important;
+	}
+}
+
+// 행취소
+.cl-button.btn-revert {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_revert.svg") !important;
+	}
+}
+
+// 행삭제
+.cl-button.btn-delete {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_delete.svg") !important;
+	}
+}
+
+// 출력
+.cl-button.btn-print {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_print.svg") !important;
+	}
+}
+
+// 선택
+.cl-button.btn-check {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_check.svg") !important;
+	}
+}
+
+// 취소
+.cl-button.btn-cancel {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_cancel.svg") !important;
+	}
+}
+
+// 팝업호출
+.cl-button.btn-pop {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_pop.svg") !important;
+	}
+}
+
+// 엑셀
+.cl-button.btn-excel {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_excel.svg") !important;
+	}
+}
+
+// 초기화
+.cl-button.btn-reset {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_reset.svg") !important;
+	}
+}
+
+// 조회
+.cl-button.btn-search {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_search.svg") !important;
+	}
+}
+
+// 저장
+.cl-button.btn-save {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_save.svg") !important;
+	}
+}
+
+// 등록
+.cl-button.btn-add {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_add.svg") !important;
+	}
+}
+
+// 삭제
+.cl-button.btn-remove {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_remove.svg") !important;
+	}
+}
+
+// 파일 업로드
+.cl-button.btn-upload {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_upload.svg") !important;
+	}
+}
+
+// 파일 다운로드
+.cl-button.btn-download {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_download.svg") !important;
+	}
+}
+
+// 셔틀 버튼 - 위 화살표
+.cl-button.btn-up {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_up.svg") !important;
+	}
+}
+
+// 셔틀 버튼 - 오른쪽 화살표
+.cl-button.btn-right {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_right.svg") !important;
+	}
+}
+
+// 셔틀 버튼 - 아래 화살표
+.cl-button.btn-down {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_down.svg") !important;
+	}
+}
+
+// 셔틀 버튼 - 왼쪽 화살표
+.cl-button.btn-left {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_left.svg") !important;
+	}
+}
+
+// pdf
+.cl-button.btn-pdf {
+	.cl-icon {
+		background-image: url("../images/controls/button/ic_btn_pdf.svg") !important;
+	}
+}

@@ -1,0 +1,9 @@
+{
+  "screen": { "name": "사원 상세", "type": "POPUP" },
+  "regions": [
+    { "type": "form", "title": "기본정보", "columnsPerRow": 2, "fields": [{ "label": "사번", "component": "inputbox", "required": true }, { "label": "성명", "component": "inputbox" }, { "label": "입사일", "component": "date" }, { "label": "직급", "component": "select" }, { "label": "메모", "component": "textarea" }] },
+    { "type": "tabs", "tabs": ["경력", "학력"] },
+    { "type": "Grid", "title": "경력 목록", "columns": [{ "header": "", "editor": "checkbox" }, { "header": "회사명", "editor": "input" }, { "header": "시작일", "editor": "date" }] },
+    { "type": "footer", "buttons": [{ "label": "닫기" }, { "label": "확인" }] }
+  ]
+}

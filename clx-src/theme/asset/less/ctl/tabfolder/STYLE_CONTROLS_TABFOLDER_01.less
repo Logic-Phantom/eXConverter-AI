@@ -1,0 +1,69 @@
+.cl-tabfolder.tab-basic {
+	/* 탭 폴더 헤더 스타일 */
+	.cl-tabfolder-header {
+		background-image: linear-gradient(#babfc7, #babfc7);
+		background-size: 100% 1px;
+		background-repeat: no-repeat;
+		height: 35px; // 탭 폴더 아이템의 높이
+		
+		/* 탭 폴더 헤더가 위에 표시될 때 */
+		&.cl-top {
+			background-position: 0px 100%; // 라인을 탭 아이템 기준 아래에 표시
+			
+			.cl-tabfolder-item {
+				box-shadow: inset 0px -1px 0px 0px rgb(186, 191, 199, 1); // 탭 아이템 아래 선
+				
+
+			}
+		}
+		
+		/* 탭 폴더 헤더가 아래에 표시될 때 */
+		&.cl-bottom {
+			background-position: 100% 0px; // 라인을 탭 아이템 기준 위에 표시
+			
+			.cl-tabfolder-item {
+				box-shadow: inset 0px 1px 0px 0px rgb(186, 191, 199, 1); // 탭 아이템 윗 선
+				
+
+			}
+		}
+		
+		/* 탭 폴더 아이템 스타일 */
+		.cl-tabfolder-item {
+			background-color: #ffffff;
+			color: #666666;
+			
+			/* 탭 폴더 아이템 포커스링 해제 */
+			.cl-text:focus {
+				text-decoration: none;
+			}
+			
+			/* 탭 폴더 아이템 선택 스타일 */
+			&.cl-selected {
+				background-color: #ffffff;
+				border-color: #babfc7;
+				box-shadow: none;
+				color: #3f87fd;
+			}
+			
+			/* 탭 폴더 아이템 호버 스타일 */
+			&:not(.cl-selected):hover {
+				background-color: #f5f5f5;
+				color: #333333;
+			}
+		}
+	}
+	
+	/* 탭 폴더 바디 스타일 */
+	.cl-tabfolder-body {
+		/* 탭 폴더 헤더가 바디 아래에 표시될 때 */
+		&.cl-top {
+			border-bottom: none;
+		}
+		
+		/* 탭 폴더 헤더가 바디 위에 표시될 때 */
+		&.cl-bottom {
+			border-top: none;
+		}
+	}
+}

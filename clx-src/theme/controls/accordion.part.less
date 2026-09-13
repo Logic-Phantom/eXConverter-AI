@@ -1,94 +1,128 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
-/* 아코디언 */
 .cl-accordion {
-	border: 1px solid @default-border-color;
-	// background-color: #fff;
-	color: @default-text-color;
-	font: @default-font;
-
+	font: @font-base;
+	background-color: @transparent;
+	border: none;
+	color: @component-text-color;
+	padding: 0;
+	
 	/* 아코디언의 각 헤더 */
 	.cl-accordion-header {
-		// background-color: #F2F4F5;
-		color: @default-text-color;
-		// border: solid 1px #B7B8BA;
-
-
+		background-color: @component-background-color;
+		border: @component-border-base;
+		border-radius: @border-radius-none;
+		color: @component-text-color;
+		font-weight: @font-weight-medium;
+		font-size: @font-size-lg;
+		padding: 12px 20px;
+		
 		/* 아코디언 펼침 버튼 */
 		.cl-accordion-expander {
-			// background-image: url(icons/expand.png);
+			background: url("../images/controls/accordion/ic_btn_expander.svg") no-repeat center / contain;
+			transition: @component-transition-base;
+			width: 16px;
+			height: 16px;
 		}
-
+		
 		/* 아코디언 헤더에 마우스가 호버되었을 떄의 스타일 */
-		&:hover:not(.cl-disabled){			
-			// background-color: #D7D7D9;			
+		&:hover:not(.cl-disabled) {
+			background-color: @component-background-color;
+			color: @component-text-color;
 		}
-
+		
+		&.cl-title-collapse:focus {
+			text-decoration: none;
+		}
+		
 		/* 아코디언 헤더 비활성화 상태 */
 		&.cl-disabled {
-			cursor: auto;
-			background-color: @disabled-selection-background;
-			border-color: @disabled-selection-background;
-			color: @disabled-selection-foreground;
+			background-color: @component-disabled-background-color;
+			border-color: @component-disabled-border-color;
+			color: @component-disabled-text-color;
 		}
-
+		
 		/* 아코디언 헤더를 클릭했을 때의 스타일 */
 		&.cl-activated {
-			background-color: @selection-background;
-			border-color: @selection-background;
-			color: @selection-foreground;
+			background-color: @component-background-color;
+			border-color: @component-border-color;
+			color: @component-text-color;
 			
 			/* 클릭된 헤더의 펼침 버튼 아이콘 */
-			.cl-accordion-expander{
-				// background-image: url(icons/collapse-selected.png);
+			.cl-accordion-expander {
+				background-image: url("../images/controls/accordion/ic_btn_expander.svg");
+				transform: rotate(180deg);
+			}
+		}
+		
+		&.cl-first {
+			border-top-left-radius: @component-border-radius;
+			border-top-right-radius: @component-border-radius;
+		}
+		
+		&.cl-last:not(.cl-activated) {
+			border-bottom-left-radius: @component-border-radius;
+			border-bottom-right-radius: @component-border-radius;
+		}
+	}
+	
+	/* 아코디언 컨텐츠를 감싸는 영역 */
+	.cl-accordion-section:not(.cl-accordion-placeholder) {
+		/* 아코디언 컨텐츠 */
+		.cl-accordion-content {
+			background-color: @component-background-color;
+			border: @component-border-base;
+			border-width: 0 1px 1px 1px;
+			
+			/* 컨텐츠 내 여백 */
+			> .cl-container {
+				padding: 0 1.25rem 1.25rem 1.25rem;
+			}
+		}
+		
+		&.cl-last {
+			.cl-accordion-content {
+				border-bottom-left-radius: @component-border-radius;
+				border-bottom-right-radius: @component-border-radius;
 			}
 		}
 	}
-
-	/* 아코디언 컨텐츠를 감싸는 영역 */
-	.cl-accordion-section:not(.cl-accordion-placeholder) {
-
-		/* 아코디언 컨텐츠 */
-		.cl-accordion-content {
-			border: solid 1px @selection-background;
-		}
-	}
-
+	
 	/* 아코디언 섹션 */
-	.cl-accordion-section+.cl-accordion-header{
-		// margin-top: 4px;
-
-		/* 아코디언 섹션간의 간격 */
-		&.cl-first{
-			// margin-top: 0px;
-		}
-	}	
+	.cl-accordion-section + .cl-accordion-header {
+		margin: -1px 0px 0px 0px;
+	}
 }
- 
+
 /* Disabled 상태의 아코디언 */
 .cl-accordion.cl-disabled {
-
 	/* 선택된 헤더 */
 	.cl-accordion-header {
-
+		background-color: @component-disabled-background-color;
+		border-color: @component-disabled-border-color;
+		color: @component-disabled-text-color;
+		
 		/* 아코디언 헤더가 선택된 경우 */
-		&.cl-activated{
-			background-color: @disabled-selection-background;
-			border-color: @disabled-selection-background;
-			color: @disabled-selection-foreground;
+		&.cl-activated {
+			background-color: @component-disabled-background-color;
+			border-color: @component-disabled-border-color;
+			color: @component-disabled-text-color;
 		}
-
+		
 		/* 아코디언 헤더에 마우스가 호버되었을 떄의 스타일 */
-		&:hover{
-			// background-color: #F2F4F5;
+		&:hover:not(.cl-activated) {
+			background-color: @component-disabled-background-color;
+			border-color: @component-disabled-border-color;
+			color: @component-disabled-text-color;
 		}
 	}
-
+	
 	.cl-accordion-section:not(.cl-accordion-placeholder) {
-
 		/* 선택된 바디 */
 		.cl-accordion-content {
-			border-color: @disabled-selection-background;
+			background-color: @component-disabled-background-color;
+			border-color: @component-disabled-border-color;
+			color: @component-disabled-text-color;
 		}
 	}
 }

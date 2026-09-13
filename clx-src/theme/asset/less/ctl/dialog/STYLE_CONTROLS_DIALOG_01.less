@@ -1,0 +1,70 @@
+.cl-dialog.modal {
+	/* 다이얼로그 스타일 */
+	background-color: #ffffff;
+	border: 1px solid #babfc7;
+	border-radius: 5px;
+	box-shadow: 0 2px 18px 1px rgba(49, 53, 72, 0.15);
+	
+	/* 다이얼로그 헤더 스타일 */
+	.cl-dialog-header {
+		background-color: #ffffff;
+		border-bottom-color: #babfc7;
+		color: #333333;
+		font-weight: bold;
+		font-size: 18px;
+		padding: 10px 20px;
+	}
+	
+	/* 다이얼로그 헤더 텍스트 스타일 */
+	.cl-text {
+	}
+	
+	/* 다이얼로그 버튼 공통 스타일 */
+	.cl-dialog-close,
+	.cl-dialog-min,
+	.cl-dialog-max,
+	.cl-dialog-restore {
+		background-size: 20px;
+	}
+	
+	/* 다이얼로그 닫기 버튼 스타일 */
+	.cl-dialog-close {
+		background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/ic_close.png");
+		
+		&:hover, &:active {
+			background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/icon-close-hover.png");
+		}
+	}
+	
+	/* 다이얼로그 최소화 버튼 스타일 */
+	.cl-dialog-min {
+		background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/icon-minimize.png");
+				
+		&:hover, &:active {
+			background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/icon-minimize-hover.png");
+		}
+	}
+	
+	/* 다이얼로그 최대화 버튼 스타일 */
+	.cl-dialog-max {
+		background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/icon-maximize.png");
+				
+		&:hover, &:active {
+			background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/icon-close-hover.png");
+		}
+	}
+	
+	/* 다이얼로그 복구 버튼 스타일 */
+	.cl-dialog-restore {
+		background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/icon-restore.png");
+				
+		&:hover, &:active {
+			background-image: url("/eXCFrame-sample/clx-src/theme/asset/images/ctl/dialog/icon-restore-hover.png");
+		}
+	}
+}
+
+/* 다이얼로그 오버레이 스타일 */
+.cl-overlay.light-modal-overlay {
+	background-color: rgba(30, 61, 115, .25);
+}

@@ -1,0 +1,42 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 배지
+ * → 일반 배지
+ * → displayExp로도 사용가능하도록 컨트롤 명시하지 않음
+ ************************************************/
+ 
+.badge {
+	background-color: #212529;
+	border-radius: @border-radius;
+	color: @white;
+	font-size: @font-size-base;
+	font-weight: @font-weight-medium;
+	padding: 0px 6px;
+	text-align: center;
+	
+	&.badge-blue {
+		background-color: @primary;
+		color: @white;
+	}
+	
+	&.badge-gray {
+		background-color: @secondary;
+		color: @white;
+	}
+	
+	&.badge-green {
+		background-color: @green;
+		color: @white;
+	}
+	
+	&.badge-orange {
+		background-color: @orange;
+		color: @white;
+	}
+	
+	&.badge-red {
+		background-color: @red;
+		color: @white;
+	}
+}

@@ -1,0 +1,29 @@
+/* 아이콘 버튼 공통 스타일 */
+.cl-button.btn-icon {
+	.cl-icon {
+		width: 24px;
+		height: 24px;
+	}
+	
+	/* iconAlign 속성에 따른 스타일 (아이콘 방향) */
+	&.cl-icon-align-left {
+		.cl-icon {
+			margin-right: 5px;
+		}
+	}
+	&.cl-icon-align-right {
+		.cl-icon {
+			margin-left: 5px;
+		}
+	}
+	&.cl-icon-align-top {
+		.cl-icon {
+			margin-bottom: 5px;
+		}
+	}
+	&.cl-icon-align-bottom {
+		.cl-icon {
+			margin-top: 5px;
+		}
+	}
+}

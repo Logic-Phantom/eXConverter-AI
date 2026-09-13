@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+    <g style="fill:#4680ff;stroke:#4680ff">
+        <circle cx="7" cy="7" r="7" style="stroke:none"/>
+        <circle cx="7" cy="7" r="6.5" style="fill:none"/>
+    </g>
+    <circle cx="3" cy="3" r="3" transform="translate(4 4)" style="fill:#ffffff"/>
+</svg>

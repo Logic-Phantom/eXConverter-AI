@@ -1,0 +1,37 @@
+.cl-grid.table-check {
+	.cl-grid-cell {
+		/* 그리드 특수컬럼 체크박스인 경우에 대한 스타일 */
+		.cl-checkbox.cl-builtin {
+			/* 체크박스 스타일 */
+			.cl-checkbox-icon {
+				background-image: url("../../../../../theme/asset/images/ctl/checkbox/icon-checkbox-circle.png");
+			}
+			
+			/* 체크박스 체크 스타일 */
+			&.cl-checked {
+				.cl-checkbox-icon {
+					background-image: url("../../../../../theme/asset/images/ctl/checkbox/icon-checkbox-circle-selected.png");
+				}
+			}
+			
+			/* 부분 체크박스 스타일 */
+			&.cl-partialchecked {
+				.cl-checkbox-icon {
+					background-image: url("../../../../../theme/asset/images/ctl/checkbox/icon-checkbox-circle-partial.png");
+				}
+			}
+			/* 체크박스 비활성화시 스타일 */
+			&.cl-disabled {
+
+			.cl-checkbox-icon {
+
+				cursor: default !important;
+
+				background-image: none;
+
+			   }
+
+		   }
+		}
+	}
+}

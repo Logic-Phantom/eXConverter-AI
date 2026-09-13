@@ -1,0 +1,51 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 카드 기본 스타일
+ * → 카드 기본
+ ************************************************/
+ 
+.cl-container.card {
+	background-color: @component-background-color;
+	border: @component-border-base;
+	border-radius: 4px;
+}
+
+/************************************************
+ * 안내문/지시문 카드
+ * → 해당 카드 내에 아웃풋을 배치하여 사용
+ ************************************************/
+ 
+.cl-container.card-dim {
+	background-color: #eef3fb;
+	border-radius: 4px;
+	
+	.cl-output {
+		color: #5b6b79;
+		
+		&.has-symbol {
+			/* 기호를 사용하는 경우 */
+			padding-left: 16px;
+			text-indent: -16px;
+			
+			span {
+				display: block;
+				float: left;
+				margin-right: 16px;
+				text-align: center;
+			}
+		}
+	}
+}
+
+/************************************************
+ * 데이터 없음 유형
+ * → 조회된 데이터가 없는 경우 사용
+ ************************************************/
+ 
+.cl-output.nodata {
+	background: url("../images/controls/output/ic_nodata.svg") no-repeat center calc(50% - 12px) / 32px;
+	color: #9ca3af;
+	padding: 42px 0px 0px 0px;
+	text-align: center;
+}

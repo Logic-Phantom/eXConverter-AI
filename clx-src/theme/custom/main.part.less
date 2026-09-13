@@ -1,0 +1,1853 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 메인
+ * → 어사이드/탭 콘텐츠/플로팅
+ ************************************************/
+ 
+._main {
+	background-color: #f6f6f7;
+		
+	/* 모바일 스타일  */
+	.cl-container.m_header {
+		background: #ffffff;
+		box-shadow: @box-shadow;
+		z-index: 1;
+		.cl-button.logo {
+			.btn-transparent();
+			
+			background-image: url("../images/com/main/logo.png");
+			background-size: contain;
+		}
+		
+		.cl-button.btn-menu {
+			.btn-transparent();
+			
+			background-image: url("../images/com/main/ic_btn_m_menu.svg");
+			background-size: 24px;
+		}
+	}
+	
+	.cl-container.m_menu {
+		background: #ffffff;
+		
+		.cl-container.menu-header {
+			border-bottom: 6px solid #efeff0;
+
+			.cl-container.topbar {
+				padding: 12px 24px;
+				
+				.cl-button {
+					.btn-transparent();
+					
+					background-size: 28px;
+				}
+				
+				.cl-button.btn-close {
+					background-image: url("../images/com/main/ic_btn_m_close.svg");
+				}
+				
+				.cl-button.btn-alarm {
+					background-image: url("../images/com/main/ic_btn_m_alarm.svg");
+					
+					&.on {
+						&:after {
+							content: '';
+							position: absolute;
+							top: 2px;
+							right: 2px;
+							width: 6px;
+							height: 6px;
+							background: @danger;
+							border-radius: @border-radius-full;
+						}
+					}
+				}
+				
+				.cl-button.btn-setting {
+					background-image: url("../images/com/main/ic_btn_m_setting.svg");
+				}
+			}
+			
+			.cl-container.user-box {
+				padding: 24px 20px;
+				
+				.cl-output.user {
+					font-size: @font-size-3xl;
+					font-weight: @font-weight-bold;
+					
+					span {
+						color: @primary;
+					}
+				}
+				
+				.cl-button.btn-submit {
+					padding: 0 6px;
+				}
+				
+				.cl-searchinput.global-search {
+					font-size: 15px;
+					
+					.cl-text {
+					}
+				}
+			}
+			
+			.cl-container.link-box {
+				.cl-button {
+					.btn-transparent();
+					
+					color: #111111;
+					font-size: @font-size-lg;
+					
+					.cl-icon {
+						width: 24px;
+						height: 24px;
+					}
+				}
+				
+				.cl-button.btn-home {
+					.cl-icon {
+						background-image: url("../images/com/main/ic_btn_m_home.svg") !important;	
+					}
+				}
+				
+				.cl-button.btn-theme {
+					.cl-icon {
+						background-image: url("../images/com/main/ic_btn_m_theme.svg") !important;	
+					}
+					
+				}
+				
+				.cl-button.btn-menu {
+					.cl-icon {
+						background-image: url("../images/com/main/ic_btn_m_menu.svg") !important;	
+					}
+				}
+				
+				.cl-button.btn-fav {
+					.cl-icon {
+						background-image: url("../images/com/main/ic_btn_m_fav.svg") !important;	
+					}
+				}
+			}
+		}
+		
+		.cl-container.menu-body {
+			.cl-sidenavigation {
+				padding: 32px 24px;
+				
+				.cl-sidenavigation-item {
+					font-size: @font-size-lg;
+					min-height: 0;
+					padding: 0;
+					
+					+ .cl-list {
+						margin: 20px 0 32px;
+					}
+					
+					&:not(.cl-first) {
+						margin-top: 20px;
+					}
+					
+//					.cl-icon, .cl-expand-icon {
+					.cl-icon {
+						display: none;
+					}
+					
+					&.cl-folder {
+						&.cl-expanded .cl-expand-icon {
+							background-image : url("../images/controls/tree/ic_btn_expanded.svg");
+							background-size : 14px;
+						}
+						
+						&.cl-collapsed .cl-expand-icon {
+							background-image : url("../images/controls/tree/ic_btn_collapsed.svg");
+							background-size : 14px;
+						}
+					}
+					
+					
+					&:hover,
+					&.cl-hover,
+					&.cl-selected {
+						background-color: @transparent;
+						color: #111111;
+					}
+					
+					&.cl-folder {
+						&.cl-expanded .cl-expand-icon {
+							background-image : url("../images/controls/tree/ic_btn_expanded.svg");
+							background-size : 14px;
+						}
+						
+						&.cl-collapsed .cl-expand-icon {
+							background-image : url("../images/controls/tree/ic_btn_collapsed.svg");
+							background-size : 14px;
+						}
+					}
+					
+					&.cl-level-1 {
+						color: #111111;
+						font-size: @font-size-xl;
+						font-weight: @font-weight-bold;
+						
+						+.cl-list {
+							margin: 32px 0;
+						}
+					}
+					
+					&.cl-level-2 {
+						color: @primary;
+						font-size: @font-size-base;
+						font-weight: @font-weight-bold;
+					}
+					
+					&.cl-level-3 {
+					}
+					
+					&.cl-level-4 {
+						
+						.cl-text {
+							padding: 0 0 0 12px;
+							
+							&:before {
+								content: '';
+								position: absolute;
+								display: block;
+								top: calc(50% - 2px);
+								left: 0;
+								width: 4px;
+								height: 4px;
+								background: @primary;
+								border-radius: @border-radius-full;
+							}
+						}
+						
+						+ .cl-list {
+							margin-left: 16px;
+						}
+					}
+					
+					&.cl-level-5 {
+						.cl-text {
+							padding: 0 0 0 12px;
+							
+							&:before {
+								content: '';
+								position: absolute;
+								display: block;
+								top: calc(50% - 0.5px);
+								left: 0;
+								width: 4px;
+								height: 1px;
+								background: @primary;
+								border-radius: @border-radius-full;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	.cl-container.aside {
+		background-color: #ffffff;
+		border-right: 1px solid #ced4da;
+		z-index: 1;
+		
+		.cl-button.logo {
+			.btn-transparent();
+			
+			background-image: url("../images/com/main/logo.png");
+			background-size: contain;
+		}
+		
+		.cl-container.leftbar {
+			border-right: 1px solid #efeff0; //#e2e2e3;
+			padding: 16px 16px;
+			
+			.cl-sidenavigation.menubar {
+				overflow: visible !important;
+				
+				> * > * {
+					overflow-x: visible !important;
+				}
+				
+				.cl-sidenavigation-item {
+					border-radius: @border-radius-3xl;
+					color: #8e8e93;
+					line-height: 16px;
+					min-height: 48px;
+					padding: 8px 4px;
+//					transition: all .3s cubic-bezier(.4, 0, .2, 1);
+					
+					/* 아이템의 구조 변경 (비권장) */
+					display: flex !important;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+
+					/* 아이템 배경 설정 */
+					&.component {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_app_02.svg");
+						}
+					}
+					&.module {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_book_02.svg");
+						}
+					}
+					&.server {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_database_02.svg");
+						}
+					}
+					&.template {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_layout_02.svg");
+						}
+					}
+
+					.cl-icon {
+						font-size: @font-size-3xl;
+						text-align: center;
+						background-size: 24px 24px;
+					}
+					
+					.cl-text {
+						font-size: 0;
+						line-height: 0;
+						padding: 0;
+						white-space: nowrap;
+					}
+					
+					.cl-expand-icon {
+						display: none;
+					}
+					
+					&:hover,&.cl-focus,&:focus,
+					&.cl-hover,
+					&.cl-selected {
+						background-color: #207de9 !important;
+						color: #ffffff;
+						
+						/* 아이템 배경 설정 */
+						&.component {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_app_01.svg");
+							}
+						}
+						&.module {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_book_01.svg");
+							}
+						}
+						&.server {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_database_01.svg");							
+							}
+						}
+						&.template {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_layout_01.svg");							
+							}
+						}
+						
+						.cl-icon {
+							color: #ffffff;
+							background-size: 24px 24px;
+						}
+					}
+					
+					&:focus {
+						background-color: #207de9;
+						outline: 2px solid @primary;
+						outline-offset: -2px;
+					}
+					
+					// 메뉴 간 간격
+					&:not(.cl-fisrt) {
+						margin-top: 8px;
+					}
+				}
+			}
+			
+			.cl-container.util-button-group {
+				.cl-button {
+					.btn-transparent();
+					
+					border-radius: @border-radius-3xl;
+					font-size: 0;
+					
+					
+					&.btn-menu {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_btn_m_menu.svg") !important;
+						}
+						
+					}
+		
+					/* 아이템 배경 설정 */
+					&.btn-fav {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_star_02.svg") !important;
+						}
+						
+						&.on {
+							background-color: #207de9 !important;
+							.cl-icon {
+								background-image: url("../images/com/main/ic_star_01.svg") !important;
+							}
+						}
+					}
+					&.btn-setting {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_settings_02.svg") !important;
+						}
+					}
+					&.btn-sitemap {
+						.cl-icon {
+							background-image: url("../images/com/main/ic_sitemap_02.svg") !important;
+						}
+					}
+					
+					.cl-icon {
+						width: 24px;
+						height: 24px;
+						font-size: @font-size-3xl;
+						margin: 0;
+						background-size: 24px 24px;
+					}
+					
+					&:focus, &.cl-focus,
+					&:not(.cl-disabled):hover,
+					&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+						background-color: #207de9 !important;
+						color: #ffffff;
+						
+						/* 아이템 배경 설정 */
+						&.btn-fav {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_star_01.svg") !important;
+							}
+						}
+						&.btn-setting {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_settings_01.svg") !important;
+							}
+						}
+						&.btn-sitemap {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_sitemap_01.svg") !important;
+							}
+						}
+						
+						.cl-icon {
+							width: 24px;
+							height: 24px;
+							color: #ffffff;
+							text-align: center;
+							background-size: 24px 24px;
+						}
+					}
+					
+					&.btn-user {
+						background-color: @secondary;
+						background-image: url("../images/com/main/ic_user_m.png");
+						background-size: contain;
+						border: 2px solid #ffffff;
+						border-radius: @border-radius-full;
+						
+						&:focus, &.cl-focus,
+						&:not(.cl-disabled):hover,
+						&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+							background-color: @secondary;
+						}
+						
+						&.female {
+							background-image: url("../images/com/main/ic_user_fm.png");
+						}
+					}
+				}
+				
+				.cl-progress.time-limit {
+					transform: rotate(-90deg);
+					
+					.cl-progress-bar {
+						background-color: #207de9;
+						border-radius: @border-radius-none;
+						
+						&.progress-red {
+							background-color: #d70015;
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-container.sidebar {
+			.cl-container.search-group {
+				.cl-container.util-button-group {
+					.cl-button.btn-submit {
+						padding: 0 6px;
+						
+						/* 아이콘 배경 설정 */
+						&.btn-plus {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_plus.svg") !important;
+							}
+						}
+						&.btn-minus {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_minus.svg") !important;
+							}
+						}
+						
+						.cl-icon {
+							width: 12px;
+							height: 12px;
+							font-size: 12px;
+							margin: 0;
+						}
+					}
+				}
+			}
+			
+			.cl-sidenavigation.sidemenu {
+				.cl-list {
+					&.cl-level-1 {
+						border-bottom: 1px solid #e2e2e3;
+					}
+				}
+				
+				.cl-sidenavigation-item {
+					color: #3d3d3d;
+					min-height: 0;
+					padding: 6px 20px 6px 12px;
+					
+					.cl-icon {
+						background: #0e6ad2;
+						border-radius: @border-radius-full;
+						width: 4px;
+						min-width: 4px;
+						height: 4px;
+					}
+					
+					.cl-text {
+						padding: 0 0 0 8px;
+					}
+					
+					.cl-expand-icon {
+						background: url("../images/com/main/ic_btn_expand.svg") no-repeat center / contain;
+						transition: all .3s ease-in-out;
+					}
+					
+					&.cl-folder {
+						&.cl-expanded {
+							.cl-expand-icon {
+								transform: rotate(-180deg);
+							}
+						}
+						
+						&.cl-collapsed {
+							.cl-expand-icon {
+							}
+						}
+					}
+					
+					&:hover,
+					&.cl-hover,
+					&.cl-selected {
+						background-color: #eff8ff;
+						color: #111111;
+						
+						.cl-icon {
+							color: #207de9;
+						}
+					}
+					
+					&:focus {
+						box-shadow: inset @component-focus-box-shadow;
+					}
+					
+					// 레벨별 스타일 공통
+					&.cl-level-1,
+					&.cl-level-2 {
+						.cl-icon {
+							display: none;
+						}
+						
+						.cl-text {
+							padding: 0;
+						}
+						
+						+ .cl-list {
+							padding: 4px 0 8px 0;
+						}
+					}
+					
+					&.cl-level-1 {
+						border-top: 1px solid #e2e2e3;
+						font-weight: @font-weight-semibold;
+						font-size: @font-size-lg;
+						padding: 12px 20px 12px 20px;
+					}
+					
+					&.cl-level-2 {
+						font-weight: @font-weight-medium;
+						font-size: @font-size-base;
+						padding: 8px 20px;
+						
+						+ .cl-list {
+							margin: 0 0 0 10px;
+							
+							// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+							.cl-sidenavigation-item {
+								border-top-left-radius: @border-radius-2xl;
+								border-bottom-left-radius: @border-radius-2xl;
+								
+								&:hover,
+								&.cl-hover {
+									background-color: fade(@primary, 5%);
+								}
+								
+								&.cl-selected {
+									background-color: fade(@primary, 10%);
+									color: #111111;
+									font-weight: @font-weight-medium;
+								}
+								
+								// 아이템 간 간격 설정
+								&:not(.cl-first) {
+									margin-top: 2px;
+								}
+							}
+							
+							// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+							.cl-list {
+								padding: 4px 0 8px 10px;
+								
+								.cl-sidenavigation-item {
+								}
+							}
+						}
+					}
+				}	
+			}
+		}
+	}
+	
+	.cl-tabfolder.cl-mdifolder.tab-content {
+		// MDI 줌 인시 콘텐츠가 컨테이너의 경계를 넘어설 경우, 해당 콘텐츠를 그대로 렌더링하지 않도록 주석처리
+		// overflow: visible !important;
+		
+		// box-shadow clipping 처리
+		> .content,
+		> .content > .cl-tabfolder-header.content {
+			overflow: visible !important;
+		}
+		
+		> .content {
+			> .cl-tabfolder-header.content {
+				.cl-tabfolder-prev,
+				.cl-tabfolder-next {
+					background-color: @btn-background-color;
+					border: 1px solid #ced4da;
+					width: 32px;
+					height: 32px;
+					
+					&:focus {
+						outline: 2px solid @primary;
+						outline-offset: -2px;
+					}
+				}
+				
+				.cl-tabfolder-item {
+					border: 1px solid #ced4da;
+					border-radius: @border-radius-full;
+					color: #8e8e93;
+					font-weight: @font-weight-normal;
+					
+					.cl-checkbox {
+						margin: 0 4px 0 0;
+						
+						.cl-checkbox-icon {
+							background: url("../images/com/main/ic_pin.svg") no-repeat center / contain;
+							width: 12px;
+							height: 12px;
+							min-height: 12px;
+						}
+						
+						&.cl-checked {
+							.cl-checkbox-icon {
+								background-image: url("../images/com/main/ic_pin_on.svg");
+							}
+						}
+					}
+					
+					.cl-tabfolder-button {
+						background-image: url("../images/com/main/ic_mdi_close.svg");
+					}
+					
+					&.cl-selected {
+						background-color: #207de9;
+						border-color: #207de9;
+						color: #ffffff;
+						
+						.cl-checkbox {
+							.cl-checkbox-icon {
+								background-image: url("../images/com/main/ic_pin_w.svg");
+							}
+							
+							&.cl-checked {
+								.cl-checkbox-icon {
+									background-image: url("../images/com/main/ic_pin_on_w.svg");
+								}
+							}
+						}
+						
+						.cl-tabfolder-button {
+							background-image: url("../images/com/main/ic_mdi_close_on.svg");
+						}
+					}
+					
+					&:not(.cl-selected):hover {
+					}
+					
+					&:focus, &:focus-within {
+						border-color: @component-focus-transparent-color;
+						outline: 2px solid @primary;
+						outline-offset: -2px;
+					}
+				}
+				
+				// 헤더 컨트롤 스타일
+				> .cl-container.util-button-group,
+				> .content > .content > .cl-container.util-button-group {
+					padding: 0 0 0 4px;
+					
+					&.left-button-group {
+						padding: 0;
+					}
+					
+					.cl-button.btn-tab-home,
+					.cl-button.btn-tab-list,
+					.cl-button.btn-tab-zoom,
+					.cl-button.btn-tab-refresh,
+					.cl-button.btn-tab-close,
+					.cl-button.btn-tab-window,
+					.cl-button.btn-tab-max,
+					.cl-button.btn-menu,
+					.cl-button.btn-tab-min {
+						background-size: 16px;
+						border-color: #ced4da;
+						border-radius: @border-radius-full;
+						padding: 0;
+											
+						&:focus, &.cl-focus,
+						&:not(.cl-disabled):hover,
+						&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+							background-color: #ffffff;
+						}
+					}
+					
+					.cl-button.btn-tab-home {
+						background-image: url("../images/com/main/ic_mdi_home.svg");
+					}
+					
+					.cl-button.btn-tab-list {
+						background-image: url("../images/com/main/ic_mdi_list.svg");
+					}
+					
+					.cl-button.btn-tab-zoom {
+						background-image: url("../images/com/main/ic_mdi_zoom.svg");
+					}
+					
+					.cl-button.btn-tab-refresh {
+						background-image: url("../images/com/main/ic_mdi_refresh.svg");
+					}
+					
+					.cl-button.btn-tab-close {
+						background-image: url("../images/com/main/ic_mdi_close.svg");
+					}
+					
+					.cl-button.btn-tab-window {
+						background-image: url("../images/com/main/ic_mdi_div_p.svg");
+					}
+					
+					.cl-button.btn-tab-max {
+						background-image: url("../images/com/main/ic_mdi_out.svg");
+					}
+					
+					.cl-button.btn-tab-min {
+						background-image: url("../images/com/main/ic_mdi_in.svg");
+					}
+					.cl-button.btn-menu {
+						background-image: url("../images/com/main/ic_btn_m_menu.svg");
+					}
+				}
+				
+				// MDI폴더 헤더 위치에 따른 스타일
+				&.cl-top, &.cl-bottom {
+					box-shadow: @box-shadow-none;
+				}
+				
+				&.cl-top {
+					margin-bottom: 8px;
+				}
+				
+				&.cl-bottom {
+					margin-top: 8px;
+				}
+			}
+			
+			> .cl-tabfolder-body {
+				border-radius: @border-radius-3xl;
+				border: 1px solid #ced4da;
+				
+				> * > .cl-container {
+					padding: 0;
+				}
+			}
+		}
+	}
+	
+	.cl-button.btn-expander {
+		background-color: #ffffff;
+		background-image: url("../images/com/main/ic_lnb_close.svg");
+		background-size: 12px;
+		border-color: #ced4da;
+		border-top-left-radius: @border-radius-none;
+		border-bottom-left-radius: @border-radius-none;
+		padding: 0;
+		
+		&.on {
+			background-image: url("../images/com/main/ic_lnb_open.svg");
+		}
+	}
+	
+	// 플로팅되는 컨트롤 스타일
+	.cl-container.dropdown {
+		background-color: #ffffff;
+		border-radius: @border-radius;
+		box-shadow: @box-shadow-md;
+		padding: 16px;
+		
+		.cl-button.btn-close {
+			.btn-transparent();
+			
+			background: url("../images/controls/dialog/ic_btn_close.svg") no-repeat center / 16px;
+		}
+	}
+	
+	.cl-container.dropdown-zoom {
+		border-radius: @component-border-radius;
+		padding: 0 6px;
+		
+		.cl-button.btn-in,
+		.cl-button.btn-out {
+			.btn-transparent();
+			
+			border-radius: @border-radius-full;
+		}
+		
+		.cl-button.btn-in {
+			background-image: url("../images/com/main/ic_btn_zoom_up.svg");
+		}
+		
+		.cl-button.btn-out {
+			background-image: url("../images/com/main/ic_btn_zoom_down.svg");
+		}
+		
+		.cl-numbereditor.zoom-ratio {
+			background-color: @transparent;
+			border: none;
+			border-radius: @border-radius-none;
+			text-align: center;
+		}
+	}
+	
+	/* 드롭다운메뉴 */
+	.cl-container.dropdown-menu {
+		background-color: #ffffff;
+		border-radius: @border-radius-md;
+		box-shadow: 0 5px 10px rgba(30,32,37,.12);
+		padding: 8px 0px;
+		z-index: 1;
+		
+		.cl-container.dropdown-header {
+			padding: 8px 20px;
+			.cl-button {
+				.btn-transparent();
+				background-size: 15px;
+				&.btn-close {
+					background-image: url("../images/com/main/ic_btn_m_close.svg");
+				}
+			}
+
+			.h5, .h6 {
+				color: #495057;
+				font-weight: @font-weight-bold;
+			}
+		}
+		
+		&.dropdown-body,
+		.cl-container.dropdown-body {
+			padding: 6px 20px !important;
+		}
+		
+		.cl-container.dropdown-footer {
+			padding: 16px 0px 4px 0px;
+		}
+	}
+	
+	
+	.mobile-footer{
+		background-color : #fff;
+		.cl-button{
+			border:0px none;
+			border-radius : 50%;
+			background-color : transparent;
+			background-size: 24px;
+			
+			&:focus {
+				background-color : #207de9 !important;
+				&.btn-menu {
+					background-image : url("../images/com/main/mobile/ic_btn_m_menu_w.svg");
+				}
+				
+				&.btn-tab-close {
+					background-image : url("../images/com/main/mobile/ic_mdi_close_w.svg");
+				}
+				
+				&.btn-refresh {
+					background-image : url("../images/com/main/mobile/ic_mdi_refresh_w.svg");
+				}
+				
+				&.btn-home {
+					background-image : url("../images/com/main/mobile/ic_btn_m_home_w.svg");
+				}
+				
+				&.btn-win-open {
+					background-image : url("../images/com/main/mobile/ic_mdi_window_w.svg");
+				}
+			}
+			
+			&.btn-menu {
+				background-image : url("../images/com/main/mobile/ic_btn_m_menu.svg");
+			}
+			
+			&.btn-tab-close {
+				background-image : url("../images/com/main/mobile/ic_mdi_close.svg");
+			}
+			
+			&.btn-refresh {
+				background-image : url("../images/com/main/mobile/ic_mdi_refresh.svg");
+			}
+			
+			&.btn-home {
+				background-image : url("../images/com/main/mobile/ic_btn_m_home.svg");
+			}
+			
+			&.btn-win-open {
+				background-image : url("../images/com/main/mobile/ic_mdi_window.svg");
+			}
+		}
+	}
+}
+
+._profile {
+	.cl-container.profile-header {
+		border-bottom: 6px solid #efeff0;
+		padding: 24px;
+		
+		.cl-output.user {
+			font-size: @font-size-3xl;
+			font-weight: @font-weight-bold;
+			
+			span {
+				color: @primary;
+			}
+		}
+	}
+
+	.cl-container.customize {
+		.cl-checkbox.switch-theme {
+			background-color: @btn-background-color;
+			border: 1px solid @btn-border-color;
+			border-radius: @btn-border-radius;
+			
+			.cl-checkbox-icon {
+				background: url("../images/com/main/ic_btn_light.svg") no-repeat center / 24px;
+				width: 34px;
+				height: 34px;
+			}
+			
+			&.cl-checked {
+				.cl-checkbox-icon {
+					background-image: url("../images/com/main/ic_btn_dark.svg");
+				}
+			}
+		}
+		
+		.cl-radiobutton.switch-color {
+			text-align: right;
+			
+			.cl-radiobutton-item {
+				font-size: 0;
+				
+				.cl-text {
+					padding: 0;
+				}
+				
+				.cl-radiobutton-icon {
+					position: relative;
+
+					background-image: none;
+					border-radius: @border-radius-none;
+					width: 26px;
+					height: 26px;					
+				}
+				
+				&.cl-selected {
+					.cl-radiobutton-icon {
+						background-image: none;
+						
+						&:after {
+							content: "";
+							position: absolute;
+							right: 2px;
+							bottom: 2px;
+							border-right: 8px solid #ffffff;
+							border-top: 8px solid @transparent;
+							border-left: 8px solid @transparent;
+						}
+					}
+				}
+				
+				// 테마 색상별 스타일
+				&.default {
+					.cl-radiobutton-icon {
+						background-color: @component-background-color;
+						border: @component-border-base;
+					}
+					
+					&.cl-selected .cl-radiobutton-icon:after {
+						border-right-color: #152035;
+					}
+				}
+				
+				&.black {
+					.cl-radiobutton-icon {
+						background-color: #152035;
+					}
+				}
+				
+				&.blue {
+					.cl-radiobutton-icon {
+						background-color: #207de9;
+					}
+				}
+				
+				&.green {
+					.cl-radiobutton-icon {
+						background-color: #26b16d;
+					}
+				}
+				
+				&.orange {
+					.cl-radiobutton-icon {
+						background-color: #ff9500;
+					}
+				}
+				
+				&.purple {
+					.cl-radiobutton-icon {
+						background-color: #af52de;
+					}
+				}
+				
+				&.gradient {
+					.cl-radiobutton-icon {
+						background-image: linear-gradient(45deg, #4dc1b9, #207de9);
+					}
+				}
+			}
+		}
+	}
+	
+	.cl-container.notification {
+		.cl-container.notification-button-group {
+			padding: 0 24px;
+			
+			.cl-button {
+				.btn-transparent();
+				
+				color: #111111;
+			}
+			
+			.cl-button.btn-read-all {
+				.cl-icon {
+					background-image: url("../images/com/main/ic_btn_read.svg") !important;
+				}
+			}
+			
+			.cl-button.btn-remove-all {
+				.cl-icon {
+					background-image: url("../images/com/main/ic_btn_remove.svg") !important;
+				}
+			}
+		}
+		
+		.cl-output.nodata {
+			color: #323234;
+			font-size: @font-size-lg;
+			text-align: center;
+		}
+		
+		.cl-container.list {
+			border-top: 1px solid #e2e2e3;
+			
+			
+			.cl-container.item {
+				border-bottom: 1px solid #e2e2e3;
+				cursor: pointer;
+				padding: 12px 24px;
+				
+				.cl-button.message {
+					.btn-transparent();
+					
+					color: #111111;
+					font-size: @font-size-base;
+					font-weight: @font-weight-bold;
+					text-align: left;
+					&:focus {
+						outline:0px;
+					}
+					&.on {
+						.cl-text::after {
+							content: 'N';
+							position: absolute;
+							color : white;
+							margin-left : 6px;
+							font-weight: @font-weight-semibold;
+							font-size: 9px;
+							width: 14px;
+							height: 14px;
+							text-align: center;
+							background: @orange;
+							border-radius: @border-radius-full;
+						}
+					}
+					
+				}
+			}
+		}
+	}
+}
+
+/************************************************
+ * 대시보드
+ * → 
+ ************************************************/
+ 
+._home {
+	background: fade(@primary, 5%);
+	border-radius: @border-radius-3xl;
+	
+	.cl-container.box {
+		background: #ffffff;	
+		border-radius: @border-radius-3xl;
+		box-shadow: 0 4px 10px rgba(0,0,0,.03);
+		padding: 32px;
+	}
+	
+	.cl-container.user {
+//		background-image: url("../images/com/main/bg_tomato.png");
+//		background-repeat: no-repeat;
+//		background-position: right 32px center;
+//		background-size: 180px;
+		
+		.cl-container.box {
+			cursor: pointer;
+		}
+		
+		.cl-container.notice {
+			border: 2px solid @primary;
+			border-radius: @border-radius-full;
+			padding: 8px 16px 8px 16px;
+			
+			.cl-output.text {
+				color: #323234;
+				font-weight: @font-weight-medium;
+				padding: 0 16px 0 28px;
+				
+				&::before {
+					content: '';
+					position: absolute;
+					top: calc(50% - 10px);
+					left: 0;
+					width: 20px;
+					height: 20px;
+					background: url("../images/com/main/ic_megaphone_01.svg") no-repeat center / contain;
+					border-radius: @border-radius-full;
+					transform: scaleX(-1);
+				}
+			}
+			
+			.cl-output.date {
+				color: #a8a8ac;
+				font-size: @font-size-xs;
+			}
+		}
+		
+		.cl-output.welcome {
+			font-size: @font-size-2xl;
+			font-weight: @font-weight-normal;
+			margin-top: 24px;
+			
+			span {
+				font-weight: @font-weight-bold;
+			}
+		}
+		
+		.cl-container {
+			> .cl-layout > .cl-layout-content > .cl-layout-wrap {
+				&:not(:first-child) {
+					&:before {
+						content: '';
+						position: absolute;
+						top: calc(50% - 6px);
+						left: -9px;
+						width: 1px;
+						height: 12px;
+						background: #bbbbbe;
+					}
+				}
+			}
+		}
+		
+		.cl-output.text {
+			color: #7f7f83;
+		}
+	}
+	
+	.frame {
+		.cl-output.title {
+			font-size: @font-size-2xl;
+			font-weight: @font-weight-medium;
+			
+			span {
+				font-weight: @font-weight-semibold;
+			}
+		}
+		
+		.cl-output.text {
+			color: #323234;
+			font-size: @font-size-base;
+			
+			.cl-text {
+				word-break: keep-all;
+			}
+		}
+		
+		.cl-button.btn-txt {
+			.btn-transparent();
+			
+			font-size: 16px;
+			
+			.cl-icon {
+				background-image: url("../images/com/main/ic_btn_more.svg") !important;
+				width: 20px;
+				height: 20px;
+			}
+			
+			&:not(.cl-disabled):hover,
+			&:focus,
+			&.cl-focus,
+			&:not(.cl-disabled).cl-activated,
+			&:not(.cl-disabled):active {
+				text-decoration: underline;
+			}
+		}
+	}
+	
+	.search {
+		.cl-output.title {
+			font-size: @font-size-2xl;
+			
+			span {
+				color: @primary;
+				font-weight: @font-weight-medium;
+			}
+		}
+		
+		.cl-output.caption {
+			color: #7f7f83;
+		}
+		
+		.cl-searchinput.sample-search {
+			background: #efeff0;
+			border: 0;
+			border-radius: @border-radius-xl;
+			font-size: 16px;
+			
+			.cl-text {
+				padding: 0 16px;	
+			}
+			
+			.cl-searchinput-search.cl-right {
+				width: 24px;
+				margin-right: 16px;
+			}
+		}
+		
+		.cl-button.btn-submit {
+			font-size: 16px;
+//			min-width: 100px;
+		}
+	}
+	
+	.cl-container.link {
+		.cl-container.box {
+			cursor: pointer;
+			
+			&:hover, &:focus-within {
+				outline-offset: -2px;
+				outline: 2px solid @primary;
+			}
+		}
+		
+		.cl-button.title {
+			.btn-transparent();
+			
+			color: @primary;
+			font-size: @font-size-xl;
+			font-weight: @font-weight-medium;
+			outline: none;
+			text-align: center;
+		}
+		
+		.cl-output.text {
+			color: #7f7f83;
+			font-size: @font-size-base;
+			text-align: center;
+		}
+		
+		.cl-container.link01,
+		.cl-container.link02,
+		.cl-container.link03,
+		.cl-container.link04,
+		.cl-container.link05,
+		.cl-container.link06,
+		.cl-container.link07,
+		.cl-container.link08 {
+			background-repeat: no-repeat;
+			background-position: center 32px;
+			background-size: 120px;
+			padding-top: 182px;
+		}
+		
+		.cl-container.link01 {
+			background-image: url("../images/com/main/bg_link01.svg");
+		}
+		
+		.cl-container.link02 {
+			background-image: url("../images/com/main/bg_link02.svg");
+		}
+		
+		.cl-container.link03 {
+			background-image: url("../images/com/main/bg_link03.svg");
+		}
+		
+		.cl-container.link04 {
+			background-image: url("../images/com/main/bg_link04.svg");
+		}
+		
+		.cl-container.link05 {
+			background-image: url("../images/com/main/bg_link05.svg");
+		}
+		
+		.cl-container.link06 {
+			background-image: url("../images/com/main/bg_link06.svg");
+		}
+		
+		.cl-container.link07 {
+			background-image: url("../images/com/main/bg_link07.svg");
+		}
+		
+		.cl-container.link08 {
+			background-image: url("../images/com/main/bg_link08.svg");
+		}
+	}
+	
+//	background-color: #ffffff;
+//	background-image: linear-gradient(fade(@primary, 8%), fade(@primary, 8%));
+//	border-radius: @border-radius-3xl;
+//	
+	&._sitemap {
+		border-radius: @border-radius-none;
+	}
+//	
+//	.cl-container.notice-box {
+//		background: #ffffff;
+//		border-radius: @border-radius-full;
+//		box-shadow: @box-shadow;
+//		padding: 8px 16px 8px 8px;
+//		
+//		.cl-button.btn-megaphone {
+//			background: fade(@primary, 5%);
+//			border: 0;
+//			border-radius: @border-radius-full;
+//			padding: 0;
+//			
+//			.cl-icon {
+//				color: @primary;
+//				margin: 0;
+//				transform: scaleX(-1);
+//				background-image: url("../images/com/main/ic_megaphone_01.svg") !important;
+//			}
+//		}
+//		
+//		.cl-output.text {
+//			color: #323234;
+//			font-weight: @font-weight-bold;
+//			padding: 0 16px 0 8px;
+//		}
+//		
+//		.cl-output.date {
+//			color: #a8a8ac;
+//			font-size: @font-size-xs;
+//		}
+//	}
+//	
+//	.cl-container.user-box {
+//		.cl-output.welcome {
+//			font-size: @font-size-2xl;
+//			font-weight: @font-weight-normal;
+//			
+//			span {
+//				font-weight: @font-weight-bold;
+//			}
+//		}
+//		
+//		.cl-container {
+//			> .cl-layout > .cl-layout-content > .cl-layout-wrap {
+//				&:not(:first-child) {
+//					&:before {
+//						content: '';
+//						position: absolute;
+//						top: calc(50% - 6px);
+//						left: -9px;
+//						width: 1px;
+//						height: 12px;
+//						background: #bbbbbe;
+//					}
+//				}
+//			}
+//		}
+//		
+//		.cl-output.text {
+//			color: #7f7f83;
+//		}
+//	}
+//	
+//	.cl-container.notification-box {
+//		&:before {
+//			content: '';
+//			position: absolute;
+//			top: -120px;
+//			right: 0;
+//			width: 90px;
+//			height: 120px;
+//			background: url("../images/com/main/bg_tomato.png") no-repeat right center / contain;
+//		}
+//
+//		.cl-container.card {
+//			background: #ffffff;
+//			border-radius: @border-radius-2xl;
+//			box-shadow: @box-shadow;
+//			padding: 16px;
+//		}
+//	}
+//	
+////	.cl-container.history-box {
+////		background: #ffffff;
+////		border-radius: @border-radius-3xl;
+////		padding: 24px;
+////		
+////		&:before {
+////			content: '';
+////			position: absolute;
+////			top: -120px;
+////			right: 0;
+////			width: 90px;
+////			height: 120px;
+////			background: url("../images/com/main/bg_tomato.png") no-repeat right center / contain;
+////		}
+////		
+////		.cl-output.tit {
+////			font-weight: @font-weight-bold;
+////		}
+////		
+////		.cl-output.text {
+////			color: #323234;
+////			
+////			.cl-text {
+////				padding: 0 0 0 10px;
+////				
+////				&:before {
+////					content: '';
+////					position: absolute;
+////					display: block;
+////					top: calc(50% - 2px);
+////					left: 0;
+////					width: 4px;
+////					height: 4px;
+////					background: @primary;
+////					border-radius: @border-radius-full;
+////				}
+////			}
+////		}
+////		
+////		.cl-output.date {
+////			color: #a8a8ac;
+////		}
+////	}
+//	
+//	.cl-container.link-box {
+//		.cl-button.btn-link {
+//			background: linear-gradient(#ffffff, #ffffff) no-repeat left top / 100% 100%,
+//						linear-gradient(to right, #4dc1b9, #207de9) repeat right center;
+//			background-origin: border-box !important;
+//			background-clip: padding-box, border-box !important;
+//			border: 2px solid @transparent;
+//			border-radius: @border-radius-3xl;
+//			font-size: @font-size-lg;
+//			line-height: 1.2 !important;
+//			padding: 16px;
+//			text-align: left;
+//			
+//			.cl-icon {
+//				margin-top: 0;
+//			}
+//			
+//			/* 아이콘 배경 설정 */			
+//			&.btn-techdom {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_headset_01.svg") !important;
+//				}
+//			}
+//			&.btn-education {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_graduation_01.svg") !important;
+//				}
+//			}
+//			&.btn-video {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_video_01.svg") !important;
+//				}
+//			}
+//			&.btn-demo {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_flask_01.svg") !important;
+//				}
+//			}
+//			&.btn-properties {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_component_01.svg") !important;
+//				}
+//			}
+//			&.btn-guide {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_openbook_01.svg") !important;
+//				}
+//			}
+//			&.btn-web {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_person_01.svg") !important;
+//				}
+//			}
+//			&.btn-global {
+//				.cl-icon {
+//					background-image: url("../images/com/main/ic_magnifying_01.svg") !important;
+//				}
+//			}
+//			
+//			.cl-text-wrapper {
+//				width: 100% !important;
+//				align-items: flex-start !important;
+//			}
+//			
+//			.cl-icon {
+//				width: 28px;
+//				height: 28px;
+//				color: @primary;
+//				font-size: 28px;
+//				margin-left: auto;
+//				background-size: 28px;
+//			}
+//		}
+//	}
+//	
+	.cl-container.box {
+		background: #ffffff;
+		border-radius: @border-radius-3xl;
+		padding: 32px;
+		
+		.cl-container.box-header {
+			border-bottom: 1px solid #e2e2e3;
+			padding: 0 0 24px 0;
+			
+			.cl-output.tit {
+				font-weight: @font-weight-bold;
+			}
+			
+			.cl-searchinput.global-search {
+				border-radius: @border-radius-full;
+			}
+		}
+		
+		.cl-container.box-body {
+			.cl-container.item {
+				border-bottom: 1px solid #e2e2e3;
+				padding: 24px 0;
+				
+				.cl-output.tit {
+				}
+				
+				.cl-container.sitemenus {
+					.cl-sidenavigation {
+						color: @component-text-color;
+						
+						.cl-sidenavigation-item {
+							font-size: @font-size-sm;
+							
+							+ .cl-list {
+								> .cl-subtree {
+									margin-top: 4px;
+								}
+							}
+							
+							.cl-icon, .cl-expand-icon {
+								display: none;
+							}
+							
+							.cl-text {
+								padding: 0;
+							}
+							
+							&:hover,
+							&.cl-hover,
+							&:focus,
+							&.cl-selected {
+								background: 0;
+								color: @component-text-color;
+							}
+							
+							/* LEVEL 1 아이템 */
+							&.cl-level-1 {
+								font-size: @font-size-xl;
+								font-weight: @font-weight-bold;
+							}
+							
+							/* LEVEL 2 아이템 */
+							&.cl-level-2 {
+								font-size: @font-size-lg;
+								
+								&:hover,
+								&.cl-hover,
+								&:focus,
+								&.cl-selected {
+									font-weight: @font-weight-bold;
+								}
+							}
+							
+							/* LEVEL 3 아이템 */
+							&.cl-level-3 {
+								padding: 0 12px;
+								
+								.cl-text {
+									position: relative;
+									padding: 0 0 0 10px;
+									
+									&:before {
+										content: '';
+										position: absolute;
+										display: block;
+										top: calc(50% - 2px);
+										left: 0;
+										width: 4px;
+										height: 4px;
+										background: @primary;
+										border-radius: @border-radius-full;
+									}
+								}
+
+								&:hover,
+								&.cl-hover,
+								&:focus,
+								&.cl-selected {
+									background: fade(@primary, 8%);
+									border-radius: @border-radius-full;
+								}
+								
+								+ .cl-list {
+									padding: 0 0 0 10px;
+								}
+							}
+							/* LEVEL 4 아이템 */
+							&.cl-level-4 {
+								padding: 0 12px;
+								
+								.cl-text {
+									position: relative;
+									padding: 0 0 0 10px;
+									
+									&:before {
+										content: '';
+										position: absolute;
+										display: block;
+										top: calc(50% - 0.5px);
+										left: 0;
+										width: 4px;
+										height: 1px;
+										background: @primary;
+										border-radius: @border-radius-full;
+									}
+								}
+
+								&:hover,
+								&.cl-hover,
+								&:focus,
+								&.cl-selected {
+									background: fade(@primary, 8%);
+									border-radius: @border-radius-full;
+								}
+								+ .cl-list {
+									padding: 0 0 0 10px;
+								}
+							}
+							/* LEVEL 5 아이템 */
+							&.cl-level-5 {
+								padding: 0 12px;
+								
+								.cl-text {
+									position: relative;
+									padding: 0 0 0 10px;
+								}
+
+								&:hover,
+								&.cl-hover,
+								&:focus,
+								&.cl-selected {
+									background: fade(@primary, 8%);
+									border-radius: @border-radius-full;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+/************************************************
+ * Search.clx (통합검색)
+ ************************************************/
+ 
+._search {
+	.cl-container.search-box {
+		border: 1px solid fade(@primary, 30%);
+		border-radius: @border-radius-3xl;
+		padding: 28px 48px;
+		
+		.cl-inputbox, .cl-searchinput {
+			.cl-text {
+				padding: 0 16px;
+			}
+		}
+	}
+	
+	.cl-output.subtitle {
+		font-size: 18px;
+		font-weight: @font-weight-medium;
+		padding-right: 16px;
+		
+		&::after {
+			content: "";
+			position: absolute;
+			top: calc(50% - 8px);
+			right: 0;
+			width: 1px;
+			height: 16px;
+			background: @component-border-color;
+		}
+	}
+	
+	.cl-output.count {
+		color: @primary;
+		font-size: 16px;
+		font-weight: @font-weight-semibold;
+	}
+	
+	.cl-container.list {
+		.cl-container.item {
+			background: #ffffff;
+			border: @component-border-base;
+			cursor: pointer;
+			padding: 24px 48px;
+			border-radius : @border-radius-3xl;
+			
+			&:hover {
+				outline: 2px solid @primary;
+				outline-offset: -2px;
+			}
+			
+			.cl-output.title {
+				font-size: 16px;
+				font-weight: @font-weight-semibold;
+				padding: 1px 0 10px 0;
+			}
+			
+			.cl-output.location {
+				color: #7f7f7f;
+			}
+			
+			.cl-output.desc {
+				color: #565659;
+				font-size: 14px;
+			}
+			
+			.cl-container.badge-wrap {
+				padding: 10px 0 0 0;
+				
+				.cl-output.badge {
+					background: #ffffff;
+					border: 1px solid #bbbbbe;
+					border-radius: @border-radius-full;
+					padding: 0 8px;
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 1128px) {
+	._main {
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-body {
+					border-radius: 0;
+				}
+			}
+		}
+	}
+	
+	._home {
+		border-radius: 0;
+	}
+}

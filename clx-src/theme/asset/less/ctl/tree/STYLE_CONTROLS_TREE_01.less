@@ -1,0 +1,55 @@
+.cl-tree.tree-levels {
+	.cl-tree-item {
+		/* 트리 아이템 선택 스타일 */
+		&.cl-selected {
+			background-color: #E8F4FE;
+			color: #333333;
+		}
+		
+		/* 1뎁스에 해당하는 트리 아이템 스타일 */
+		&.tree-item-level-1 {
+			font-size: 18px;
+			
+			&.cl-selected {
+				background-color: #3f87fd;
+				color: #ffffff;
+			}
+		}
+		
+		/* 2뎁스에 해당하는 트리 아이템 스타일 */
+		&.tree-item-level-2 {
+			font-size: 16px;
+			
+			&.cl-selected {
+				background-color: #d8e6ff;
+				color: #333333;
+			}
+		}
+	}
+	
+	&:not(.cl-disabled) {
+		.cl-tree-item:not(.cl-disabled) {
+			/* 트리 아이템 호버 스타일 */
+			&:not(.cl-selected).cl-hover, &:not(.cl-selected):hover {
+				background-color: #E8F4FE;
+				color: #333333;
+			}
+			
+			/* 1뎁스에 해당하는 트리 아이템 호버 스타일 */
+			&.tree-item-level-1 {
+				&:not(.cl-selected).cl-hover, &:not(.cl-selected):hover {
+					background-color: #3f87fd;
+					color: #ffffff;
+				}
+			}
+			
+			/* 2뎁스에 해당하는 트리 아이템 호버 스타일 */
+			&.tree-item-level-2 {
+				&:not(.cl-selected).cl-hover, &:not(.cl-selected):hover {
+					background-color: #d8e6ff;
+					color: #333333;
+				}
+			}
+		}
+	}
+}

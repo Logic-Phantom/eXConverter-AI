@@ -1,0 +1,42 @@
+.cl-tabfolder.cl-mdifolder.tab-cont {
+	> .inner-cont {
+		> .cl-tabfolder-header.inner-cont {
+			height: 40px;
+			background-image: linear-gradient(#babfc7, #babfc7);
+			background-size: 100% 1px;
+			background-repeat: no-repeat;
+			background-position: 0px 100%;
+			
+			> .inner-cont .cl-tabfolder-item {
+				background-color: transparent;
+				border: none;
+				color: #333333;
+				font-size: 15px;
+				text-align: left;
+				
+				.cl-text {
+					&:focus {
+						text-decoration: none; // 탭 포커스 시 텍스트 언더라인 제거
+					}
+				}
+				
+				&.cl-selected {
+					background-color: #ffffff;
+					border: 1px solid #babfc7;
+					border-bottom: 1px solid #ffffff;
+					color: #3f87fd;
+				}
+				
+				+ .cl-tabfolder-item {
+					margin-left: -1px; // 테두리가 겹치지 않도록 추가
+				}
+			}
+		}
+	
+		> .cl-tabfolder-body {
+			border: 1px solid #babfc7;
+			border-top: none;
+			background-color: #ffffff;
+		}
+	}
+}

@@ -1,0 +1,260 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 프레임 공통
+ * → 일반 화면
+ * → 팝업 화면
+ * → 임베딩 화면
+ ************************************************/
+ 
+.cl-container.content-wrapper,
+.cl-container.pop-content-wrapper,
+.cl-container.inner-content-wrapper {
+}
+
+/************************************************
+ * 일반 화면 프레임
+ * → content-wrapper
+ * 	→ content-header 
+ * 	→ content-body 
+ * 	→ content-footer
+ ************************************************/
+
+.cl-container.content-wrapper {
+	// 버티컬 레이아웃인 경우 레이아웃 설정
+	> .cl-layout.v_base > .cl-layout-content.v_base {
+		padding: 24px !important;
+	}
+	
+	// 폼 레이아웃인 경우 레이아웃 설정
+	> .cl-layout.f_base > .cl-layout-content.f_base {
+	}
+	
+	.cl-container.content-header {
+		margin-bottom: 24px;
+	}
+	
+	.cl-container.content-body {
+		.cl-container.division-group {
+		}
+	}
+	
+	.cl-container.content-footer {
+		margin-top: 24px;
+		.cl-container.footer-button-group {
+			.cl-button {
+				padding: 6.5px 12px;
+			}
+		}
+	}
+}
+
+/************************************************
+ * 팝업 화면 프레임
+ * → pop-content-wrapper
+ * 	→ pop-content-header 
+ * 	→ pop-content-body 
+ * 	→ pop-content-footer
+ ************************************************/
+
+.cl-container.pop-content-wrapper {
+	// 앱 헤더 UDC 여백 및 간격 처리
+	.cl-container.app-header {
+		padding: 0 24px;
+	}
+	
+	.cl-container.pop-content-header {
+		padding: 0 24px 0 24px;
+		margin: 24px 0;
+	}
+	
+	.cl-container.pop-content-body {
+		padding: 0 24px 0 24px;
+		
+		// 팝업에 헤더 영역이 없는 경우 여백 및 간격 처리
+		&.cl-first-row {
+			padding-top: 24px;
+		}
+	}
+	
+	.cl-container.pop-content-footer {
+		padding: 12px 24px;
+		
+		.cl-container.footer-button-group {
+			.cl-button {
+				padding: 6.5px 12px;
+			}
+		}
+	}
+}
+
+/************************************************
+ * 임베딩 화면 프레임
+ * → inner-content-wrapper
+ * 	→ inner-content-body 
+ ************************************************/
+ 
+.cl-container.inner-content-wrapper {
+}
+
+/************************************************
+ * 버튼 그룹 공통
+ * → title-button-group
+ * → tab-button-group
+ ************************************************/
+ 
+.cl-container.title-button-group {
+}
+
+.cl-container.tab-button-group {
+}
+
+/************************************************
+ * [화면] 예제 서브페이지
+ ************************************************/
+
+.cl-container.subpage {
+	.cl-output.section-tit {
+		font-size: 18px;
+		font-weight: 700;
+	}
+	.cl-output.tit {
+		line-height: 1.25;
+		font-weight: @font-weight-semibold;	
+		
+		&.h1,
+		&.h2,
+		&.h3 {
+			font-weight: @font-weight-bold;
+		}
+		
+		&.h1 {
+			font-size: @font-size-5xl;
+			letter-spacing: -0.68px;
+		}
+		
+		&.h2 {
+			font-size: @font-size-4xl;
+			letter-spacing: -0.56px;
+		}
+		
+		&.h3 {
+			font-size: @font-size-3xl;
+			letter-spacing: -0.48px;
+		}
+		
+		&.h4 {
+			font-size: @font-size-2xl;
+			letter-spacing: -0.36px;
+		}
+		
+		&.h5 {
+			font-size: @font-size-xl;
+			letter-spacing: -0.32px;
+		}
+		
+		&.h6 {
+			font-size: @font-size-lg;
+			letter-spacing: -0.28px;
+		}
+	}
+	
+	.cl-container.content-box {
+		background-color: #eff8ff;
+		border-radius: 8px;
+		
+		.cl-output.content-tit {
+			font-size: 18px;
+			font-weight: 700;
+			color: #207de9;
+		}
+		
+		.cl-container.box {
+			background-color: #ffffff;
+			border: @component-border-base;
+			border-radius: 8px;
+			
+			.cl-output.box-tit {
+				background-color: #efeff0;
+				font-size: 14px;
+				font-weight: 700;
+				text-align: center;
+			}
+		}
+	}
+	
+	// 아웃풋
+	.cl-output.fw-bold {
+		font-weight: @font-weight-bold;
+	}
+	
+	// 카드
+	.cl-container.card {
+		background-color: @component-background-color;
+		border: @component-border-base;
+		border-radius: 8px;
+		padding: 0;
+	}
+	
+	// 폼 레이아웃
+	.cl-container.cl-form-group {
+		background-color: @component-background-color;
+		border: 1px solid @form-border-color;
+		border-top-color: #323234;
+//		
+//		.cl-formlayout-column-shade {
+//			background-color: #f0f0f0;
+//		}
+//		
+//		.cl-formlayout-row-shade {
+//			background-color: #f0f0f0;
+//		}
+//		
+		.cl-formlayout-vertical-separator,
+		.cl-formlayout-horizontal-separator {
+			background-color: @form-separator-background-color;
+		}
+//		
+//		.cl-formlayout-vertical-lightweight-resizer,
+//		.cl-formlayout-horizontal-lightweight-resizer {
+//			background-color: #207de9;
+//		}
+		
+		.bg-warning-dim {
+			background-color: #fffbe5;
+		}
+		
+		.cl-output.label {
+			font-weight: @font-weight-semibold;
+			text-align: center;
+		}
+		
+		.cl-button {
+			padding: 0px 10px;
+		}
+		
+		&.vertical {
+			.cl-output.label {
+				text-align: center;
+			}
+		}
+	}
+	
+	// 버튼
+	.cl-button {
+	}
+	
+	.cl-button.btn-primary {
+		.cl-button.btn-submit();
+	}
+	
+	.cl-button.btn-secondary {
+		.cl-button.btn-inline();
+		
+		font: @font-base;
+	}
+	
+	.cl-button.btn-i-search {
+		.cl-button.btn-search();
+	}
+}

@@ -1,0 +1,310 @@
+/************************************************
+ * 컬러 시스템
+ ************************************************/
+
+@transparent: transparent;
+@gray-100: #efeff0;
+@gray-200: #e2e2e3;
+@gray-300: #cfd0d2;
+@gray-400: #bbbbbe;
+@gray-500: #a8a8ac;
+@gray-600: #7f7f83;
+@gray-700: #68666b;
+@gray-800: #565659;
+@gray-900: #323234;
+
+@primary: #207de9;
+@secondary: #4dc1b9;
+@info: #0071a4;
+@success: #007d1b;
+@warning: #a05a00;
+@danger: #d70015;
+
+@red: #ff3b30;
+@orange: #ff9500;
+@yellow: #ffcc00;
+@green: #28cd41;
+@teal: #59adc4;
+@cyan: #55bef0;
+@blue: #007aff;
+@indigo: #5856d6;
+@navy: #00448f;
+@purple: #af52de;
+@pink: #ff2d55;
+@brown: #a2845e;
+@white: #ffffff;
+@gray: #8e8e93;
+@black: #000000;
+@light: #f6f6f7;
+@dark: #282828;
+
+/************************************************
+ * 바디
+ ************************************************/
+
+@body-background-color: @transparent;
+
+/************************************************
+ * 폰트
+ ************************************************/
+
+@font-base: @font-weight-normal @font-size-sm @font-family-base;
+@font-family-sans-serif: "Pretendard", "Apple SD Gothic Neo", "맑은 고딕", "malgun gothic", sans-serif;
+@font-family-base: @font-family-sans-serif;
+
+@font-weight-normal: 400;
+@font-weight-medium: 500;
+@font-weight-semibold: 600;
+@font-weight-bold: 700;
+
+@font-size-xs: 12px;
+@font-size-sm: 13px;
+@font-size-base: 14px;
+@font-size-lg: 16px;
+@font-size-xl: 18px;
+@font-size-2xl: 20px;
+@font-size-3xl: 24px;
+@font-size-4xl: 28px;
+@font-size-5xl: 32px;
+
+/************************************************
+ * 유틸
+ ************************************************/
+ 
+@border-radius-none: 0px;
+@border-radius-sm: 2px;
+@border-radius: 4px;
+@border-radius-md: 6px;
+@border-radius-lg: 8px;
+@border-radius-xl: 10px;
+@border-radius-2xl: 12px;
+@border-radius-3xl: 16px;
+@border-radius-4xl: 20px;
+@border-radius-5xl: 24px;
+@border-radius-full: 9999px;
+
+@box-shadow-none: none;
+@box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+@box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+@box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+@box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+@box-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1);
+@box-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+@box-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+
+/************************************************
+ * 컴포넌트 공통 (컨트롤 공통)
+ ************************************************/
+ 
+@component-text-color: #111111;
+
+@component-background-color: #ffffff;
+@component-background-image: none;
+
+@component-border-base: @component-border-width @component-border-style @component-border-color;
+@component-border-width: 1px;
+@component-border-style: solid;
+@component-border-color: @gray-300;
+@component-border-radius: @border-radius;
+
+@component-focus-color: @primary;
+@component-focus-transparent-color: fade(@primary, 50%);
+@component-focus-box-shadow: 0 0 0 2px @component-focus-transparent-color;
+
+@component-hover-background-color:#edf5ff;
+@component-hover-text-color: #0e6ad2;
+
+@component-selected-background-color: #0e6ad2;
+@component-selected-text-color: #ffffff;
+
+@component-disabled-background-color: @gray-100;
+@component-disabled-border-color: @component-border-color;
+@component-disabled-text-color: @gray-700;
+
+@component-disabled-selected-background-color: @gray-200;
+@component-disabled-selected-text-color: @component-disabled-text-color;
+
+@component-transition-base: all .3s cubic-bezier(.4,0,.2,1);
+
+@component-transition-property: all;
+@component-transition-duration: .3s;
+@component-transition-timing-function: cubic-bezier(.4,0,.2,1);
+
+/************************************************
+ * 인풋 계열 컨트롤
+ * → 인풋박스, 서치인풋, 파일인풋, 텍스트에리어
+ *   데이트인풋, 넘버에디터, 마스크에디터, 콤보박스 일부
+ ************************************************/
+ 
+@input-padding-0: 0px;
+@input-padding-x: 8px;
+@input-padding-y: 8px;
+
+@input-placeholder-text-color: #c4c4c7;
+
+/************************************************
+ * 셀렉션 계열 컨트롤
+ * → 콤보박스 리스트, 리스트 박스, 트리, 사이드 내비게이션
+ *   메뉴, 내비게이션바
+ ************************************************/
+
+@list-padding-y: 3px;
+@list-padding-x: 3px;
+
+@list-item-padding-y: 4px;
+@list-item-padding-x: 8px;
+
+@list-item-height: 26px;
+
+/************************************************
+ * 버튼
+ ************************************************/
+ 
+@btn-padding-y: 4.5px;
+@btn-padding-x: 8px;
+
+@btn-background-color: #ffffff;
+@btn-border-color: #bbbbbe;
+@btn-text-color: #111111;
+
+@btn-border-radius: @component-border-radius;
+
+@btn-hover-background-color: #efeff0;
+@btn-hover-border-color: #afafaf;
+@btn-hover-text-color: #111111;
+
+@btn-focus-background-color: @btn-hover-background-color;
+@btn-focus-border-color: @btn-hover-border-color;
+@btn-focus-text-color: @btn-hover-text-color;
+
+@btn-active-background-color: @btn-background-color;
+@btn-active-border-color: @btn-border-color;
+@btn-active-text-color: @btn-text-color;
+
+@btn-disabled-background-color: #e2e2e3;
+@btn-disabled-border-color: #e2e2e3;
+@btn-disabled-text-color: #68686b;
+
+/************************************************
+ * 폼
+ ************************************************/
+
+@form-border-color: @component-border-color;
+@form-border-radius: 0;
+
+@form-shade-background-color: #f8f8f8; //#eaeff7;
+@form-separator-background-color: #ced4da; //#d2dcee;
+@form-lightweight-resizer-color: @component-focus-color;
+
+/************************************************
+ * 테이블(그리드)
+ ************************************************/
+ 
+@table-header-background-color: #f8f8f8;
+@table-header-text-color: #111111;
+
+@table-cell-border-color: #e8ebed;
+@table-cell-padding-y: 0.25rem;
+@table-cell-padding-x: @input-padding-x;
+
+@table-footer-background-color: #fffce7; //#f0f7ff;
+@table-footer-text-color: @table-header-text-color;
+
+@table-group-header-background-color: @transparent;
+@table-group-footer-background-color: @transparent;
+
+@table-row-odd-even-background-color: @transparent;
+@table-row-odd-even-text-color: @component-text-color;
+@table-row-inserted-background-color: fade(#28cd41, 10%);
+@table-row-inserted-text-color: @component-text-color;
+@table-row-updated-background-color: fade(#ffcc00, 10%);
+@table-row-updated-text-color: @component-text-color;
+@table-row-deleted-background-color: fade(#8e8e93, 10%);
+@table-row-deleted-text-color: @component-disabled-text-color;
+@table-row-selected-background-color: fade(#207de9, 10%);
+@table-row-selected-text-color: @component-text-color;
+@table-row-edit-background-color: @table-row-selected-background-color;
+@table-row-edit-text-color: @table-row-selected-text-color;
+
+/************************************************
+ * 탭 (탭 폴더/MDI 폴더)
+ ************************************************/
+
+@tab-background-color: #ffffff;
+@tab-border-color: @component-border-color;
+
+@tab-item-padding-y: 7px;
+@tab-item-padding-x: 16px;
+
+@tab-item-height: auto;
+
+@tab-item-background-color: #ffffff;
+@tab-item-border-color: @component-border-color;
+@tab-item-text-color: @component-text-color;
+
+@tab-item-hover-background-color: #ffffff; //@component-hover-background-color;
+@tab-item-hover-border-color: @tab-item-border-color;
+@tab-item-hover-text-color: @component-hover-text-color;
+
+@tab-item-selected-background-color: @component-background-color;
+@tab-item-selected-border-color: @component-focus-color;
+@tab-item-selected-text-color: @component-focus-color;
+
+/************************************************
+ * 다이얼로그 (모달/팝업)
+ ************************************************/
+
+//@modal-overlay-background-color: rgba(0, 0, 0, 0.4);
+@modal-overlay-background-color: @transparent;
+
+@modal-background-color: @component-background-color;
+@modal-border-base: @component-border-width @component-border-style @component-border-color;
+
+@modal-header-padding: 16px 24px 12px 24px;
+
+@modal-header-background-color: @transparent;
+@modal-header-border-color: #e2e2e3;
+@modal-header-text-color: @component-text-color;
+
+/************************************************
+ * 캘린더
+ * → 캘린더 및 데이트인풋의 캘린더
+ ************************************************/
+
+@calendar-background-color: @component-background-color;
+@calendar-text-color: @component-text-color;
+
+@calendar-border-color: @component-border-color;
+@calendar-content-border-color: @calendar-border-color;
+
+@calendar-header-background-color: @transparent;
+@calendar-header-text-color: @calendar-text-color;
+
+@calendar-content-header-background-color: @calendar-header-background-color;
+@calendar-content-header-text-color: @gray-600; //@calendar-header-text-color;
+
+@calendar-date-sun-text-color: inherit;
+@calendar-date-sat-text-color: inherit;
+
+@calendar-date-background-color: @transparent;
+@calendar-date-text-color: @calendar-text-color;
+@calendar-date-hover-background-color: @component-hover-background-color;
+@calendar-date-hover-text-color: @component-hover-text-color;
+@calendar-date-selected-background-color: @primary; //@component-selected-background-color;
+@calendar-date-selected-text-color: @white; //@component-selected-text-color;
+@calendar-date-range-selected-background-color: @component-selected-background-color;
+@calendar-date-range-selected-text-color: @component-selected-text-color;
+
+@calendar-default-date-background-color: @transparent;
+@calendar-default-date-text-color: inherit;
+@calendar-other-date-background-color: @transparent;
+@calendar-other-date-text-color: @input-placeholder-text-color;
+@calendar-current-date-background-color: @transparent;
+@calendar-current-date-text-color: inherit;
+@calendar-current-date-box-shadow: inset 0px 0px 0px 2px fade(@primary, 50%);
+
+@calendar-date-disabled-background-color: @component-disabled-background-color;
+@calendar-date-disabled-text-color: @component-disabled-text-color;
+
+@calendar-footer-background-color: @transparent;
+@calendar-footer-text-color: @btn-text-color;

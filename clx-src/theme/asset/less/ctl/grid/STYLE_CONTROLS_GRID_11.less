@@ -1,0 +1,11 @@
+.cl-grid.targetFocus{
+	.cl-control,			// 그리드 셀에 임베딩 된 컨트롤
+	.cl-grid-cell,			// 그리드 셀
+	.cl-radiobutton-icon,	// 그리드 columType=radio 아이콘 및 그리드에 임베딩 된 라디오버튼 아이콘
+	.cl-checkbox-icon {		// 그리드 columType=checkbox 아이콘 및 그리드에 임베딩 된 체크박스 아이콘
+		&.cl-focus,
+		&:focus {
+			box-shadow: inset 0 0 2px 2px #EFA2A2;
+		}
+	}
+}

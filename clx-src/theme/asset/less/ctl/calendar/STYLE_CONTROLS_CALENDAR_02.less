@@ -1,0 +1,43 @@
+
+.cl-calendar.cl-cal-range{
+	            //범위 가운데 변경
+	            .cl-calendar-content .cl-calendar-content-day.cl-range-selected {
+				  background-color: rgba(32, 138, 237, 0.5);
+				  color: white;
+				}
+				
+                // 날짜 선택 잡을떄
+				:not(.cl-disabled) .cl-calendar-content-day.cl-selected,
+
+			    .cl-calendar:not(.cl-disabled) .cl-other-month.cl-selected {
+				    background-color: #3387ff;
+				    border-radius: 50%;
+				    color: #ffffff;
+				}
+				//날짜 마우스 호버시
+				:not(.cl-disabled) .cl-calendar-content-day:not(.cl-disabled):hover,
+				:not(.cl-disabled) .cl-other-month:not(.cl-disabled):hover {
+				  cursor: pointer;
+				  background-color: #656565;
+				  border-radius: 50%;
+				  color: white;
+				}
+				// 선택한 시작 날짜 
+				:not(.cl-disabled) .cl-calendar-content-day.cl-selected.cl-range-start,
+				:not(.cl-disabled) .cl-other-month.cl-selected.cl-range-start{
+				  background-color: #3387ff;
+                  border-radius: 50% 0 0 50%;
+				  color: #FFFFFF;
+				}
+				// 선택한 끝나는 날짜 
+				:not(.cl-disabled) .cl-calendar-content-day.cl-selected.cl-range-end,
+				:not(.cl-disabled) .cl-other-month.cl-selected.cl-range-end{
+				  background-color: #3387ff;
+                  border-radius: 0 50% 50% 0;
+				  color: #FFFFFF;
+				}
+
+		
+}
+	
+	

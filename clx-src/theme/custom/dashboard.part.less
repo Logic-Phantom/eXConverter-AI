@@ -1,0 +1,224 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 메인
+ ************************************************/
+
+.cl-container.dashboard {	
+	.cl-searchinput.global-search {
+		background-color: @lighter;
+		border: none;
+		font-size: @font-size-md;
+		
+		.cl-text {
+			padding: 0px 15px !important;
+		}
+		
+		.cl-searchinput-search {
+			background-image: url("../images/com/EXB01/ic_btn_search.svg");
+			background-position: center;
+			background-size: 20px;
+			width: 40px;
+		}
+	}
+	
+	.cl-container.filter-box {
+		background-color: @secondary-dim;
+		border-radius: @border-radius-lg;
+		
+		.cl-radiobutton.btn {
+			.cl-radiobutton-item {
+				background-color: @btn-background-color;
+				border: @btn-border-base;
+				border-style: dashed;
+				border-radius: @btn-border-radius;
+				font-size: @font-size-md;
+				font-weight: @font-weight-medium;
+				text-align: center;
+				
+				.cl-radiobutton-field {
+					width: 100%;
+					height: 30px;
+				}
+				
+				&.cl-selected {
+					border-color: @blue;
+					color: @blue;
+				}
+			}
+		}
+		
+		.cl-inputbox {
+			.cl-text {
+				padding: 0px 15px !important;
+			}
+		}
+	}
+	
+	.cl-container.breadcrumbs {
+		.cl-output.breadcrumb-item {
+			color: @gray-600;
+			font-size: 13px;
+			
+			.cl-text:before {
+				content: ">";
+				color: @gray-600;
+				padding: 0px 6px;
+			}
+		}
+		
+		.cl-layout-wrap:first-child {
+			.cl-output.breadcrumb-item {
+				.cl-text:before {
+					content: none;
+				}
+			}
+		}
+	}
+	
+	.cl-container.sitemap {
+		.cl-sidenavigation {
+			border: none;
+			border-radius: @component-border-radius-0;
+			
+			.cl-sidenavigation-item {
+				color: #444444;
+				min-height: 26px;
+				padding: 10px 20px 10px 30px;
+				position: relative;
+				
+				.cl-icon, .cl-expand-icon {
+					display: none;
+				}
+				
+				.cl-text {
+					padding: 0px;
+				}
+				
+				// LESS for loop
+				.loop-item(@n, @i : 3) when (@i <= @n) {
+					&.cl-level-@{i} {
+						font-size: 16px - @i;
+						padding-top: 5px;
+						padding-bottom: 5px;
+						
+						.cl-text {
+							padding-left: 10px * (@i - 2);
+							
+							&:before {
+								content: "";
+								position: absolute;
+								top: 15px - @i + 2;
+								left: 30px + (10px * (@i - 3));
+							}
+						}
+					}
+					.loop-item(@n, (@i + 1));
+				}
+				
+				.loop-item(5);
+				
+				&.cl-level-1 {
+					background-color: @secondary; //#7ea2c2;
+					color: @white;
+					font-size: 14px;
+					min-height: 40px;
+					
+					+ .cl-list {
+						border-bottom: 1px dashed @secondary; //#7ea2c2;
+					}
+				}
+				
+				&.cl-level-2 {
+					background-color: #f6f7fb; //#f2f6f9;
+					font-size: 13px;
+					min-height: 44px;
+					
+					&.cl-first {
+				 		&:before {
+				 			content: "";
+				 			position: absolute;
+				 			top: 0px;
+				 			left: 30px;
+				 			border-left: 6px solid transparent;
+				 			border-right: 6px solid transparent;
+				 			border-top: 6px solid @secondary; //#7ea2c2;
+				 		}
+					}
+					
+					&:not(.cl-first) {
+						border-top: 1px dashed @secondary; //#7ea2c2;
+					}
+					
+					+ .cl-list {
+						padding: 10px 0px;
+					}
+				}
+				
+				&.cl-level-3 {
+					min-height: 28px;
+					
+					.cl-text {
+						&:before {
+							top: 13px;
+							width: 4px;
+							height: 4px;
+							background-color: @secondary; //#7ea2c2;
+							border-radius: 50%;
+						}
+					}
+				}
+				
+				&.cl-level-4, &.cl-level-5 {
+					.cl-text {
+						&:before {
+							width: 4px;
+							height: 1px;
+							background-color: #444444;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	.cl-tabfolder.tab-result {
+		.cl-tabfolder-header {
+			height: 25px;
+			
+			.cl-empty-area {
+				border: none;
+			}
+			
+			.cl-tabfolder-item {
+				background-repeat: no-repeat;
+				background-position: center;
+				border: @tab-item-border-base !important;
+				border-radius: @btn-border-radius;
+				box-shadow: none;
+				padding: 0px;
+				font-size: 0px;
+				height: 32px;
+				
+//				&.sitemap {
+//					background-image: url("../images/com/ic_sitemap.png");
+//				}
+//				
+//				&.grid {
+//					background-image: url("../images/com/ic_grid.png");
+//				}
+			}
+		}
+		
+		.cl-tabfolder-body {
+			border: none;
+		}
+	}
+}
+
+/* 다크 모드인 경우 */
+body.dark {	
+	.cl-container.filter-box {
+		background-color: #1b232d !important;
+	}	
+}

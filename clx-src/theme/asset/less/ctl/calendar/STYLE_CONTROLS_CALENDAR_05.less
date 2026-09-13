@@ -1,0 +1,29 @@
+.cl-calendar.cl-cal-style {
+	.cl-first-row {
+		border-top: 3px solid black !important;
+	}
+	
+	.cl-last-row {
+		border-bottom: 3px solid black !important;
+	}
+	
+	.cl-first-column {
+		background-color: rgba(255, 0, 0, 0.2);
+	}
+	
+	.cl-last-column {
+		background-color: rgba(0, 0, 255, 0.2);
+	}
+	
+	// 캘린더의 현재 달 영역에만 스타일 설정
+	.cl-calendar-content-day {
+		&.cl-even-column {
+			background-color: rgba(255, 235, 205, 0.4)
+		}
+		
+		&.cl-odd-column {
+			background-color: rgba(241, 217, 255, 0.4)
+		}
+		
+	}
+}

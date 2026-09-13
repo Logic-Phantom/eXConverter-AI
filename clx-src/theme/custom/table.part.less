@@ -1,0 +1,144 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 일반 그리드 공통
+ * → 
+ ************************************************/
+ 
+.cl-grid {
+	.cl-grid-header {
+		.cl-grid-cell.required {
+			.cl-text {
+				&:before {
+					content: "*";
+					position: relative;
+					color: @danger;
+					margin: 0 4px 0 0;
+				}
+			}
+		}
+	}
+	
+	.cl-grid-detail {
+		.cl-grid-row {
+			.cl-grid-cell {
+				.cl-control {
+					&.cl-default-cell {
+					}
+					
+					&.cl-output {
+						text-align: center;
+					}
+					
+					&.cl-inputbox,
+					&.cl-maskeditor,
+					&.cl-numbereditor,
+					&.cl-dateinput,
+					&.cl-textarea,
+					&.cl-combobox,
+					&.cl-fileinput,
+					&.cl-searchinput {
+					}
+					
+					&.cl-button {
+					}
+					
+					&.cl-treecell {
+					}
+					
+					&.cl-checkbox,
+					&.cl-checkboxgroup,
+					&.cl-radiobutton {
+					}
+				}
+			}
+		}
+	}
+	
+	.cl-grid-footer {
+		.cl-grid-row {
+			.cl-grid-cell {
+			}
+		}
+	}
+	
+	.cl-grid-cell {
+		.cl-control {
+			
+			&.cl-output {
+				padding: (@input-padding-y / 2)@input-padding-x;
+			}
+			
+			&.cl-checkbox,
+			&.cl-checkboxgroup,
+			&.cl-radiobutton {
+				text-align: center;
+			}
+		}
+	}
+	
+	/* ---------- 조회성 그리드 ---------- */
+	&.cl-readonly {
+		
+	}
+}
+
+/************************************************
+ * 그리드 상태컬럼
+ * → 
+ ************************************************/
+
+//.cl-output.state {
+//	background-repeat: no-repeat !important;
+//	background-position: center !important;
+//	font-size: 0;
+//	
+//	.cl-text {
+//		padding: 0;
+//	}
+//	
+//	&.insert {
+//		background: url("../images/controls/grid/ic_sts_insert.svg") no-repeat center / 16px !important;
+//	}
+//	
+//	&.update {
+//		background: url("../images/controls/grid/ic_sts_update.svg") no-repeat center / 16px !important;
+//	}
+//	
+//	&.delete {
+//		background: url("../images/controls/grid/ic_sts_delete.svg") no-repeat center / 16px !important;
+//	}
+//}
+
+.cl-grid {
+	.cl-grid-detail {
+		.cl-grid-row {
+			&.cl-inserted {
+				.cl-output.state-cell {
+					background: url("../images/controls/grid/ic_sts_insert.svg") no-repeat center / 16px;
+				}
+			}
+			
+			&.cl-modified {
+				.cl-output.state-cell {
+					background: url("../images/controls/grid/ic_sts_update.svg") no-repeat center / 16px;
+				}
+			}
+			
+			&.cl-deleted,
+			&.cl-nullified {
+				.cl-output.state-cell {
+					background: url("../images/controls/grid/ic_sts_delete.svg") no-repeat center / 16px;
+				}
+			}
+		}
+	}
+}
+
+.cl-output.state-cell {
+	font-size: 0;
+	
+	.cl-text {
+		padding: 0;
+	}
+}

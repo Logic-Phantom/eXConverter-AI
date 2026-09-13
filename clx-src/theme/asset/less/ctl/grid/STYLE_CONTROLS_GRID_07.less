@@ -1,0 +1,37 @@
+.cl-grid.table-split {
+	&.cl-leftsplit {
+		/* 좌측으로 스플릿된 영역 */
+		.cl-grid-leftsplit {
+			box-shadow : 0px 0px 17px 5px rgba(113,106,202,0.14);
+		}
+		
+		/* 스플릿에서 제외된 나머지 영역 */
+		.cl-grid-centersplit {
+			border-left: none;
+		}
+	}
+	
+	&.cl-rightsplit {
+		/* 우측으로 스플릿된 영역 */
+		.cl-grid-rightsplit {
+			box-shadow : 0px 0px 17px 5px rgba(113,106,202,0.14);
+		}
+		
+		/* 스플릿에서 제외된 나머지 영역 */
+		.cl-grid-centersplit {
+			border-right: none;
+		}
+	}
+	
+	/* 상측으로 스플릿된 영역 */
+	.cl-grid-topsplit {
+		border-bottom: none;
+		box-shadow : 0px 17px 17px -12px rgba(113,106,202,0.14);
+	}
+	
+	/* 하측으로 스플릿된 영역 */
+	.cl-grid-bottomsplit {
+		border-top: none;
+		box-shadow : 0px 0px 17px 5px rgba(113,106,202,0.14);
+	}
+}

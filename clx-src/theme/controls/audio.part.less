@@ -1,16 +1,13 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
-/* 오디오 */
 .cl-audio {
-	border: 1px solid @default-border-color;
+	border: @component-border-base;
 	
-	/* 포커스 상태 */
-	&.cl-focus{
-		border: solid 1px @focus-border-color;
+	&.cl-focus {
+		border-color: @component-focus-color;
 	}
-
-	/* 비활성화 상태 */
-	&.cl-disabled .cl-overlay{
-
+	
+	&.cl-disabled .cl-overlay {
+		background-color: @modal-overlay-background-color;
 	}
 }

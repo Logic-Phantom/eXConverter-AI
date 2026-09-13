@@ -1,0 +1,17 @@
+// 그리드의 좌/우 테두리 border 제거
+.cl-grid.table-boarder {
+	border-left: none;
+	border-right: none;
+		
+	.cl-grid-cell {
+		// 마지막 헤더 셀의 경우 우측 border 제거
+		&:last-child {
+			border-right: none;
+		}
+		
+		// 첫 번째 헤더 셀의 경우 좌측 border 제거
+		&:first-child {
+			border-left: none !important;
+		}
+	}
+}

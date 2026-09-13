@@ -1,0 +1,110 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 기본 폼 스타일 (사용하지 않음)
+ * → .cl-form-group
+ ************************************************/
+ 
+.cl-form-group {
+	background-color: @transparent;
+	border: none;
+	border-radius: @border-radius-none;
+}
+
+/************************************************
+ * 일반 폼
+ * → .form-base
+ ************************************************/
+
+.cl-container.form-base,
+.cl-container.form-table {
+	background-color: @component-background-color;
+	border: 1px solid @form-border-color;
+	border-width: 1px 0px;
+	border-top-color: #323234;
+//	border-width: 2px 0px 1px 0px;
+	border-radius: @form-border-radius;
+	
+	.label, .sub-label {
+		background-color: @form-shade-background-color;
+		color: @component-text-color;
+		font-weight: @font-weight-semibold;
+		padding: 0 12px;
+		
+		&.required {
+			.cl-text {
+				&:after {
+					content: "*";
+					position: relative;
+					color: @danger;
+					margin: 0 0 0 4px;
+				}
+			}
+		}
+	}
+}
+
+.cl-container.form-table {
+	/* 폼 내 컨트롤 공통 스타일 */
+	.cl-output,
+	.cl-checkbox,
+	.cl-checkboxgroup,
+	.cl-radiobutton {
+		text-align: center;
+	}
+	
+	.label {
+		text-align: center;
+	}
+	
+	.sub-label {
+		text-align: left;
+	}
+}
+
+/************************************************
+ * 조회 폼
+ * → .search-box
+ ************************************************/
+ 
+.cl-container.search-box {
+	background-color: #f0f7ff;
+	border-radius: @border-radius-lg;
+	padding: 12px 24px;
+	
+	.label, .sub-label {
+		background: 0;
+		color: @component-text-color;
+		font-weight: @font-weight-semibold;
+		text-align: right;
+		
+		// 단과 단 사이 간격 처리
+		&:not(.cl-first-column) {
+			margin-left: 16px;
+		}
+		
+		&.required {
+			.cl-text {
+				&:after {
+					content: "*";
+					position: relative;
+					color: @danger;
+					margin: 0 0 0 4px;
+				}
+			}
+		}
+	}
+	
+	.cl-container.search-button-group {
+		margin-left: 16px;
+		
+		.cl-button.btn-base,
+		.cl-button.btn-submit {
+			padding: 6.5px 12px;
+		}
+		
+		.cl-button.btn-i-only {
+			padding: 0 6px;
+		}
+	}
+}

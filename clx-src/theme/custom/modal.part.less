@@ -1,0 +1,34 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 알림 팝업 (comPMsgDialog)
+ * → 상태에 따른 스타일 (정보/성공/경고/오류)
+ ************************************************/
+ 
+.cl-dialog.alert {
+	border-top: 3px solid @primary;
+	border-top-left-radius: @border-radius-none;
+	border-top-right-radius: @border-radius-none;
+	box-sizing: content-box;
+	
+	.cl-dialog-header {
+		border-bottom-color: @transparent;
+	}
+	
+	// 상태에 따른 스타일
+	&.info {
+		border-top-color: @info;
+	}
+	
+	&.success {
+		border-top-color: @success;
+	}
+	
+	&.warning {
+		border-top-color: @warning;
+	}
+	
+	&.danger {
+		border-top-color: @danger;
+	}
+}

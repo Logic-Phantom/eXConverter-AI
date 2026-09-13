@@ -1,84 +1,117 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 /* 데이트 인풋 */
 .cl-dateinput {
-	font: @default-font;
-	color: @default-text-color;
-	border: 1px solid @default-border-color;
-	text-align: left;
-
+	font: @font-base;
+	background-image: @component-background-image;
+	background-color: @component-background-color;
+	border: @component-border-base;
+	border-radius: @component-border-radius;
+	color: @component-text-color;
+	
 	/* 텍스트 */
-	.cl-text {}
-
+	.cl-text {
+		padding: @input-padding-0 @input-padding-x;
+		
+		&.cl-placeholder {
+			color: @input-placeholder-text-color !important;
+		}
+	}
+	
 	/* 버튼 */
 	.cl-dateinput-button {
-		// background-image: url(icons/calendar-button.png);
+		background: url("../images/controls/dateinput/ic_btn_date.svg") no-repeat center / contain;
+		width: 1rem;
+		
+		&.cl-left {
+			margin: 0px 0px 0px (@input-padding-x - 2);
+		}
+		
+		&.cl-right {
+			margin: 0px (@input-padding-x - 2) 0px 0px;
+		}
 	}
-
+	
 	/* 클리어 버튼 */
 	.cl-dateinput-clear {
-		&:hover {}
+		background: url("../images/controls/inputbox/ic_btn_clear.svg") no-repeat center / contain;
+		width: 1rem;
+		margin: 0px (@input-padding-x / 2) 0px 0px;
 	}
-
+	
 	/* 스핀 버튼 */
 	.cl-dateinput-spinbuttons {
-		border-left: solid 1px @default-border-color;
-		// width:16px;
-
+		border-left: @component-border-base;
+		width: 1rem;
+		position: relative;
+		
+		&:before {
+			content: "";
+			position: absolute;
+			top: calc(50% - 0.5px);
+			left: 0px;
+			width: 100%;
+			height: 1px;
+			background-color: @component-border-color;
+		}
+		
 		/* 증가 버튼 */
 		.cl-dateinput-increase {
-			// background-image: url(icons/up-spin.png);
-			// background-repeat: no-repeat;
-			// background-size: 16px auto;
-			// background-position: center;
-			// cursor: pointer;
+			background: url("../images/controls/inputbox/ic_btn_spin_up.svg") no-repeat center / 9px;
 		}
-
+		
 		/* 감소 버튼 */
 		.cl-dateinput-decrease {
-			// background-image: url(icons/down-spin.png);
-			// background-repeat: no-repeat;
-			// background-size: 16px auto;
-			// background-position: center;
-			// cursor:pointer;
+			background: url("../images/controls/inputbox/ic_btn_spin_down.svg") no-repeat center / 9px;
 		}
 	}
-
+	
 	&:not(.cl-disabled) {
 		.cl-dateinput-increase:hover {
-			// background-image: url(icons/up-spin-hover.png);
-			// background-color: @tint-normal-color;
+			background-image: url("../images/controls/inputbox/ic_btn_spin_up_w.svg");
+			background-color: var(--xb-component-hover-background-color, @component-selected-background-color);
 		}
-
+		
 		.cl-dateinput-increase:active {
-			// background-image: url(icons/up-spin-active.png);
-			// background-color: @tint-darker-color;
+			background-image: url("../images/controls/inputbox/ic_btn_spin_up_w.svg");
+			background-color: var(--xb-component-selected-background-color, @component-selected-background-color);
 		}
-
+		
 		.cl-dateinput-decrease:hover {
-			// background-image: url(icons/down-spin-hover.png);
-			// background-color: @tint-normal-color;
+			background-image: url("../images/controls/inputbox/ic_btn_spin_down_w.svg");
+			background-color: var(--xb-component-hover-background-color, @component-selected-background-color);
 		}
-
+		
 		.cl-dateinput-decrease:active {
-			// background-image: url(icons/down-spin-active.png);
-			// background-color: @tint-darker-color;
+			background-image: url("../images/controls/inputbox/ic_btn_spin_down_w.svg");
+			background-color: var(--xb-component-selected-background-color, @component-selected-background-color);
 		}
 	}
-
+	
 	/* 비활성화 상태 */
 	&.cl-disabled {
-		color: @disabled-text-color;
-		background-color: @disabled-selection-background;
-		border-color: @disabled-border-color;
-
+		background-color: @component-disabled-background-color;
+		border-color: @component-disabled-border-color;
+		color: @component-disabled-text-color;
+		
 		.cl-dateinput-button {
-			// background-image: url(icons/calendar-button-disabled.png);
+			background-image: url("../images/controls/dateinput/ic_btn_date.svg");
 		}
 	}
-
+	
 	/* 포커스 상태 */
 	&.cl-focus {
-		border-color: @focus-border-color;
+		border-color: @component-focus-transparent-color;
+		outline: 2px solid @primary;
+		outline-offset: -2px;
+		
+		/* 데이트 인풋 focus 상태 스핀 버튼 영역 */
+		.cl-dateinput-spinbuttons {
+			border-left-color: @component-border-color;
+			
+			&:before {
+				border-left-color: @component-border-color;
+			}
+		}
 	}
 }

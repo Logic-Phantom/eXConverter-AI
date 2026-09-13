@@ -1,0 +1,343 @@
+/* 기능확인 -- 도움말 버튼 */
+.cl-button.btn-help {
+	background: transparent url("../../../images/ctl/tooltip/ic_btn_help_.svg") no-repeat center / 24px;
+	border: none;
+	border-radius: 9999px;
+	text-shadow: none;
+	
+	&:not(.cl-disabled):hover,
+ 	&:focus,
+ 	&.cl-focus,
+ 	&:not(.cl-disabled).cl-activated,
+ 	&:not(.cl-disabled):active,
+ 	&.selected {
+ 		background-image: url("../../../images/ctl/tooltip/ic_btn_help_on.svg");
+ 	}
+}
+
+.cl-tooltip {
+	background-color: #111111;
+	border-radius: 4px;
+	padding: 4px 12px;
+	text-align: center;
+	
+	.cl-output {
+		color: #ffffff;
+	}
+}
+
+/* 응용예시 -- 예시(1) */
+.cl-container.tooltip-01 {
+	background: #1a1e25;
+	box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.25);
+	border-radius: 12px;
+	padding: 10px 10px;
+	
+	// 화살표
+	&:before {
+		content: '';
+		position: absolute;
+		width: 10px;
+		height: 10px;
+		background: #1a1e25;
+		border-radius: 2px;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
+	
+	&[data-usr-tooltip-placement^='top']:before {
+		bottom: -4px;
+		left: calc(50% - 5px);
+	}
+	
+	&[data-usr-tooltip-placement^='right']:before {
+		top: calc(50% - 5px);
+		left: -4px;
+	}
+	
+	&[data-usr-tooltip-placement^='bottom']:before {
+		top: -4px;
+		left: calc(50% - 5px);
+	}
+	
+	&[data-usr-tooltip-placement^='left']:before {
+		top: calc(50% - 5px);
+		right: -4px;
+	}
+	
+	.cl-output.tooltip-txt {
+		color: #ffffff;
+		text-align: center;
+		
+		.cl-text {
+			word-break: keep-all;
+		}
+	}
+	
+	.cl-button.btn-link {
+		background: #3c3c40 url("../../../images/ctl/tooltip/ic_btn_link.svg") no-repeat calc(100% - 15px) center;
+		border: none;
+		border-radius: 8px;
+		color: #ffffff;
+		text-shadow: none;
+	}
+}
+
+/* 응용예시 -- 예시(2) */
+.cl-button.avatar {
+	background: #ffe680 url("../../../images/ctl/tooltip/avatar.png") no-repeat center / contain;
+	border: 3px solid #ffffff;
+	border-radius: 9999px;
+}
+
+
+.cl-container.tooltip-02 {
+	background: #ffffff;
+	border: 1px solid #e8e8e8;
+	border-radius: 4px;
+	box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.25);
+	
+	// 화살표
+	&:before {
+		content: '';
+		position: absolute;
+		left: -6px;
+		top: 20px;
+		width: 10px;
+		height: 10px;
+		background: #ffffff;
+		border-bottom: 1px solid #e8e8e8;
+		border-left: 1px solid #e8e8e8;
+		border-radius: 2px;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
+	
+	.cl-container.tooltip-header {
+		.cl-image.avatar {
+			background-color: #ffe680;
+			border-radius: 9999px;
+		}
+		
+		.cl-output.name {
+			color: #444444;
+			font-weight: 700;
+			padding: 0px 0px 2px 0px;
+		}
+		
+		.cl-output.location {
+			background: url("../../../images/ctl/tooltip/ic_location.svg") no-repeat left center / 16px;
+			color: #999999;
+			font-size: 12px;
+			padding: 0px 0px 2px 20px;
+		}
+	}
+	
+	.cl-container.tooltip-body {
+		padding: 10px 20px;
+		
+		.cl-output.txt {
+			color: #444444;
+			padding: 0px 4px;
+		}
+	}
+	
+	.cl-container.tooltip-footer {
+		background: #f5F7fa;
+		border-top: 1px solid #e8e8e8;
+		padding: 9px 20px 10px 20px;
+		
+		.cl-output.post {
+			color: #999999;
+			font-size: 12px;
+			
+			span {
+				font-weight: 700;
+			}
+		}
+		
+		.cl-button.btn-follow {
+			background: #4d91ff;
+			border: none;
+			border-radius: 4px;
+			color: #ffffff;
+			font-size: 12px;
+			padding: 0px 10px;
+			text-shadow: none;
+		}
+	}
+}
+
+/* 응용예시 -- 예시(3) */
+.cl-button.btn-voice {
+	background: transparent url("../../../images/ctl/tooltip/ic_btn_voice.svg") no-repeat center;
+	border: none;
+	border-radius: 8px;
+	color: #ffffff;
+	text-shadow: none;
+	
+	&:not(.cl-disabled):hover,
+ 	&:focus,
+ 	&.cl-focus,
+ 	&:not(.cl-disabled).cl-activated,
+ 	&:not(.cl-disabled):active {
+ 		background-image: url("../../../images/ctl/tooltip/ic_btn_voice.svg");
+ 	}
+}
+
+.cl-container.tooltip-03 {
+	background: #ffffff;
+	border-radius: 10px;
+	padding: 120px 20px 20px 20px;
+	
+	// 화살표
+	&:before {
+		content: '';
+		position: absolute;
+		left: calc(50% - 10px);
+		bottom: -10px;
+		width: 20px;
+		height: 20px;
+		background: #ffffff;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
+	
+	// 배경 이미지
+	&:after {
+		content: '';
+		position: absolute;
+		top: -140px;
+		left: calc(50% - 140px);
+		width: 280px;
+		height: 280px;
+		background: url("../../../images/ctl/tooltip/social_01.svg") no-repeat center / contain;
+	}
+	
+	.cl-output.tooltip-tit {
+		font-size: 18px;
+		font-weight: 700;	
+		text-align: center;
+	}
+	
+	.cl-output.txt {
+		color: #444444;
+	}
+	
+	.cl-container.tooltip-footer {
+		padding: 12px 0px 0px 0px;
+		
+		.cl-button.btn-confirm {
+			background: #799afb;
+			border: none;
+			border-radius: 4px;
+			color: #ffffff;
+			text-shadow: none;
+			
+			&:not(.cl-disabled):hover,
+		 	&:focus,
+		 	&.cl-focus,
+		 	&:not(.cl-disabled).cl-activated,
+		 	&:not(.cl-disabled):active {
+		 		background-color: #0e84e5;
+		 		color: #ffffff;
+		 	}
+		}
+		
+		.cl-button.btn-skip {
+			background: transparent;
+			border: 1px solid transparent;
+			border-radius: 4px;
+			color: #999999;
+			text-shadow: none;
+			
+			&:not(.cl-disabled):hover,
+		 	&:focus,
+		 	&.cl-focus,
+		 	&:not(.cl-disabled).cl-activated,
+		 	&:not(.cl-disabled):active {
+		 		border-color: #444444;
+		 		color: #444444;
+		 	}
+		}
+	}
+}
+
+/* 응용예시 -- 예시(4) */
+.cl-button.btn-add {
+	background: #4d91ff url("../../../images/ctl/tooltip/ic_btn_plus.svg") no-repeat center;
+	border: none;
+	border-radius: 9999px;
+	transition: all .35s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+	
+	&:not(.cl-disabled):hover,
+ 	&:focus,
+ 	&.cl-focus,
+ 	&:not(.cl-disabled).cl-activated,
+ 	&:not(.cl-disabled):active,
+ 	&.selected {
+ 		background-image: url("../../../images/ctl/tooltip/ic_btn_plus.svg");
+ 		border-color: #444444;
+ 		color: #444444;
+ 	}
+ 	
+ 	// 애니메이션 적용
+ 	&:not(.cl-disabled):hover {
+	 	transform: rotate(-45deg);
+ 	}
+}
+
+.cl-container.tooltip-04 {
+	background: #ffffff;
+	border-radius: 60px;
+	box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+	padding: 10px 12px;
+	
+	&:before {
+		content: '';
+		position: absolute;
+		left: calc(50% - 6px);
+		bottom: -6px;
+		width: 12px;
+		height: 12px;
+		background: #ffffff;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
+	
+	.cl-button {
+		background-color: transparent;
+		background-repeat: no-repeat;
+		background-position: center;
+		border: none;
+		border-radius: 0px;
+		
+		&:not(.cl-disabled):hover,
+	 	&:focus,
+	 	&.cl-focus,
+	 	&:not(.cl-disabled).cl-activated,
+	 	&:not(.cl-disabled):active {
+	 		background-color: transparent;
+	 	}
+		
+		&.btn-camera {
+			background-image: url("../../../images/ctl/tooltip/ic_btn_camera.svg");
+		}
+		
+		&.btn-voice {
+			background-image: url("../../../images/ctl/tooltip/ic_btn_voice_on.svg");
+		}
+		
+		&.btn-picture {
+			background-image: url("../../../images/ctl/tooltip/ic_btn_image.svg");
+		}
+	}
+}

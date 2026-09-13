@@ -1,0 +1,69 @@
+.cl-grid.table-state {
+	/* 그리드 디테일 영역 */
+	.cl-grid-detail {
+		/* 그리드 로우 영역 */
+		.cl-grid-row {
+			/* 보기 모드의 로우 스타일 */
+			&.cl-viewing {
+			}
+			
+			/* 홀수 행의 로우 스타일 */
+			&.cl-odd-row {
+			}
+			
+			/* 짝수 행의 로우 스타일 */
+			&.cl-even-row {
+			}
+			
+			/* 추가된 행의 로우 스타일 */
+			&.cl-inserted {
+				background-color: rgba(30, 159, 242, 0.15);
+				color: #333333;
+
+				.cl-control {
+					font-weight: normal;
+				}
+			}
+			
+			/* 수정된 행의 로우 스타일 */
+			&.cl-modified {
+				background-color: rgba(255, 193, 7, 0.18);
+				color: #333333;
+				
+				.cl-control {
+					font-weight: normal;
+				}
+			}
+			
+			/* 삭제된 행의 로우 스타일 */
+			&.cl-deleted {
+				background-color: rgba(0, 0, 0, .05);
+				color: #BABFC7;
+				
+				.cl-control {
+					font-style: normal;
+				}
+			}
+			
+			/* 추가 후 삭제된 행의 로우 스타일 */
+			&.cl-nullified {
+			}
+			
+			/* 선택된 행의 로우 스타일 */
+			&.cl-selected {
+				background-color: rgba(255, 235, 59, 0.45);
+				color: #333333;
+			}
+			
+			/* 편집 모드인 행의 로우 스타일 */
+			&.cl-editing {
+				background-color: rgba(255, 235, 59, 0.65);
+				color: #333333;
+			}
+			
+			/* 호버된 행의 로우 스타일 */
+			&:hover {
+			}
+		}
+	}
+}

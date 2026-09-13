@@ -1,0 +1,1398 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 컨트롤 개인화 테마
+ ************************************************/
+
+:root {
+	
+}
+
+/************************************************
+ * 메인 개인화 테마
+ * → data-xb-color="black"
+ * → data-xb-color="white" (default)
+ * → data-xb-color="blue"
+ * → data-xb-color="green"
+ * → data-xb-color="orange"
+ * → data-xb-color="purple"
+ * → data-xb-color="gradient"
+ ************************************************/
+
+// 메인에 개인화 테마가 적용된 경우 공통 스타일
+//[data-xb-color]:not([data-xb-color=""]) {
+[data-xb-color="black"],
+[data-xb-color="blue"],
+[data-xb-color="green"],
+[data-xb-color="orange"],
+[data-xb-color="purple"],
+[data-xb-color="gradient"] {
+	/* ---------- CSS 변수 ---------- */
+
+	--gray-100: #efeff0;
+	--gray-200: #e2e2e3;
+	--gray-300: #cfd0d2;
+	--gray-400: #bbbbbe;
+	--gray-500: #a8a8ac;
+	--gray-600: #7f7f83;
+	--gray-700: #68666b;
+	--gray-800: #565659;
+	--gray-900: #323234;
+
+	--primary: #207de9;
+	--secondary: #4dc1b9;
+	--info: #0071a4;
+	--success: #007d1b;
+	--warning: #a05a00;
+	--danger: #d70015;
+	
+	--primary-rgb: 32, 125, 233;
+	--secondary-rgb: 77, 193, 185;
+	--info-rgb: 0, 113, 164;
+	--success-rgb: 0, 125, 27;
+	--warning-rgb: 160, 90, 0;
+	--danger-rgb: 215, 0, 21;
+	--black-rgb: 0, 0, 0;
+	--white-rgb: 255, 255, 255;
+	
+	
+	--xb-component-text-color: #111111 !important;
+	
+	--xb-component-background-color: #ffffff;
+	
+	--xb-component-border-base: @component-border-width @component-border-style var(--xb-component-border-color);
+	--xb-component-border-color: var(--gray-300);
+	
+	--xb-component-focus-color: var(--primary);
+	--xb-component-focus-transparent-color: rgba(var(--primary-rgb), .5);
+	--xb-component-focus-box-shadow: 0 0 0 2px var(--xb-component-focus-transparent-color);
+
+	--xb-component-hover-background-color: 0;
+	--xb-component-hover-text-color: 0;
+	
+	--xb-component-selected-background-color: 0;
+	--xb-component-selected-text-color: 0;
+	
+	--xb-component-disabled-background-color: 0;
+	--xb-component-disabled-border-color: 0;
+	--xb-component-disabled-text-color: 0;
+	
+	--xb-component-disabled-selected-background-color: 0;
+	--xb-component-disabled-selected-text-color: 0;
+	
+	
+	--xb-input-placeholder-text-color: #808290;
+	
+	
+	--xb-tab-item-selected-background-color: 0;
+	--xb-tab-item-selected-border-color: 0;
+	--xb-tab-item-selected-text-color: 0;
+	
+	
+	--xb-calendar-date-hover-background-color: 0;
+	--xb-calendar-date-hover-text-color: 0;
+	--xb-calendar-date-selected-background-color: 0;
+	--xb-calendar-date-selected-text-color: 0;
+	--xb-calendar-date-range-selected-background-color: 0;
+	--xb-calendar-date-range-selected-text-color: 0;
+	
+	--xb-calendar-other-date-text-color: var(--xb-input-placeholder-text-color);
+	--xb-calendar-current-date-box-shadow: inset 0px 0px 0px 2px rgba(var(--primary-rgb), .5);
+	
+	--xb-calendar-date-disabled-background-color: var(--xb-component-disabled-background-color);
+	--xb-calendar-date-disabled-text-color: var(--xb-component-disabled-text-color);
+	
+	
+	/* ---------- 일반 컨트롤 ---------- */
+
+	/* ---------- 사용자 정의 ---------- */
+	
+	/* ---------- 메인 ---------- */
+	._main {
+		.cl-container.aside {
+			.cl-button.logo {
+				background-image: url("../images/com/main/logo_w.png");
+			}
+			
+			.cl-container.leftbar {
+				background-color: var(--primary);
+				
+				.cl-sidenavigation.menubar {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						/* 아이템 배경 설정 */
+						&.component {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_app_01.svg");
+							}
+						}
+						&.module {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_book_01.svg");
+							}
+						}
+						&.server {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_database_01.svg");
+							}
+						}
+						&.template {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_layout_01.svg");
+							}
+						}
+						
+						&:hover,&.cl-focus,&:focus,
+						&.cl-hover,
+						&.cl-selected {
+							background-color: rgba(var(--white-rgb), .1) !important;
+
+							.cl-icon {
+							}
+						}
+					}
+				}
+				
+				.cl-container.util-button-group {
+					.cl-button {
+						.cl-icon {
+						}
+						
+						/* 아이콘 배경 설정 */
+						&.btn-fav {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_star_01.svg") !important;
+							}
+						}
+						&.btn-setting {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_settings_01.svg") !important;
+							}
+						}
+						&.btn-sitemap {
+							.cl-icon {
+								background-image: url("../images/com/main/ic_sitemap_01.svg") !important;
+							}
+						}
+						
+						&:focus, &.cl-focus,
+						&:not(.cl-disabled):hover,
+						&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+							background-color: rgba(var(--white-rgb), .1) !important;
+						}
+					}
+				}
+			}
+			
+			.cl-container.sidebar {
+				.cl-sidenavigation.sidemenu {
+					.cl-sidenavigation-item {
+						.cl-icon {
+							background-color: var(--primary);
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							color: var(--primary);
+							
+							.cl-icon {
+								color: var(--primary);
+							}
+						}
+						
+						&.cl-level-1 {
+						}
+						
+						&.cl-level-2 {
+							+ .cl-list {
+								// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+								.cl-sidenavigation-item {
+									&:hover,
+									&.cl-hover {
+									}
+									
+									&.cl-selected {
+									}
+								}
+								
+								// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+								.cl-list {
+									.cl-sidenavigation-item {
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-header.content {
+					.cl-tabfolder-item {
+						&.cl-selected {
+							background-color: var(--primary);
+							border-color: var(--primary);
+						}
+					}
+				}
+				
+				> .cl-tabfolder-body {
+				}
+			}
+		}
+		
+		.mobile-footer{
+			.cl-button {
+				&:focus {
+					background-color : rgba(var(--white-rgb),.1) !important;
+				}
+				&.btn-menu {
+					background-image : url("../images/com/main/mobile/ic_btn_m_menu_w.svg");
+				}
+				
+				&.btn-tab-close {
+					background-image : url("../images/com/main/mobile/ic_mdi_close_w.svg");
+				}
+				
+				&.btn-refresh {
+					background-image : url("../images/com/main/mobile/ic_mdi_refresh_w.svg");
+				}
+				
+				&.btn-home {
+					background-image : url("../images/com/main/mobile/ic_btn_m_home_w.svg");
+				}
+				
+				&.btn-win-open {
+					background-image : url("../images/com/main/mobile/ic_mdi_window_w.svg");
+				}
+			}
+		}
+	}
+	
+	._home {
+		background: rgba(var(--primary-rgb), .05);
+		
+		.cl-container.user {
+			.cl-container.notice {
+				border: 2px solid var(--primary);
+				
+				.cl-output.text::before {
+				}
+			}
+		}
+		
+		.cl-container.search {
+			.cl-output.title {
+				span {
+					color: var(--primary);
+				}
+			}
+		}
+		
+		.cl-container.link {
+			.cl-container.box {
+				&:hover, &:focus-within {
+					outline: 2px solid var(--primary);
+				}	
+			}
+			
+			.cl-button.title {
+				color: var(--primary);
+			}
+		}
+		
+//		background-image: linear-gradient(rgba(var(--primary-rgb), .08), rgba(var(--primary-rgb), .08));
+//		
+//		.cl-container.notice-box {
+//			.cl-button.btn-megaphone {
+//				background: rgba(var(--primary-rgb), .05);
+//				
+//				.cl-icon {
+//					color: var(--primary);
+//				}
+//			}
+//		}
+//		
+//		.cl-container.user-box {
+//		}
+//		
+//		.cl-container.link-box {
+//			.cl-button.btn-link {
+//				.cl-icon {
+//					color: var(--primary);
+//				}
+//			}
+//		}
+//		
+//		.cl-container.box {
+//			.cl-container.box-body {
+//				.cl-container.item {
+//					.cl-container.sitemenus {
+//						.cl-sidenavigation {
+//							.cl-sidenavigation-item {
+//								&.cl-level-1 {
+//								}
+//								
+//								&.cl-level-2 {
+//								}
+//								
+//								&.cl-level-3 {
+//									.cl-text:before {
+//										background: var(--primary);
+//									}
+//									
+//									&:hover,
+//									&.cl-hover,
+//									&:focus,
+//									&.cl-selected {
+//										background: rgba(var(--primary-rgb), .08);
+//										border-radius: @border-radius-full;
+//									}
+//								}
+//								
+//								&.cl-level-4 {
+//									.cl-text:before {
+//										background: var(--primary);
+//									}
+//									
+//									&:hover,
+//									&.cl-hover,
+//									&:focus,
+//									&.cl-selected {
+//										background: rgba(var(--primary-rgb), .08);
+//										border-radius: @border-radius-full;
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+	}
+	
+	._search {
+		.cl-container.search-box {
+			border-color: rgba(var(--primary-rgb), .3);
+		}
+		
+		.cl-container.search-box {
+			background: #ffffff;
+			
+			.cl-searchinput.global-search {
+				.cl-searchinput-search {
+					//background-color: var(--primary);
+				}
+			}
+		}
+		
+		.cl-output.count {
+			color: var(--primary);
+		}
+		
+		.cl-container.list {
+			.cl-container.item {
+				&:hover {
+					outline: 2px solid var(--primary);
+				}
+			}
+		}
+	}
+	
+	.cl-container.subpage {
+		.cl-container.content-box {
+			background-color: rgba(var(--primary-rgb), 0.1);
+			
+			.cl-output.content-tit {
+				color: var(--primary);
+			}
+		}
+	}
+}
+
+[data-xb-color="black"] {
+	--primary: #152035;
+	--primary-rgb: 21, 32, 53;
+	
+	.cl-button.btn-submit {
+		background-image: linear-gradient(45deg, #5a5c6a, #152035);
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: linear-gradient(to right, #5a5c6a, #152035);
+		}
+	}
+	
+	.cl-container.search-box {
+		background-color: #efeff0;
+	}
+	
+	._main {
+		.cl-container.aside {
+			.cl-container.leftbar {
+				
+				.cl-sidenavigation.menubar {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							.cl-icon {
+							}
+						}
+					}
+				}
+				
+				.cl-container.util-button-group {
+					.cl-button {
+					}
+				}
+			}
+			
+			.cl-container.sidebar {
+				.cl-sidenavigation.sidemenu {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							background-color: #efeff0;
+							
+							.cl-icon {
+							}
+						}
+						
+						&.cl-level-1 {
+						}
+						
+						&.cl-level-2 {
+							+ .cl-list {
+								// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+								.cl-sidenavigation-item {
+									&:hover,
+									&.cl-hover {
+										background-color: rgba(var(--primary-rgb), .05);
+									}
+									
+									&.cl-selected {
+										background-color: rgba(var(--primary-rgb), .1);
+									}
+								}
+								
+								// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+								.cl-list {
+									.cl-sidenavigation-item {
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-header.content {
+					.cl-tabfolder-item {
+						&.cl-selected {
+						}
+					}
+				}
+				
+				> .cl-tabfolder-body {
+				}
+			}
+		}
+		
+		.mobile-footer{
+			background-color : var(--primary);
+		}
+	}
+	
+	._home {
+		.cl-container.user {
+			.cl-container.notice {
+				.cl-output.text::before {
+					background-image: url("../images/com/main/ic_megaphone_02.svg");
+				}
+			}
+		}
+		
+//		.cl-container.notice-box {
+//			.cl-button.btn-megaphone {
+//				background: rgba(var(--primary-rgb), .05);
+//				
+//				.cl-icon {
+//					color: var(--primary);
+//					background-image: url("../images/com/main/ic_megaphone_02.svg") !important;
+//				}
+//			}
+//		}
+//		
+//		.cl-container.link-box {
+//			.cl-button.btn-link {
+//				background: linear-gradient(#ffffff, #ffffff) no-repeat left top / 100% 100%,
+//							linear-gradient(to right, #5a5c6a, #152035) repeat right center;
+//							
+//				/* 아이콘 배경 설정 */			
+//				&.btn-techdom {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_headset_02.svg") !important;
+//					}
+//				}
+//				&.btn-education {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_graduation_02.svg") !important;
+//					}
+//				}
+//				&.btn-video {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_video_02.svg") !important;
+//					}
+//				}
+//				&.btn-demo {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_flask_02.svg") !important;
+//					}
+//				}
+//				&.btn-properties {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_component_02.svg") !important;
+//					}
+//				}
+//				&.btn-guide {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_openbook_02.svg") !important;
+//					}
+//				}
+//				&.btn-web {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_person_02.svg") !important;
+//					}
+//				}
+//				&.btn-global {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_magnifying_02.svg") !important;
+//					}
+//				}
+//			}
+//		}
+	}
+}
+
+[data-xb-color="blue"] {
+	--primary: #207de9;
+	--primary-rgb: 32, 125, 233;
+	
+	.cl-button.btn-submit {
+		background-image: linear-gradient(45deg, #4dc1b9, #207de9);
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: linear-gradient(to right, #4dc1b9, #207de9);
+		}
+	}
+	
+	.cl-container.search-box {
+		background-color: #f0f7ff;
+	}
+	
+	._main {
+		.cl-container.aside {
+			.cl-container.leftbar {
+				
+				.cl-sidenavigation.menubar {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							.cl-icon {
+							}
+						}
+					}
+				}
+				
+				.cl-container.util-button-group {
+					.cl-button {
+					}
+				}
+			}
+			
+			.cl-container.sidebar {
+				.cl-sidenavigation.sidemenu {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							background-color: #eff8ff;
+							color: #111111 !important;
+							
+							.cl-icon {
+							}
+						}
+						
+						&.cl-level-1 {
+						}
+						
+						&.cl-level-2 {
+							+ .cl-list {
+								// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+								.cl-sidenavigation-item {
+									&:hover,
+									&.cl-hover {
+										background-color: rgba(var(--primary-rgb), .05);
+									}
+									
+									&.cl-selected {
+										background-color: rgba(var(--primary-rgb), .1);
+										color: #111111 !important;
+									}
+								}
+								
+								// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+								.cl-list {
+									.cl-sidenavigation-item {
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-header.content {
+					.cl-tabfolder-item {
+						&.cl-selected {
+						}
+					}
+				}
+				
+				> .cl-tabfolder-body {
+				}
+			}
+		}
+		
+		.mobile-footer{
+			background-color : var(--primary);
+		}
+	}
+	
+	._home {
+		.cl-container.user {
+			.cl-container.notice {
+				.cl-output.text::before {
+					background-image: url("../images/com/main/ic_megaphone_02.svg");
+				}
+			}
+		}
+//		.cl-container.link-box {
+//			.cl-button.btn-link {
+//				background: linear-gradient(#ffffff, #ffffff) no-repeat left top / 100% 100%,
+//							linear-gradient(to right, #4dc1b9, #207de9) repeat right center;
+//			}
+//		}
+	}
+}
+
+[data-xb-color="green"] {
+	--primary: #26b16d;
+	--primary-rgb: 38, 177, 109;
+	
+	.cl-button.btn-submit {
+		background-image: linear-gradient(45deg, #4dc1b9, #26b16d);
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: linear-gradient(to right, #4dc1b9, #26b16d);
+		}
+	}
+	
+	.cl-container.search-box {
+		background-color: #eefbf3;
+	}
+	
+	._main {
+		.cl-container.aside {
+			.cl-container.leftbar {
+				
+				.cl-sidenavigation.menubar {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							.cl-icon {
+							}
+						}
+					}
+				}
+				
+				.cl-container.util-button-group {
+					.cl-button {
+					}
+				}
+			}
+			
+			.cl-container.sidebar {
+				.cl-sidenavigation.sidemenu {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							background-color: #eefbf3;
+							color: #111111 !important;
+							
+							.cl-icon {
+							}
+						}
+						
+						&.cl-level-1 {
+						}
+						
+						&.cl-level-2 {
+							+ .cl-list {
+								// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+								.cl-sidenavigation-item {
+									&:hover,
+									&.cl-hover {
+										background-color: rgba(var(--primary-rgb), .05);
+									}
+									
+									&.cl-selected {
+										background-color: rgba(var(--primary-rgb), .1);
+										color: #111111 !important;
+									}
+								}
+								
+								// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+								.cl-list {
+									.cl-sidenavigation-item {
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-header.content {
+					.cl-tabfolder-item {
+						&.cl-selected {
+						}
+					}
+				}
+				
+				> .cl-tabfolder-body {
+				}
+			}
+		}
+		
+		.mobile-footer{
+			background-color : var(--primary);
+		}
+	}
+	
+	._home {
+		.cl-container.user {
+			.cl-container.notice {
+				.cl-output.text::before {
+					background-image: url("../images/com/main/ic_megaphone_03.svg");
+				}
+			}
+		}
+//		.cl-container.notice-box {
+//			.cl-button.btn-megaphone {
+//				background: rgba(var(--primary-rgb), .05);
+//				
+//				.cl-icon {
+//					color: var(--primary);
+//					background-image: url("../images/com/main/ic_megaphone_03.svg") !important;
+//				}
+//			}
+//		}
+//		
+//		.cl-container.link-box {
+//			.cl-button.btn-link {
+//				background: linear-gradient(#ffffff, #ffffff) no-repeat left top / 100% 100%,
+//							linear-gradient(to right, #4dc1b9, #26b16d) repeat right center;
+//							
+//				/* 아이콘 배경 설정 */			
+//				&.btn-techdom {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_headset_03.svg") !important;
+//					}
+//				}
+//				&.btn-education {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_graduation_03.svg") !important;
+//					}
+//				}
+//				&.btn-video {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_video_03.svg") !important;
+//					}
+//				}
+//				&.btn-demo {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_flask_03.svg") !important;
+//					}
+//				}
+//				&.btn-properties {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_component_03.svg") !important;
+//					}
+//				}
+//				&.btn-guide {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_openbook_03.svg") !important;
+//					}
+//				}
+//				&.btn-web {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_person_03.svg") !important;
+//					}
+//				}
+//				&.btn-global {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_magnifying_03.svg") !important;
+//					}
+//				}
+//			}
+//		}
+	}
+}
+
+[data-xb-color="orange"] {
+	--primary: #ff9500;
+	--primary-rgb: 255, 149, 0;
+	
+	.cl-button.btn-submit {
+		background-image: linear-gradient(45deg, #ffcc00, #ff9500);
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: linear-gradient(to right, #ffcc00, #ff9500);
+		}
+	}
+	
+	.cl-container.search-box {
+		background-color: #fffbea;
+	}
+	
+	._main {
+		.cl-container.aside {
+			.cl-container.leftbar {
+//				background-color: #ff9500;
+				
+				.cl-sidenavigation.menubar {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							.cl-icon {
+							}
+						}
+					}
+				}
+				
+				.cl-container.util-button-group {
+					.cl-button {
+					}
+				}
+			}
+			
+			.cl-container.sidebar {
+				.cl-sidenavigation.sidemenu {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							background-color: #fffbea;
+							color: #111111 !important;
+							
+							.cl-icon {
+							}
+						}
+						
+						&.cl-level-1 {
+						}
+						
+						&.cl-level-2 {
+							+ .cl-list {
+								// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+								.cl-sidenavigation-item {
+									&:hover,
+									&.cl-hover {
+										background-color: rgba(var(--primary-rgb), .05);
+									}
+									
+									&.cl-selected {
+										background-color: rgba(var(--primary-rgb), .1);
+										color: #111111 !important;
+									}
+								}
+								
+								// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+								.cl-list {
+									.cl-sidenavigation-item {
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-header.content {
+					.cl-tabfolder-item {
+						&.cl-selected {
+						}
+					}
+				}
+				
+				> .cl-tabfolder-body {
+				}
+			}
+		}
+		
+		.mobile-footer{
+			background-color : var(--primary);
+		}
+	}
+	
+	._home {
+		.cl-container.user {
+			.cl-container.notice {
+				.cl-output.text::before {
+					background-image: url("../images/com/main/ic_megaphone_04.svg");
+				}
+			}
+		}
+//		.cl-container.notice-box {
+//			.cl-button.btn-megaphone {
+//				background: rgba(var(--primary-rgb), .05);
+//				
+//				.cl-icon {
+//					color: var(--primary);
+//					background-image: url("../images/com/main/ic_megaphone_04.svg") !important;
+//				}
+//			}
+//		}
+//		
+//		.cl-container.link-box {
+//			.cl-button.btn-link {
+//				background: linear-gradient(#ffffff, #ffffff) no-repeat left top / 100% 100%,
+//							linear-gradient(to right, #ffcc00, #ff9500) repeat right center;
+//							
+//				/* 아이콘 배경 설정 */			
+//				&.btn-techdom {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_headset_04.svg") !important;
+//					}
+//				}
+//				&.btn-education {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_graduation_04.svg") !important;
+//					}
+//				}
+//				&.btn-video {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_video_04.svg") !important;
+//					}
+//				}
+//				&.btn-demo {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_flask_04.svg") !important;
+//					}
+//				}
+//				&.btn-properties {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_component_04.svg") !important;
+//					}
+//				}
+//				&.btn-guide {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_openbook_04.svg") !important;
+//					}
+//				}
+//				&.btn-web {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_person_04.svg") !important;
+//					}
+//				}
+//				&.btn-global {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_magnifying_04.svg") !important;
+//					}
+//				}
+//			}
+//		}
+	}
+}
+
+[data-xb-color="purple"] {
+	--primary: #af52de;
+	--primary-rgb: 175, 82, 222;
+	
+	.cl-button.btn-submit {
+		background-image: linear-gradient(45deg, #dab9fc, #af52de);
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: linear-gradient(to right, #dab9fc, #af52de);
+		}
+	}
+	
+	.cl-container.search-box {
+		background-color: #fbf6fe;
+	}
+	
+	._main {
+		.cl-container.aside {
+			.cl-container.leftbar {
+				
+				.cl-sidenavigation.menubar {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							.cl-icon {
+							}
+						}
+					}
+				}
+				
+				.cl-container.util-button-group {
+					.cl-button {
+					}
+				}
+			}
+			
+			.cl-container.sidebar {
+				.cl-sidenavigation.sidemenu {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							background-color: #fbf6fe;
+							color: #111111 !important;
+							
+							.cl-icon {
+							}
+						}
+						
+						&.cl-level-1 {
+						}
+						
+						&.cl-level-2 {
+							+ .cl-list {
+								// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+								.cl-sidenavigation-item {
+									&:hover,
+									&.cl-hover {
+										background-color: rgba(var(--primary-rgb), .05);
+									}
+									
+									&.cl-selected {
+										background-color: rgba(var(--primary-rgb), .1);
+										color: #111111 !important;
+									}
+								}
+								
+								// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+								.cl-list {
+									.cl-sidenavigation-item {
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-header.content {
+					.cl-tabfolder-item {
+						&.cl-selected {
+						}
+					}
+				}
+				
+				> .cl-tabfolder-body {
+				}
+			}
+		}
+		
+		.mobile-footer{
+			background-color : var(--primary);
+		}
+	}
+	
+	._home {
+		.cl-container.user {
+			.cl-container.notice {
+				.cl-output.text::before {
+					background-image: url("../images/com/main/ic_megaphone_05.svg");
+				}
+			}
+		}
+		
+//		.cl-container.notice-box {
+//			.cl-button.btn-megaphone {
+//				background: rgba(var(--primary-rgb), .05);
+//				
+//				.cl-icon {
+//					color: var(--primary);
+//					background-image: url("../images/com/main/ic_megaphone_05.svg") !important;
+//				}
+//			}
+//		}
+//		
+//		.cl-container.link-box {
+//			.cl-button.btn-link {
+//				background: linear-gradient(#ffffff, #ffffff) no-repeat left top / 100% 100%,
+//							linear-gradient(to right, #dab9fc, #af52de) repeat right center;
+//							
+//				/* 아이콘 배경 설정 */			
+//				&.btn-techdom {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_headset_05.svg") !important;
+//					}
+//				}
+//				&.btn-education {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_graduation_05.svg") !important;
+//					}
+//				}
+//				&.btn-video {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_video_05.svg") !important;
+//					}
+//				}
+//				&.btn-demo {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_flask_05.svg") !important;
+//					}
+//				}
+//				&.btn-properties {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_component_05.svg") !important;
+//					}
+//				}
+//				&.btn-guide {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_openbook_05.svg") !important;
+//					}
+//				}
+//				&.btn-web {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_person_05.svg") !important;
+//					}
+//				}
+//				&.btn-global {
+//					.cl-icon {
+//						margin-top : 0px;
+//						background-image: url("../images/com/main/ic_magnifying_05.svg") !important;
+//					}
+//				}
+//			}
+//		}
+	}
+}
+
+[data-xb-color="gradient"] {
+	--primary: #207de9;
+	--secondary: #4dc1b9;
+	
+	--primary-rgb: 32, 125, 233;
+	--secondary-rgb: 77, 193, 185;
+	
+	.cl-button.btn-submit {
+		background-image: linear-gradient(45deg, #4dc1b9, #207de9);
+		
+		&:focus, &.cl-focus,
+		&:not(.cl-disabled):hover,
+		&:not(.cl-disabled).cl-activated, &:not(.cl-disabled):active {
+			background-image: linear-gradient(to right, #4dc1b9, #207de9);
+		}
+	}
+	
+	.cl-container.search-box {
+		background-color: #f0f7ff;
+	}
+	
+	._main {
+		.cl-container.aside {
+			.cl-container.leftbar {
+				background-image: linear-gradient(45deg, var(--secondary), var(--primary));
+				
+				.cl-sidenavigation.menubar {
+					.cl-sidenavigation-item {
+						.cl-icon {
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							.cl-icon {
+							}
+						}
+					}
+				}
+				
+				.cl-container.util-button-group {
+					.cl-button {
+					}
+				}
+			}
+			
+			.cl-container.sidebar {
+				.cl-sidenavigation.sidemenu {
+					.cl-sidenavigation-item {
+						.cl-icon {
+							background-color: var(--secondary);
+						}
+						
+						&:hover,
+						&.cl-hover,
+						&.cl-selected {
+							background-color: #f2fbfa;
+							color: #111111 !important;
+							
+							.cl-icon {
+								color: var(--secondary);
+							}
+						}
+						
+						&.cl-level-1 {
+						}
+						
+						&.cl-level-2 {
+							+ .cl-list {
+								// 1레벨 아래 레벨부터의 공통 스타일 (2레벨 ~ )
+								.cl-sidenavigation-item {
+									&:hover,
+									&.cl-hover {
+										background-color: rgba(var(--secondary-rgb), .05);
+									}
+									
+									&.cl-selected {
+										background-color: rgba(var(--secondary-rgb), .1);
+										color: #111111 !important;
+									}
+								}
+								
+								// 2레벨 아래 레벨부터의 공통 스타일 (3레벨 ~ )
+								.cl-list {
+									.cl-sidenavigation-item {
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.cl-tabfolder.cl-mdifolder.tab-content {
+			> .content {
+				> .cl-tabfolder-header.content {
+					.cl-tabfolder-item {
+						&.cl-selected {
+							background-image: linear-gradient(45deg, var(--secondary), var(--primary));
+							border-color: #ffffff;
+						}
+					}
+				}
+				
+				> .cl-tabfolder-body {
+				}
+			}
+		}
+		
+		.mobile-footer{
+			background-color : var(--primary);
+		}
+	}
+}

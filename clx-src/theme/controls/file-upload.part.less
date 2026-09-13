@@ -1,120 +1,300 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
+
+@file-upload-header-height: 33px; // 파일 업로드 헤더 높이
+@file-upload-content-height: 33px; // 파일 업로드 파일 아이템 높이
 
 /* 파일 업로드 루트 */
 .cl-fileupload {
-	font: @default-font;
-	color: @default-text-color;
-	border: 1px solid @default-border-color;
-	background-color: #fff;
-
+	font: @font-base;
+	background-color: @component-background-color;
+	border: @component-border-base;
+	border-width: 1px 0px;
+	border-top-color: #323234;
+	border-radius: @component-border-radius * 0;
+	color: @component-text-color;
+	
 	/* 파일 업로드 내 텍스트 */
 	.cl-text {
 	}
-
+	
 	/* 헤더 */
 	.cl-fileupload-header {
-		border-bottom: 1px solid @default-border-color;
-
+		background-color: @table-header-background-color;
+		background-image: @component-background-image;
+		border-bottom-color: @table-cell-border-color;
+		color: @table-header-text-color;
+		font-weight: @font-weight-semibold;
+		height: @file-upload-header-height;
+		
 		/* 헤더내 체크 박스 */
 		.cl-fileupload-checkheader {
-			border-right: 1px solid @default-border-color;
+			border-right-color: @table-cell-border-color;
+			width: 40px;
 		}
 		
 		/* 파일명 헤더 컬럼 */
 		.cl-fileupload-nameheader {
 		}
-
+		
 		/* 파일 크기 헤더 컬럼 */
 		.cl-fileupload-sizeheader {
-			border-left: 1px solid @default-border-color;
+			border-left-color: @table-cell-border-color;
+			min-width: 70px;
 		}
 	}
-
+	
 	/* 파일 업로드 디테일 영역 */
 	.cl-fileupload-detail {
-
 		/* emptyMessage */
-		.cl-emptymsg{
-			
+		.cl-emptymsg {
+			color: @input-placeholder-text-color;
 		}
-
+		
 		/* 각 파일 행 */
-		.cl-fileupload-file,.cl-fileupload-uploadedfile {
-
+		.cl-fileupload-file,
+		.cl-fileupload-uploadedfile {
+			border-bottom: 1px solid @table-cell-border-color;
+			height: @file-upload-content-height;
+			
 			/* 체크 박스 컬럼 */
 			.cl-fileupload-checkcolumn {
-			}
-
-			/* 파일 아이콘 */
-			.cl-fileupload-fileicon {
-				// background-image: url(icons/tree-file.png);
-			}
-
-			/* 피일 이름 */
-			.cl-fileupload-filename {
-			}
-
-			/* 파일 크기 */
-			.cl-fileupload-sizecolumn {
+				border-right: 1px solid @table-cell-border-color;
+				width: 40px;
 			}
 			
+			/* 파일 아이콘 */
+			.cl-fileupload-fileicon {
+				background: url("../images/controls/fileupload/ic_file.svg") no-repeat right center / auto;
+				border-right: none;
+				margin: 0 0 0 @input-padding-x;
+				width: 24px;
+				
+				&.cl-filetype-jpg,
+				&.cl-filetype-JPG,
+				&.cl-filetype-jpeg,
+				&.cl-filetype-JPEG {
+					background-image: url("../images/controls/fileupload/ic_file_jpg.svg");
+				}
+				
+				&.cl-filetype-png,
+				&.cl-filetype-PNG {
+					background-image: url("../images/controls/fileupload/ic_file_png.svg");
+				}
+				
+				&.cl-filetype-svg {
+					background-image: url("../images/controls/fileupload/ic_file_svg.svg");
+				}
+				
+				&.cl-filetype-avi {
+					background-image: url("../images/controls/fileupload/ic_file_avi.svg");
+				}
+				
+				&.cl-filetype-mp4
+				&.cl-filetype-wmv,
+				&.cl-filetype-mov {
+					background-image: url("../images/controls/fileupload/ic_file_mp4.svg");
+				}
+				
+				&.cl-filetype-txt,
+				&.cl-filetype-rtf {
+					background-image: url("../images/controls/fileupload/ic_file_txt.svg");
+				}
+				
+				&.cl-filetype-html {
+					background-image: url("../images/controls/fileupload/ic_file_html.svg");
+				}
+				
+				&.cl-filetype-js {
+					background-image: url("../images/controls/fileupload/ic_file_js.svg");
+				}
+				
+				&.cl-filetype-css {
+					background-image: url("../images/controls/fileupload/ic_file_css.svg");
+				}
+				
+				&.cl-filetype-xml {
+					background-image: url("../images/controls/fileupload/ic_file_xml.svg");
+				}
+				
+				&.cl-filetype-json {
+					background-image: url("../images/controls/fileupload/ic_file_json.svg");
+				}
+				
+				&.cl-filetype-hwp,
+				&.cl-filetype-hwt {
+					background-image: url("../images/controls/fileupload/ic_file_hwp.svg");
+				}
+				
+				&.cl-filetype-doc,
+				&.cl-filetype-docx,
+				&.cl-filetype-dotx,
+				&.cl-filetype-docm {
+					background-image: url("../images/controls/fileupload/ic_file_doc.svg");
+				}
+				
+				&.cl-filetype-pdf {
+					background-image: url("../images/controls/fileupload/ic_file_ppt.svg");
+				}
+				
+				&.cl-filetype-xlsx,
+				&.cl-filetype-xlsm,
+				&.cl-filetype-xltx,
+				&.cl-filetype-xlsb,
+				&.cl-filetype-xlam {
+					background-image: url("../images/controls/fileupload/ic_file_xls.svg");
+				}
+				
+				&.cl-filetype-pptx,
+				&.cl-filetype-pptm,
+				&.cl-filetype-ppt,
+				&.cl-filetype-potx,
+				&.cl-filetype-potm,
+				&.cl-filetype-pot {
+					background-image: url("../images/controls/fileupload/ic_file_ppt.svg");
+				}
+				
+				&.cl-filetype-zip,
+				&.cl-filetype-7z {
+					background-image: url("../images/controls/fileupload/ic_file_zip.svg");
+				}
+				
+				&.cl-filetype-exe {
+					background-image: url("../images/controls/fileupload/ic_file_exe.svg");
+				}
+			}
+			
+			/* 피일 이름 */
+			.cl-fileupload-filename {
+				padding: @input-padding-0 @input-padding-0 @input-padding-0 @input-padding-x;
+			}
+			
+			/* 파일 크기 */
+			.cl-fileupload-sizecolumn {
+				border-left-color: @table-cell-border-color;
+				padding: @input-padding-0 @input-padding-x;
+				min-width: 70px;
+			}
 		}
-
+		
 		/* 업로드된 파일 */
-		.cl-fileupload-uploadedfile {	
-
+		.cl-fileupload-uploadedfile {
 			/* 파일 다운로드 버튼 */
 			.cl-fileupload-download {
-				// background-image: url(icons/download.png);
+				background: url("../images/controls/fileupload/ic_btn_download.svg") no-repeat center;
 			}
 		}
 	}
-
+	
 	/* 푸터 */
 	.cl-fileupload-footer {
-		border-top:1px solid @default-border-color;
-
+		background-color: #ffffff; @table-footer-background-color;
+		border-top: @component-border-base;
+		color: @table-footer-text-color;
+		height: auto;
+		
 		/* 푸터 텍스트 */
-		.cl-text{
+		.cl-text {
+			font-weight: @font-weight-medium;
+			
+			span {
+				color: @component-focus-color;
+				font-weight: @font-weight-semibold;
+			}
 		}
-
+		
 		/* 푸터 내 버튼 영역 */
 		.cl-fileupload-buttons {
+			padding: 4px;
 			
 			/* 푸터 내 버튼 */
 			.cl-fileupload-button {
-
-				&:focus{
-					// border: solid 1px @focus-border-color;
+				font: @font-base;
+				background-color: @btn-background-color;
+				background-image: @component-background-image;
+				border: @component-border-base;
+				border-radius: @btn-border-radius;
+				color: @btn-text-color;
+				font-weight: @font-weight-semibold;
+				margin: 0 0 0 4px;
+				padding: @btn-padding-y @btn-padding-x;
+				text-shadow: none;
+				
+				&:focus {
+					background-color: @btn-focus-background-color;
+					border-color: @btn-focus-border-color;
+					color: @btn-focus-text-color;
+				}
+				
+				&:hover {
+					background-color: @btn-hover-background-color;
+					border-color: @btn-hover-border-color;
+					color: @btn-text-color;
+				}
+				
+				&:active {
+					background-color: @btn-active-background-color;
+					border-color: @btn-active-border-color;
+					color: @btn-active-text-color;
+				}
+			}
+			
+			.cl-fileupload-button.cl-fileupload-send {
+				background-color: #207de9;
+				border: 1px solid #207de9;
+				color: #ffffff;
+				
+				&:focus {
+					background-color: #0e6ad2;
+					border-color: #0e6ad2;
+					color: #ffffff;
+				}
+				
+				&:hover {
+					background-color: #116fda;
+					border-color: #116fda;
+					color: #ffffff;
+				}
+				
+				&:active {
+					background-color: #0e6ad2;
+					border-color: #0e6ad2;
+					color: #ffffff;
 				}
 			}
 		}
 	}
-
+	
 	/* 파일 업로드 체크 박스 */
 	.cl-fileupload-checkbox {
-		// background-image: url(icons/checkbox.png);
-
+		background: url("../images/controls/checkbox/ic_check.svg") no-repeat center / contain;
+		width: 1rem;
+		height: 1rem;
+		min-height: 1rem;
+		
 		/* 선택된 파일 업로드 체크 박스 */
 		&.cl-checked {
-			// background-image: url(icons/checkbox-selected.png);
+			background-image: url("../images/controls/checkbox/ic_check_on.svg");
 		}
-		&:focus{
-			// background-image: url(icons/checkbox-hover.png);
+		
+		&:focus {
+			background-image: url("../images/controls/checkbox/ic_check.svg");
+			
 			&.cl-checked {
-				// background-image: url(icons/checkbox-hover-selected.png);
+				background-image: url("../images/controls/checkbox/ic_check_on.svg");
 			}
 		}
 	}
-
-	&:not(.cl-disabled){
-
+	
+	&:not(.cl-disabled) {
 		/* 파일 - 호버 상태 */
-		.cl-fileupload-file:hover,.cl-fileupload-uploadedfile:hover{
+		.cl-fileupload-file:hover,
+		.cl-fileupload-uploadedfile:hover {
+			background-color: @table-row-selected-background-color;
+			color: @table-row-selected-text-color;
 		}
 		
 		/* 파일 업로드 버튼 - 호버 상태 */
-		.cl-fileupload-button:hover{
+		.cl-fileupload-button:hover {
 		}
 	}
 }

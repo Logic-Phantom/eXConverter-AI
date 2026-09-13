@@ -2,7 +2,13 @@
 
 The current project is a Spring MVC 5/eXBuilder6 application, so this implementation uses its existing `src/main/java`, `src/main/resources`, and `src/main/webapp` layout. It does not introduce Spring Boot, Maven, or a Java-version change. Eclipse WTP packages `templates/` into `WEB-INF/classes/exconverter/templates`, so local server operation does not require a template-root JVM argument.
 
-`templates/P1_Single Pattern/버티컬/Single Pattern P1-1.clx` is read-only source material. `GenerationService` selects it for a SEARCH_GRID UI-IR, `ClxGenerator` changes only known template nodes, and `ClxValidator` checks XML, duplicate IDs, screen, and grid presence before saving a result in `generated/`.
+Every CLX under `templates/` is read-only skeleton material.
+
+1. `TemplateCatalog` profiles each template (search box, grid/form counts, tabs, tree, popup) and picks the closest skeleton for the UI-IR's regions.
+2. `ClxGenerator` keeps the skeleton — responsive screens, `udcComAppHeader`, `content-header`/`search-box`, `content-body`/`content` (incl. `udcComGridTitle`), `content-footer`, style classes and spacing — and rebuilds the contents from the UI-IR: search label/control pairs and buttons, one `content` group per grid with its dataset, columns, header text and cell editors, forms (`form-base`), description text, section titles, tabs, textareas and footer buttons. Placeholder controls from the template are removed.
+3. `ClxValidator` checks XML, duplicate `id`/`std:sid`, grid column indexes, dataset references and formdata positions against their formlayout.
+
+Generated CLX can additionally be checked with the eXBuilder6 headless compiler: `java -jar ci-lib/clx/e6-compiler.jar -s <project> -o <out>`.
 
 ## Generate
 
@@ -28,6 +34,8 @@ Phase 2 adapters (PaddleOCR and local Ollama/Qwen3-VL) must output this UI-IR co
 
 The eXBuilder6 `FileUpload` control registers a selected file with `subSend.setFileParameters(each.name, each)`. It uses the original filename as the multipart field name and also sends `_JSONREQUESTOBJ_`; the controller deliberately reads the first actual multipart file rather than requiring a fixed field name.
 
-When no vision adapter is configured, the response contains `"analysisMode":"structural-fallback"`; it derives screen size but uses placeholder labels and columns. For direct local Qwen3-VL analysis, set `-Dexconverter.ollama.model=qwen3-vl:<your-tag>`; the default endpoint is `http://127.0.0.1:11434/api/generate`, and can be changed with `-Dexconverter.ollama.url=...`. The model must be vision-capable and return UI-IR JSON.
+Settings live in `src/main/resources/exconverter/exconverter.properties` (JVM `-D` options and environment variables override them). If `exconverter.ollama.model` is empty, the first installed vision model in the local Ollama (`/api/tags`) is used automatically. The prompt is `exconverter/prompts/vision-ui-ir.txt`; the model's raw UI-IR is saved to `generated/ui-ir/<name>.ui-ir.json`. The response lists `analysisMode`, the recognised `regions` and any `warnings`.
+
+Only when no local vision AI is reachable does the response contain `"analysisMode":"structural-fallback"` with placeholder labels and columns. On CPU-only PCs a 4B vision model needs several minutes per image, so `exconverter.ollama.timeoutSeconds` defaults to 1800 and images are downscaled to `exconverter.vision.maxImageSide` (1280).
 
 For PaddleOCR plus custom layout logic, configure a local executable with `-Dexconverter.vision.command=C:\path\to\vision-bridge.exe`. It receives the image path as its only argument and must print UI-IR JSON to stdout. The executable takes precedence over the Ollama setting. Both options keep the design image inside the local network.

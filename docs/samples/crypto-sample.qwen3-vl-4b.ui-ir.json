@@ -1,0 +1,186 @@
+{
+    "screen":  {
+                   "name":  "타이틀을 입력하세요",
+                   "sourceWidth":  1024
+               },
+    "regions":  [
+                    {
+                        "type":  "title",
+                        "text":  "타이틀을 입력하세요"
+                    },
+                    {
+                        "type":  "description",
+                        "text":  "Cryptops 라이브러리를 활용한 데이터 암/복호화 성공입니다.\nCryptops 에서 제공하고 있는 다양한 암/복호화 알고리즘(AES, DES, TripleDES, Rabbit, RC4, RC4Drop 등) 중 AES-CBC 알고리즘을 적용하는 방법을 설명합니다.\nCryptops 은 v4.1.1 버전을 적용합니다.\n\n본 예제를 확인 하기 위해서는 exFrame-thirdparty-web 프로젝트를 서버에 온라인으로 실행하기 바랍니다."
+                    },
+                    {
+                        "type":  "sectionTitle",
+                        "text":  "암호화 데이터 송신"
+                    },
+                    {
+                        "type":  "description",
+                        "text":  "서버이름을 통해 요청/응답 데이터를 송신합니다.\n송수신 또는 데이터는 AES-CBC 암호화 알고리즘을 적용합니다.\n\n이러한 조작의 최종 버튼을 클릭할 위, 개발자도구의 네트워크 탭에서 listdo 를 눌러 확인 할 수 있습니다."
+                    },
+                    {
+                        "type":  "search",
+                        "fields":  [
+                                       {
+                                           "label":  "성명",
+                                           "component":  "inputbox",
+                                           "value":  ""
+                                       },
+                                       {
+                                           "label":  "김길동",
+                                           "component":  "inputbox",
+                                           "value":  ""
+                                       },
+                                       {
+                                           "label":  "이메일",
+                                           "component":  "inputbox",
+                                           "value":  "kingildong@google.com"
+                                       }
+                                   ],
+                        "buttons":  [
+                                        "초기화",
+                                        "조회"
+                                    ]
+                    },
+                    {
+                        "type":  "form",
+                        "columnsPerRow":  2,
+                        "fields":  [
+                                       {
+                                           "label":  "암호화 데이터 표시",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "변호",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "성명",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "사유자등록번호",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "주민등록번호",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "계좌번호",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "이메일",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "카드번호",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       },
+                                       {
+                                           "label":  "연락처",
+                                           "component":  "inputbox",
+                                           "value":  "",
+                                           "required":  false
+                                       }
+                                   ]
+                    },
+                    {
+                        "type":  "grid",
+                        "title":  "이벤트/함수명",
+                        "columns":  [
+                                        {
+                                            "header":  "이벤트/함수명",
+                                            "editor":  "inputbox",
+                                            "width":  150,
+                                            "cellText":  "1"
+                                        },
+                                        {
+                                            "header":  "설명",
+                                            "editor":  "inputbox",
+                                            "width":  300,
+                                            "cellText":  "onBodyLoad"
+                                        },
+                                        {
+                                            "header":  "동작",
+                                            "editor":  "inputbox",
+                                            "width":  100,
+                                            "cellText":  "실행"
+                                        },
+                                        {
+                                            "header":  "이벤트/함수명",
+                                            "editor":  "inputbox",
+                                            "width":  150,
+                                            "cellText":  "2"
+                                        },
+                                        {
+                                            "header":  "설명",
+                                            "editor":  "inputbox",
+                                            "width":  300,
+                                            "cellText":  "조회"
+                                        },
+                                        {
+                                            "header":  "동작",
+                                            "editor":  "inputbox",
+                                            "width":  100,
+                                            "cellText":  "실행"
+                                        },
+                                        {
+                                            "header":  "이벤트/함수명",
+                                            "editor":  "inputbox",
+                                            "width":  150,
+                                            "cellText":  "3"
+                                        },
+                                        {
+                                            "header":  "설명",
+                                            "editor":  "inputbox",
+                                            "width":  300,
+                                            "cellText":  "onBodyBeforeUnload"
+                                        },
+                                        {
+                                            "header":  "동작",
+                                            "editor":  "inputbox",
+                                            "width":  100,
+                                            "cellText":  "실행"
+                                        },
+                                        {
+                                            "header":  "이벤트/함수명",
+                                            "editor":  "inputbox",
+                                            "width":  150,
+                                            "cellText":  "4"
+                                        },
+                                        {
+                                            "header":  "설명",
+                                            "editor":  "inputbox",
+                                            "width":  300,
+                                            "cellText":  "createSecretKey"
+                                        },
+                                        {
+                                            "header":  "동작",
+                                            "editor":  "inputbox",
+                                            "width":  100,
+                                            "cellText":  "실행"
+                                        }
+                                    ]
+                    }
+                ]
+}

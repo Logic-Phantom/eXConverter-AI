@@ -1,108 +1,161 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 /* 링크드 리스트 박스 루트 */
 .cl-linkedlistbox {
-	font: @default-font;
-	color: @default-text-color;
-
+	font: @font-base;
+	color: @component-text-color;
+	overflow: visible !important;
+	
+	.cl-linkedlistbox-wrap > .cl-unselectable {
+		overflow: visible !important;
+	}
+	
 	/* 리스트 박스 */
 	.cl-linkedlistbox-listbox {
-
-		&.cl-focus {
-
-			/* 리스트 박스 리스트 - 포커스 상태 */
-			.cl-linkedlistbox-list {
-				border-color: @focus-border-color;
-			}
-		}
-
+		overflow: visible !important;
+		border-radius: @component-border-radius;
+		
 		/* 리스트 박스 헤더 */
 		.cl-linkedlistbox-header {
-			border: 1px solid @default-border-color;
+			background-image: @component-background-image;
+			border: @component-border-base;
+			border-width: 1px 1px 0px;
+			border-top-left-radius: @component-border-radius;
+			border-top-right-radius: @component-border-radius;
+			
+			+ .cl-linkedlistbox-list {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+			}
 		}
-
-
+		
 		/* 리스트 박스 리스트 */
 		.cl-linkedlistbox-list {
-			border: 1px solid @default-border-color;
-			background-color: white;
-
+			background-color: @component-background-color;
+			border: @component-border-base;
+			border-radius: @component-border-radius;
+			padding: @list-padding-y @list-padding-x;
+			
 			/* 리스트 박스 리스트 아이템 */
 			.cl-linkedlistbox-item {
-
+				border-radius: @border-radius;
+				height: auto;
+				min-height: @list-item-height;
+				padding: @list-item-padding-y @list-item-padding-x @list-item-padding-y @list-item-padding-x;
+			
 				/* 아이템 드래그시 마우스가 아이템의 아래에 위치할때 표시 */
 				&.cl-dropbottom {
-					// box-shadow: inset 0 -2px 0 @default-border-color;
+					box-shadow: inset 0 -2px 0 @component-focus-color;
 				}
-
+				
 				/* 아이템 드래그시 마우스가 아이템의 위에 위치할때 표시 */
 				&.cl-droptop {
-					// box-shadow: inset 0 2px 0 @default-border-color;
+					box-shadow: inset 0 2px 0 @component-focus-color;
 				}
-
+				
 				/* 리스트 박스의 리스트 아이템 아이콘 */
-				.cl-icon {}
-
+				.cl-icon {
+				}
+				
 				/* 리스트 박스 리스트 아이템 텍스트 */
-				.cl-text {}
-
+				.cl-text {
+					text-overflow: clip;
+					white-space: pre-wrap;
+				}
+				
+				+ .cl-linkedlistbox-item {
+					margin-top: 0.25rem;
+				}
+				
 				/* 리스트 박스 리스트 아이템 리프 아이콘 */
-				.cl-linkedlistbox-arrow.cl-leaf {}
-
+				.cl-linkedlistbox-arrow.cl-leaf {
+				}
+				
 				/* 리스트 박스 리스트 아이템 드릴다운 아이콘 */
 				.cl-linkedlistbox-arrow.cl-folder {
-					// 	background-image: url(icons/drill-down.png);
+					background: url("../images/controls/menu/ic_btn_right.svg") no-repeat center / contain;
+					width: 1rem;
 				}
-
+				
 				/* 리스트 박스 리스트 아이템 - disabled 상태 */
 				&.cl-disabled {
-					color: @disabled-text-color;
-
+					color: @component-disabled-text-color;
+					
 					/* 리스트 박스 리스트 아이템 - 선택됨, disabled 상태 */
 					&.cl-selected {
-						background-color: @disabled-selection-background;
+						background-color: @component-disabled-background-color;
+						border-color: @component-disabled-border-color;
 					}
 				}
 			}
 		}
 	}
-
-	/* 링크드리스트박스 disabled 상태 */
-	&.cl-disabled {
-		color: @disabled-text-color;
-
-		.cl-linkedlistbox-item {
-			&.cl-selected {
-				color: @disabled-selection-foreground;
-				background-color: @disabled-selection-background;
+	
+	&.cl-focus {
+		/* 리스트 박스 헤더 - 포커스 상태 */
+		.cl-linkedlistbox-header {
+		}
+		
+		/* 리스트 박스 리스트 - 포커스 상태 */
+		.cl-linkedlistbox-list {
+		}
+		
+		.cl-linkedlistbox-listbox:focus-within {
+			border-color: @component-focus-transparent-color;
+			
+			.cl-linkedlistbox-header {
+				border-color: @component-focus-transparent-color;
+				border-bottom-color: @component-border-color;
+			}
+			
+			.cl-linkedlistbox-list {
+				border-color: @component-focus-transparent-color;
 			}
 		}
+	}
+	
+	/* 링크드리스트박스 disabled 상태 */
+	&.cl-disabled {
+		color: @component-disabled-text-color;
+		
+		.cl-linkedlistbox-list {
+			background-color: @component-disabled-background-color;
+			border-color: @component-disabled-border-color;
+			color: @component-disabled-text-color;
+			
+			.cl-linkedlistbox-item {
+				&.cl-selected {
+					background-color: @component-disabled-selected-background-color;
+					color: @component-disabled-selected-text-color;
+				}
+			}
+		}		
 	}
 }
 
 .cl-linkedlistbox:not(.cl-disabled) {
 	.cl-linkedlistbox-item:not(.cl-disabled) {
 		cursor: pointer;
-
+		
 		/* 아이템 호버 스타일 */
 		&:hover,
 		&:focus {
-			color: @hover-foreground;
-			background-color: @hover-background;
-
+			background-color: @component-hover-background-color;
+			color: @component-hover-text-color;
+			
 			.cl-linkedlistbox-arrow.cl-folder {
-				// background-image: url(icons/drill-down-hover.png)
+				background-image: url("../images/controls/menu/ic_btn_right.svg");
 			}
 		}
-
+		
 		/* 선택된 아이템 스타일 */
 		&.cl-selected {
-			color: @selection-foreground;
-			background-color: @selection-background;
-
+			background-color: @component-selected-background-color;
+			color: @component-selected-text-color;
+			
 			/* 선택된 아이템 드릴 다운 아이콘 */
 			.cl-linkedlistbox-arrow.cl-folder {
-				// background-image: url(icons/drill-down-selected.png);
+				background-image: url("../images/controls/menu/ic_btn_right_w.svg");
 			}
 		}
 	}

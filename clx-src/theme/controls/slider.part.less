@@ -1,113 +1,175 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
- /* 슬라이더 */
 .cl-slider {
-
-	&.cl-horizontal{
-		// min-width: 40px;
-		// min-height: 20px;
+	overflow: visible !important;
+	
+	&.cl-horizontal {
+		min-height: 26px;
 	}
-	&.cl-vertical{
-		// min-width: 20px;
-		// min-height: 40px;
+	
+	&.cl-vertical {
+		min-width: 26px;
 	}
-
+	
 	/* 슬라이더 바 */
 	.cl-slider-bar {
-		// background-color:#fff;
-		border:1px solid @default-border-color;
-
+		background-color: @component-border-color;
+		border: none;
+		border-radius: @border-radius-full;
+		
 		/* 슬라이더 가로 바 */
-		&.cl-horizontal{
-			// background-image: linear-gradient(#ddd, white 3px);
+		&.cl-horizontal {
+			background-image: @component-background-image;
+			top: 12px;
+			right: 12px;
+			left: 12px;
+			height: 4px;
 		}
-
+		
 		/* 슬라이더 세로 바 */
 		&.cl-vertical {
-			// background-image: linear-gradient(to right, #ddd, white 3px);
+			background-image: @component-background-image;
+			top: 12px;
+			bottom: 12px;
+			left: calc(50% - 2px);
+			width: 4px;
 		}
-
-
+		
 		/* 슬라이더 핸들 */
 		.cl-slider-handle {
-			// background-image: url("icons/slider-thumb.png");
-
+			background-image: @component-background-image;
+			background-color: @component-background-color;
+			border-radius: @border-radius-full;
+			box-shadow: 0 0.5px 4px 0 rgba(0, 0, 0, .12), 0 6px 13px 0 rgba(0, 0, 0, .12);
+			height: 26px;
+			width: 26px;
+			
+			/* 슬라이더 핸들에 표시되는 label */
+			.cl-slider-label {
+				font: @font-base;
+				background-color: #282828;
+				border: none;
+				border-radius: @component-border-radius;
+				color: @component-selected-text-color;
+				font-weight: @font-weight-medium;
+				line-height: 1.5;
+				padding: 4px 8px;
+				
+				&:before {
+					content: "";
+					position: absolute;
+					border: 5px solid @transparent;
+				}
+			}
+			
 			/* 슬라이더 가로바 핸들 */
 			&.cl-horizontal {
-
+				top: -12px;
+				transform: translateX(-13px);
+				
 				/* 슬라이더 핸들에 표시되는 label */
 				.cl-slider-label {
-
-					/* 슬라이더 labelAlign속성값이 leading인 경우 label 스타일 */
-					&.cl-leading{
-						
+					&:before {
+						left: 50%;
+						transform: translateX(-50%);
 					}
-
-					/* 슬라이더 labelAlign속성값이 trailing인 경우 label 스타일 */
-					&.cl-trailing{
+					
+					/* 슬라이더 labelAlign속성값이 leading인 경우 label 스타일 */
+					&.cl-leading {
+						margin-bottom: 10px;
 						
+						&:before {
+							bottom: -10px;
+							border-top-color: #282828;
+						}
+					}
+					
+					/* 슬라이더 labelAlign속성값이 trailing인 경우 label 스타일 */
+					&.cl-trailing {
+						margin-top: 10px;
+						
+						&:before {
+							top: -10px;
+							border-bottom-color: #282828;
+						}
 					}
 				}
 			}
-
+			
 			/* 슬라이더 세로바 핸들 */
 			&.cl-vertical {
-
+				left: -12px;
+				transform: translateY(-13px);
+				
 				.cl-slider-label {
-					&.cl-leading{
-						
+					&:before {
+						transform: translateY(20%);
 					}
-
-					&.cl-trailing{
+					
+					&.cl-leading {
+						margin-right: 10px;
 						
+						&:before {
+							right: -10px;
+							border-left-color: #282828;
+						}
+					}
+					
+					&.cl-trailing {
+						margin-left: 10px;
+						
+						&:before {
+							left: -10px;
+							border-right-color: #282828;
+						}
 					}
 				}
 			}
-
-			/* 슬라이더 핸들에 표시되는 label */
-			.cl-slider-label{
-
-			}
-
 		}
-
+		
 		/* 슬라이더 선택 영역 표시 바 */
 		.cl-slider-range {
-			background-color: lighten(@selection-background, 20%);
+			background-color: @component-focus-color;
 		}
 	}
-
-	&.cl-focus{
-		
+	
+	&.cl-focus {
 		/* 슬라이더 바 - focus */
 		.cl-slider-bar {
-			border-color: @focus-border-color;
+		}
+		
+		.cl-slider-handle {
+			outline: 2px solid @primary;
+			outline-offset: -2px;
 		}
 	}
-
+	
 	&.cl-disabled {
-
+		/* 슬라이더 바 - 비활성화 */
+		.cl-slider-bar {
+			background-color: @component-border-color;
+		}
+		
 		/* 슬라이더 바 핸들 - 비활성화 */
 		.cl-slider-handle {
-			// background-image: url("icons/slider-thumb-disabled.png");
+			background-color: @btn-disabled-background-color;
 		}
-
+		
 		/* 슬라이더 바 선택 영역 - 비활성화 */
 		.cl-slider-range {
-			background-color: @disabled-selection-background;
+			background-color: @component-disabled-text-color;
 		}
 	}
 }
 
-.cl-slider:not(.cl-disabled){
+.cl-slider:not(.cl-disabled) {
 	.cl-slider-bar {
-		.cl-slider-handle{
-			
+		.cl-slider-handle {
 			/* 슬라이더 바 핸들 - hover */
-			&:hover, &.cl-hover {
-				// background-image: url("icons/slider-thumb-hover.png");
+			&:hover,
+			&.cl-hover {
+				background-image: @component-background-image;
 			}
 		}
 	}
 }
-

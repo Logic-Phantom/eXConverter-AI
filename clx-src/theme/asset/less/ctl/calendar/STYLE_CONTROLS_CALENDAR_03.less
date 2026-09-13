@@ -1,0 +1,90 @@
+.cl-calendar.cl-cal-schedule {
+	padding: 0px !important;
+	
+	.cl-calendar-header{
+		text-align: center !important;
+		padding : 0px;
+	}
+	
+	.cl-calendar-content .cl-calendar-content-day, .cl-calendar-content .cl-calendar-content-month, .cl-calendar-content .cl-calendar-content-year{
+		border-radius : 0px !important;
+	}
+	
+	.cl-calendar-content-day, .cl-other-month {
+		margin: 0px;
+		padding: 9px 8px;
+		
+		&.cl-selected {
+			background-color: transparent !important;
+			
+			.cl-text {
+				color: #333333;
+			}
+		}
+	}
+	
+	.cl-calendar-detail {
+		margin-top: 34px;
+		font-size: 34px;
+	}
+	
+	.cl-calendar-item, .cl-anniversary, .cl-calendar-more {
+		background-color: transparent;
+		color: #555555;
+		font-size: 12px;
+		font-weight: 500;
+		margin: 0px 8px;
+		padding: 0px;
+	}
+	
+	.cl-calendar-content {
+		/* 날짜 달력의 헤더 스타일 (요일표시 영역) */
+		.cl-calendar-content-header {
+			/* 일요일 셀 스타일 */
+			&.cl-calendar-content-sun {
+				color: #ff2a2a;
+			}
+			
+			/* 토요일 셀 스타일 */
+			&.cl-calendar-content-sat {
+				color: #3387ff;
+			}
+		}
+	}
+	
+	.cl-calendar-content {
+		.cl-calendar-content-day {
+			/* 일요일 셀 스타일 */
+			&.cl-calendar-content-sun {
+				color: #ff2a2a;
+			}
+			
+			/* 토요일 셀 스타일 */
+			&.cl-calendar-content-sat {
+				color: #3387ff;
+			}
+		}
+	}
+	
+	.cl-calendar-item {
+		&.black {
+			color: black;
+		}
+		
+		&.Dodgerblue {
+			color: Dodgerblue;
+		}
+		
+		&.green {
+			color: green;
+		}
+		
+		&.red {
+			color: red;
+		}
+		
+		&.blue {
+			color: blue;
+		}
+	}
+}

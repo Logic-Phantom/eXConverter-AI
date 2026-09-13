@@ -1,0 +1,162 @@
+.cl-calendar.calendar-basic {
+	background-color: #ffffff;
+	border: 1px solid #babfc7;
+	border-radius: 5px;
+	
+	/* 캘린더 헤더 영역 (년/월 표시 영역) */
+	.cl-calendar-header {
+		background-color: transparent;
+		
+		.cl-calendar-header-before,
+		.cl-calendar-header-after {
+			min-width: 0px;
+			width: 0px;
+			visibility: hidden; // 년도 변경 버튼을 보이지 않게 하기 위해 추가
+		}
+		
+		.cl-calendar-header-prev {
+			background-image: url("../../../images/ctl/calendar/icon-chevron-left.svg");
+		}
+		
+		.cl-calendar-header-next {
+			background-image: url("../../../images/ctl/calendar/icon-chevron-right.svg");
+		}
+		
+		.cl-calendar-header-text {
+			color: #333333;
+			font-weight: bold;
+			font-size: 16px;
+			
+			&:hover, &.cl-hover {
+				color: #3f87fd;
+			}
+		}
+	}
+	
+	&:not(.cl-disabled) .cl-calendar-header-prev {
+		&:hover, &.cl-hover {
+			background-image: url("../../../images/ctl/calendar/icon-chevron-left-on.svg");
+		}
+	}
+	
+	&:not(.cl-disabled) .cl-calendar-header-next {
+		&:hover, &.cl-hover {
+			background-image: url("../../../images/ctl/calendar/icon-chevron-right-on.svg");
+		}
+	}
+	
+	/* 캘린더 컨텐츠의 일, 월, 년 스타일 */
+	&:not(.cl-disabled) .cl-calendar-content-day,
+	&:not(.cl-disabled)	.cl-calendar-content-month,
+	&:not(.cl-disabled)	.cl-calendar-content-year,
+	&:not(.cl-disabled)	.cl-other-month {
+		border-radius: 5px;
+		
+		/* 날짜 셀 호버 스타일 */
+		&:not(.cl-disabled):hover {
+			background-color: #f8f8fa;
+			color: #3f87fd;
+		}
+		
+		/* 날짜 셀 선택 스타일 */
+		&.cl-selected{
+			background-color: transparent; //#3f87fd;
+			color: #ffffff;
+		}
+	}
+	
+	.cl-calendar-content {
+		/* 주차가 표시될 때에 대한 스타일 */
+		.cl-calendar-content-week {
+		}
+		
+		/* 날짜 달력의 헤더 스타일 (요일표시 영역) */
+		.cl-calendar-content-header {
+			background-color: transparent;
+			font-weight: bold;
+		}
+		
+		.cl-calendar-content-day {
+			/* 일요일 셀 스타일 */
+			&.cl-calendar-content-sun {
+			}
+			
+			/* 토요일 셀 스타일 */
+			&.cl-calendar-content-sat {
+			}
+		}
+		
+		.cl-other-month {
+			background-color: transparent;
+			color: #c0c0c0;
+			
+			&.cl-disabled {
+				background-color: transparent;
+				color: #c0c0c0;
+			}
+		}
+		
+		.cl-calendar-content-day,
+		.cl-calendar-content-month,
+		.cl-calendar-content-year {
+			/* 오늘 날짜에 대한 스타일 */
+			&.cl-calendar-defaultdate {
+				color: #3f87fd;
+			}
+			
+			/* 기간 선택에 대한 스타일 */
+			&.cl-range-selected {
+				background-color: #3f87fd;
+				color: #ffffff;
+			}
+			
+			/* 날짜 선택에 대한 스타일 */
+			&.cl-selected {
+				background-color: #3f87fd;
+				color: #ffffff;
+			}
+			
+			/* 키보드 이동 시 포커스된 날짜에 대한 스타일 */
+			&.cl-calendar-current {
+				box-shadow: inset 0px 0px 0px 2px rgba(63, 135, 253, 0.5);
+			}
+			
+			/* 비활성화된 날짜 스타일 */
+			&.cl-disabled {
+				background-color: transparent;
+				color: #c0c0c0;
+			}
+			
+			/* 기념일 날짜 스타일 */
+			&.cl-calendar-anniversary {
+				box-shadow: none;
+			}
+		}
+	}
+	
+	/* 푸터 영역 스타일 */
+	.cl-calendar-field .cl-calendar-footer-wrapper {
+		padding: 5px;
+	}
+	
+	/* 캘린더 푸터 스타일 */
+	.cl-calendar-footer {
+		background-color: #f2f4f6;
+		border-radius: 5px;
+		font-size: 13px;
+		padding: 0px;
+		text-align: center;
+		vertical-align: middle;
+		
+		/* 캘린더 푸터 텍스트 스타일 */
+		.cl-calendar-footer-text {
+			color: #333333;
+		}
+	}
+	
+	&:not(.cl-disabled) .cl-calendar-footer-text {
+		&:hover {
+			color: #c0c0c0;
+		}
+	}
+}

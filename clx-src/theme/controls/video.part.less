@@ -1,16 +1,15 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
-/* 비디오 */
 .cl-video {
-	border: 1px solid @default-border-color;
-
-	/* 포커스 */
-	&.cl-focus{
-		border: solid 1px @focus-border-color;
+	border: @component-border-base;
+	
+	&.cl-focus {
+		border-color: @component-focus-transparent-color;
+		outline: 2px solid @primary;
+		outline-offset: -2px;
 	}
-
-	/* 비활성화 */
-	&.cl-disabled .cl-overlay{
-
+	
+	&.cl-disabled .cl-overlay {
+		background-color: @modal-overlay-background-color;
 	}
 }

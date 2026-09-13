@@ -1,85 +1,81 @@
-@import "../settings.part.less";
+@import "../custom-settings.part.less";
 
 /* 서치 인풋 */
 .cl-searchinput {
-	font: @default-font;
-	color: @default-text-color;
-	border: 1px solid @default-border-color;
-	text-align: left;
+	font: @font-base;
+	background-image: @component-background-image;
+	background-color: @component-background-color;
+	border: @component-border-base;
+	border-radius: @component-border-radius;
+	color: @component-text-color;
 
 	/* 서치 인풋 텍스트 */
-	.cl-text {}
+	.cl-text {
+		padding: @input-padding-0 @input-padding-x;
+		
+		&.cl-placeholder {
+			color: @input-placeholder-text-color !important;
+		}
+	}
 
 	/* 서치 인풋 클리어 버튼 */
 	.cl-searchinput-clear {
-		// background-image: url(icons/clear-button.png);
-		// background-repeat: no-repeat;
-		// background-size: contain;
-		// background-position: center;
-		// align-self: center;
-
-		// cursor:pointer;
-		&:hover {
-		}
+		background: url("../images/controls/inputbox/ic_btn_clear.svg") no-repeat center / contain;
+		width: 1rem;
+		margin: 0px (@input-padding-x / 2) 0px 0px;
 	}
 
 	/* 서치 인풋 검색버튼 */
 	.cl-searchinput-search {
-		// background-image: url(icons/search-button.png);
-		// background-repeat: no-repeat;
-		// background-size: contain;
-		// background-position: center;
-		// align-self: center;
-		// cursor:pointer;
-
+		background: url("../images/controls/inputbox/ic_btn_search.svg") no-repeat center / contain;
+		width: 1rem;
+		
 		/* 검색버튼이 왼쪽에 표시될때 스타일 */
 		&.cl-left {
+			margin: 0px 0px 0px (@input-padding-x - 2);
 		}
 
 		/* 검색버튼이 오른쪽에 표시될때 스타일 */
 		&.cl-right {
+			margin: 0px (@input-padding-x - 2) 0px 0px;
+		}
+	}
+
+	/* 서치 인풋 - 포커스 */
+	&.cl-focus {
+		border-color: @component-focus-transparent-color;
+		outline: 2px solid @primary;
+		outline-offset: -2px;
+
+		.cl-searchinput-search {}
+
+		.cl-searchinput-clear {}
+	}
+
+	&:not(.cl-disabled) {
+		/* Clear버튼 hover 및 active 상태 */
+		.cl-searchinput-clear:hover,
+		.cl-searchinput-clear:active {
+			background-image: url("../images/controls/inputbox/ic_btn_clear.svg");
+			opacity: 1;
 		}
 
-		/* 검색버튼 - hover */
-		&:hover {
+		/* 검색버튼 hover 및 active 상태 */
+		.cl-searchinput-search:hover,
+		.cl-searchinput-search:active {
+			background-image: url("../images/controls/inputbox/ic_btn_search.svg");
+			opacity: 1;
 		}
 	}
 
 	/* 비활성화 */
 	&.cl-disabled {
-
+		background-color: @component-disabled-background-color;
+		border-color: @component-disabled-border-color;
+		color: @component-disabled-text-color;
+		
 		.cl-searchinput-search {
-			// background-image: url(icons/search-button-disabled.png);
+			background-image: url("../images/controls/inputbox/ic_btn_search.svg");
 		}
-	}
-
-	&:not(.cl-disabled) {
-
-		/* 클리어 버튼 - hover */
-		.cl-searchinput-clear:hover {}
-
-		/* 클리어 버튼 - active */
-		.cl-searchinput-clear:active {}
-
-		/* 검색버튼 - hover */
-		.cl-searchinput-search:hover {}
-
-		/* 검색버튼 - active */
-		.cl-searchinput-search:active {}
-	}
-
-	&.cl-disabled {
-		color: @disabled-text-color;
-		background-color: @disabled-selection-background;
-		border-color: @disabled-border-color;
-	}
-
-	/* 서치 인풋 - 포커스 */
-	&.cl-focus {
-		border-color: @focus-border-color;
-
-		.cl-searchinput-search {}
-
-		.cl-searchinput-clear {}
 	}
 }

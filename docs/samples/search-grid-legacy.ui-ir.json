@@ -1,0 +1,8 @@
+{
+  "screen": { "name": "사용자 조회", "width": 1440, "height": 860 },
+  "regions": [
+    { "type": "search", "fields": [{ "label": "성명", "component": "inputbox" }, { "label": "등록일", "component": "dateinput", "required": true }, { "label": "기간", "component": "daterange" }, { "label": "부서", "component": "combobox" }], "actions": ["reset", "search"] },
+    { "type": "grid", "columns": ["번호", "성명", "이메일", "연락처", "등록일"] },
+    { "type": "buttons", "buttons": ["삭제", "저장"] }
+  ]
+}

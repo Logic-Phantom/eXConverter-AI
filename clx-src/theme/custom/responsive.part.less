@@ -1,0 +1,137 @@
+@import "../custom-settings.part.less";
+
+/************************************************
+ * 반응형 그리드 스타일
+ ************************************************/ 
+ 
+/************************************************
+ * dialogType
+ ************************************************/
+ .cl-button{
+ 	// 상세 버튼
+ 	&.btn-modile-detail{
+ 		.btn-transparent();
+
+		.cl-icon {
+			background-image: url("../images/controls/button/ic_btn_search_blck.svg") !important;
+		}
+ 	}
+ }
+ 
+/************************************************
+ * accordionType
+ ************************************************/
+ .cl-container.table {
+	background-color: white;
+	border: 1px solid #d6d6d6;
+	border-top-color: #555555;
+	border-width: 1px 0px;
+	border-radius: 0px;
+	
+	.cl-formlayout-row-shade.table-header {
+		background-color: #F6FBFF;
+	}
+	
+	.cl-control.table-header-cell {
+		text-align: center;
+	}
+	
+	.cl-container.table-row {
+		border-top: 1px solid #eaeaea;
+		
+		.cl-text{
+			text-align: center;
+		}
+		.cl-control.table-cell {
+			
+		}
+		
+		.cl-button.btn-expander {
+			background-color: transparent;
+			border : none;
+			background-image : none;
+			
+			&:before {
+				content: "▶";
+				display: block;
+				position: absolute;
+				color: #333333;
+				left: calc(50% - 5px);
+			    top: calc(50% - 8px);
+			    width: 10px;
+			    height: 10px;
+			    text-align: center;
+			}
+		}
+		
+		&.selected {
+			background-color: #D9E3F2;
+		}
+	}
+	
+	.cl-container.table-accordion-row {
+		border-top: 1px solid #eaeaea;
+
+		.cl-output.title {
+			font-size: 16px;
+			font-weight: 600;
+		}
+			
+		.cl-output.label {
+			font-weight: 500;
+		}
+		
+		.cl-output:not(.label):not(.title) {
+			text-align: right;
+			color: #999999;
+		}
+	}
+	
+	.cl-formlayout-horizontal-separator,
+	.cl-formlayout-vertical-separator {
+		background-color: #eaeaea;
+	}
+}
+
+/************************************************
+ * list
+ ************************************************/
+ .cl-container.list-card {
+ 	
+ 	.cl-container.card {
+	 	border : 2px solid @gray-300;
+	 	box-shadow: @box-shadow;
+	 	
+	 	.cl-formlayout-horizontal-separator {
+	 		background-color: #eaeaea;
+	 	}
+	 	.cl-output.card-label {
+	 	}
+	 	
+	 	.card-detail {
+	 	}
+ 	}
+ }
+ 
+/************************************************
+ * massiveList
+ ************************************************/
+ .cl-grid-row {
+	&.cl-grid-listType:first-child {
+		border-top : 2px solid @gray-200;
+	}
+	
+	&.cl-grid-listType {
+		border-top : 2px solid @gray-200;
+		
+		.cl-grid-header {
+			background-color : #f8f8f8;
+			border-bottom:solid 1px @gray-100;
+			border-right:solid 1px  @gray-100;
+			
+			.cl-text {
+				font-weight : @font-weight-bold;
+			}
+		}
+	}
+}
