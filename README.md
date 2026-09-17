@@ -12,7 +12,7 @@
 
 | 원칙 | 의미 |
 |---|---|
-| 완전 무료 / 사내망 | Ollama + Qwen3-VL 등 로컬 모델만 사용. OpenAI/Claude/Gemini 등 외부 API·외부 OCR 금지. 설계서 이미지는 외부로 나가지 않는다. |
+| 기본은 무료 / 사내망 | 기본 엔드포인트는 Ollama + Qwen3-VL 등 로컬 모델만 사용하며 설계서 이미지가 외부로 나가지 않는다. **속도가 필요할 때만** 별도 엔드포인트(`/EXConverter/gemini/...`)로 Google Gemini API를 호출한다(§15). 이 경로는 이미지가 Google로 전송되고, 무료 등급은 Google이 입력을 제품 개선에 사용한다. |
 | AI는 CLX를 직접 쓰지 않는다 | AI 출력은 **UI-IR(JSON)** 뿐이다. CLX XML은 Java 컴파일러(`ClxGenerator`)가 결정적으로 만든다. |
 | 템플릿 = 뼈대 | `templates/` 의 CLX는 자주 쓰는 화면 패턴(헤더 UDC, 조회영역, 본문, 푸터, 스타일 클래스, 간격 규칙)을 제공한다. **내용물(필드/그리드 컬럼/버튼 수와 텍스트)은 이미지 분석 결과로 재구성**한다. |
 | 재학습 없음 | 템플릿을 추가하면 자동으로 프로파일링되어 선택 후보가 된다. YOLO/파인튜닝 불필요. |
@@ -32,6 +32,7 @@
 | 6 | OpenCV 이미지 Diff | 미구현 |
 | 7 | Correction Engine (UI-IR 보정 → 재생성 루프, 최대 3~5회) | 미구현 |
 | 8 | 이벤트/JS 자동 생성 | 미구현 (현재 `.js`는 템플릿 주석 헤더만 복사) |
+| 9 | Gemini API 엔진 (PNG/JPG → Gemini → UI-IR, 별도 엔드포인트) | **구현됨** (2026-09-17, 가짜 API로 검증. 실제 호출은 API 키 설정 후 — §15) |
 
 ---
 
@@ -46,7 +47,15 @@
 - XML: JDK DOM (`javax.xml`)
 - eXBuilder6 서버 런타임: `ci-lib/clx/cleopatra_server.jar`, 헤드리스 컴파일러: `ci-lib/clx/e6-compiler.jar`
 - 로컬 AI: Ollama (`http://127.0.0.1:11434`) + `qwen3-vl:4b` (개발 PC 기준)
-- Context root: `/eXCoverter-AI` (오타 아님, 기존 설정 그대로)
+- 외부 AI(선택): Google Gemini `https://generativelanguage.googleapis.com/v1beta`, 기본 모델 `gemini-3.5-flash` (§15). SDK 없이 `HttpURLConnection` 사용
+- Tomcat 포트 8080. **실제 배포 컨텍스트는 루트 `/`** 이므로 절대 URL에 `/eXCoverter-AI` 접두어를 붙이면 404다.
+  프로젝트 설정(`.settings/org.eclipse.wst.common.component`)의 `context-root=eXCoverter-AI` 와 별개로,
+  Eclipse 서버 설정(`C:\eclipse_AI\workspace\Servers\Tomcat v9.0 Server at localhost-config\server.xml`)이
+  `<Context docBase="eXCoverter-AI" path="/" .../>` 로 덮어쓰고 있다(2026-09-17 확인).
+  → 기본 URL `http://localhost:8080`, 화면은 `http://localhost:8080/ui/convertTest.clx`
+  클라이언트 CLX 의 Submission 은 상대경로(`../EXConverter/...`)를 쓰므로 컨텍스트가 무엇이든 동작한다.
+  Eclipse 의 Servers 뷰 → 서버 더블클릭 → Modules 탭에서 Path 를 `/eXCoverter-AI` 로 바꾸면 접두어가 붙는 방식으로 되돌릴 수 있다.
+- Eclipse Tomcat 실행 설정은 `C:\eclipse_AI\workspace\.metadata\.plugins\org.eclipse.debug.core\.launches\Tomcat v9.0 Server at localhost.launch`. VM arguments 에 현재 `-Djava.library.path` 만 있으므로 `-Dexconverter.*` 는 여기에 추가한다
 
 WTP 배포 매핑(`.settings/org.eclipse.wst.common.component`):
 
@@ -76,6 +85,7 @@ eXConverter-AI/
 │   │   ├── model/UiIr.java                     UI-IR 자바 모델
 │   │   ├── service/
 │   │   │   ├── ImageUiIrAnalyzer.java          이미지 → UI-IR (Ollama 스트리밍 / bridge / fallback)
+│   │   │   ├── GeminiUiIrAnalyzer.java         이미지 → UI-IR (Gemini API, SSE + responseSchema) — §15
 │   │   │   ├── UiIrParser.java                 UI-IR JSON 파싱 + 이름 정규화
 │   │   │   ├── UiIrNormalizer.java             소형 모델의 표 인식 오류 구조 보정 (행 분할 그리드 병합 등)
 │   │   │   ├── ColumnNames.java                한글 라벨 ↔ 컬럼 코드 사전 (보정기/생성기 공용)
@@ -88,13 +98,15 @@ eXConverter-AI/
 │   │   │   ├── ExConverterConfig.java          설정 조회 (-D > 환경변수 > properties)
 │   │   │   └── ProgressLog.java                Eclipse 콘솔 진행 로그
 │   │   └── web/
-│   │       ├── ImageConversionController.java  POST /EXConverter/uploadAndGenerate.do (이미지 업로드)
+│   │       ├── ImageConversionController.java  POST /EXConverter/uploadAndGenerate.do (이미지 업로드, 로컬 AI)
+│   │       ├── GeminiConversionController.java POST /EXConverter/gemini/uploadAndGenerate.do (Gemini)
 │   │       └── GenerationController.java       POST /api/exconverter/generate.do (UI-IR JSON 직접 입력)
 │   ├── exbuilder/web/CleopatraUIController.java  *.clx 요청을 eXBuilder6 페이지로 렌더링 (기존)
 │   └── web/IndexController.java                  /index.do (기존)
 ├── src/main/resources/exconverter/
 │   ├── exconverter.properties          로컬 AI/경로 설정
 │   ├── prompts/vision-ui-ir.txt        Qwen3-VL 프롬프트 (UI-IR 출력 형식 정의)
+│   ├── prompts/gemini-vision-ui-ir.txt Gemini 시스템 프롬프트 (형식은 responseSchema 가 고정, 판독 규칙 중심)
 │   ├── ui-ir.schema.json               UI-IR JSON Schema
 │   └── template-repository/P1-1/metadata.json   (초기 메타데이터 예시)
 ├── clx-src/                            eXBuilder6 소스 폴더
@@ -108,7 +120,9 @@ eXConverter-AI/
 │   └── samples/*.ui-ir.json            테스트용 UI-IR (정답/실제 모델 출력/레거시/팝업 폼)
 └── tools/harness/                      이클립스 빌드 대상 아님. 수동 테스트용 main 클래스
     ├── GenHarness.java                 UI-IR 파일 → CLX 생성 + 검증
-    └── StreamHarness.java              가짜 Ollama 스트림으로 분석기 검증
+    ├── StreamHarness.java              가짜 Ollama 스트림으로 분석기 검증
+    ├── GeminiHarness.java              이미지 → 실제 Gemini API → CLX (서버 없이, API 키 필요)
+    └── GeminiStreamHarness.java        가짜 Gemini API(SSE)로 Gemini 분석기 오프라인 검증
 ```
 
 실행 시 생성되는 폴더(작업 디렉터리 기준, Eclipse 실행 시 보통 `C:\eclipse_AI\eclipse\generated`):
@@ -342,7 +356,10 @@ java -jar ci-lib/clx/e6-compiler.jar -s <프로젝트폴더> -o <출력폴더>
 | `exconverter.project.root` | (자동) | clx-src 를 가진 프로젝트 루트. 결과는 `clx-src/result/날짜` |
 | `exconverter.clx.result.root` | (자동) | 결과 저장 루트 직접 지정 |
 
-프롬프트 수정: `prompts/vision-ui-ir.txt`. **UI-IR 형식을 바꾸면 프롬프트·스키마·`UiIrParser`·`UiIr` 를 함께 바꿀 것.**
+Gemini 엔진 설정(`exconverter.gemini.*`)은 §15.3 참고.
+
+프롬프트 수정: `prompts/vision-ui-ir.txt`(Ollama), `prompts/gemini-vision-ui-ir.txt`(Gemini).
+**UI-IR 형식을 바꾸면 프롬프트 2개·`ui-ir.schema.json`·`GeminiUiIrAnalyzer.uiIrResponseSchema()`·`UiIrParser`·`UiIr` 를 함께 바꿀 것.**
 
 ---
 
@@ -380,7 +397,7 @@ OCR 오타(CryptoJS→Cryptops, 번호→변호). 구조 파이프라인은 `doc
 
 1. **AI가 CLX XML을 생성하게 만들지 말 것.** AI 출력은 UI-IR, CLX는 `ClxGenerator` 가 만든다.
 2. `templates/` 는 읽기 전용 원본이다. 생성 결과를 템플릿 폴더에 쓰지 말 것.
-3. 외부 유료 API/외부 OCR 호출 코드를 추가하지 말 것. 네트워크 호출은 로컬/사내 Ollama 뿐.
+3. 기본 엔드포인트(`/EXConverter/uploadAndGenerate.do`)와 `ImageUiIrAnalyzer` 에는 외부 API/외부 OCR 호출을 넣지 말 것. 외부 호출은 **Gemini 전용 클래스(`GeminiUiIrAnalyzer`/`GeminiConversionController`)에만** 둔다. 두 경로는 서로를 수정하지 않는다.
 4. Java 11 호환 유지, 새 jar 추가 시 `WEB-INF/lib` + `.classpath` 등록 필요(Maven 없음).
 5. UI-IR 형식 변경 시 `UiIr.java` · `UiIrParser.java` · `ui-ir.schema.json` · `prompts/vision-ui-ir.txt` · `docs/samples` 를 함께 수정.
 6. CLX 문법을 새로 쓰면(새 컨트롤/속성) **반드시 e6-compiler 로 컴파일해 생성 JS를 확인**할 것. 추측 금지.
@@ -397,6 +414,8 @@ OCR 오타(CryptoJS→Cryptops, 번호→변호). 구조 파이프라인은 `doc
 2. Eclipse에서 Tomcat 실행 → `http://localhost:<port>/eXCoverter-AI/ui/convertTest.clx`
 3. 설계서 이미지 추가 → 전송 → Eclipse 콘솔의 `[eXConverter ...]` 로그 확인
 4. `clx-src/result/<오늘날짜>/` 의 CLX 를 eXBuilder6 에서 열기
+
+Gemini 엔진으로 같은 테스트를 하려면 §15.4 의 키 설정 후 Submission `action` 만 `../EXConverter/gemini/uploadAndGenerate.do` 로 바꾼다.
 
 ### 13.2 UI-IR JSON 직접 입력 (AI 없이 생성기만)
 ```
@@ -439,3 +458,223 @@ java -cp "out;$cp;src\main\resources" GenHarness --all docs\samples templates ou
 3. 생성 CLX 를 런타임(`/ui/result/...clx`)으로 열어 Playwright 스크린샷
 4. OpenCV SSIM/영역 Diff → Correction Engine(UI-IR 폭/순서/영역 수정) → 재생성, 최대 3~5회
 5. 비동기 작업 큐 + 진행률 조회 API (지금은 요청 스레드가 분석 완료까지 대기)
+
+---
+
+## 15. Google Gemini 엔진 (선택, 속도용)
+
+로컬 `qwen3-vl:4b` 는 CPU PC에서 이미지 1장에 9~11분이 걸린다(§11). 같은 파이프라인에서 **이미지 → UI-IR 단계만 Gemini API로 바꾼** 두 번째 엔진이다.
+로컬 경로(`ImageUiIrAnalyzer`, `/EXConverter/uploadAndGenerate.do`)는 손대지 않았다. UI-IR 이후(파서 → 보정 → 템플릿 선택 → CLX 생성 → 검증 → 저장)는 두 엔진이 완전히 공유한다.
+
+> **주의**: 이 엔드포인트를 쓰면 설계서 이미지가 Google로 전송된다. Gemini 무료 등급 약관은 입력과 출력을 제품 개선에 사용하고 사람이 검토할 수 있다고 명시하며 "Do not submit sensitive, confidential, or personal information to the Unpaid Services" 라고 적고 있다. 대외비 설계서는 로컬 엔진(기본 엔드포인트)을 쓰거나 유료 등급으로 전환할 것. 유료 등급은 입력을 학습에 사용하지 않는다.
+
+### 15.1 아키텍처
+
+```
+[eXBuilder6 화면]  POST ../EXConverter/gemini/uploadAndGenerate.do   (multipart, 기존과 동일한 파일 파라미터)
+      │
+      ▼
+GeminiConversionController
+  1. 키 미설정이면 503 즉시 반환 (분석 시도 안 함)
+  2. 첫 번째 multipart 파일 수신(20MB 제한) → generated/uploads/<uuid>.img 저장
+      │
+      ▼
+GeminiUiIrAnalyzer.analyze(image, originalName)
+  3. ImageIO 디코드 확인 → 긴 변 1536px 축소(PNG, 7MB 초과 시에만 JPEG)
+     1536px = 768x768 타일 최대 4개 = 이미지 입력 약 1,032토큰
+  4. POST {url}/v1beta/models/{model}:streamGenerateContent?alt=sse
+       헤더  x-goog-api-key: <키>            ← ?key= 쿼리 대신 헤더. 접근로그/프록시에 키가 남지 않는다
+       본문  systemInstruction  = prompts/gemini-vision-ui-ir.txt
+             contents[0].parts  = [ inline_data(base64 PNG), text("...UI-IR JSON만 반환...") ]
+             generationConfig   = { temperature:0, maxOutputTokens:8192, responseMimeType:"application/json",
+                                    thinkingConfig:{thinkingLevel:"MINIMAL"} }
+                                  ※ responseSchema 는 기본적으로 보내지 않는다(아래 "스키마를 쓰지 않는 이유")
+  5. SSE 수신: data: 줄마다 candidates[0].content.parts[].text 누적 (thought:true 파트는 건너뜀)
+     10초마다 콘솔 진행 로그. 마지막 청크의 finishReason / usageMetadata 수집
+  6. 종료 검사: blockReason / MAX_TOKENS / SAFETY / RECITATION / 빈 응답 → 각각 명시적 오류
+  7. UiIrParser.parse → UiIrNormalizer.normalize  (기존 그대로)
+      │
+      ▼
+GenerationService.generate(ir, originalName, rawJson)   (기존 그대로)
+  TemplateCatalog 선택 → ClxGenerator → ClxValidator → clx-src/result/{날짜}/<파일명>.clx + .js
+  원본 UI-IR 은 generated/ui-ir/<파일명>.ui-ir.json
+      │
+      ▼
+201 { id, engine:"gemini", templateId, analysisMode:"gemini:<응답모델>", image{width,height},
+      regions[요약], warnings[], elapsedSeconds,
+      usage{promptTokenCount, candidatesTokenCount, thoughtsTokenCount, totalTokenCount, model, finishReason, elapsedSeconds},
+      saved{directory, clx, js} }
+```
+
+**스키마를 쓰지 않는 이유(중요, 실측).** Gemini 는 `generationConfig.responseSchema` 로 응답 구조를 강제할 수 있고 처음엔 그게 안전해 보인다. 실제로는 반대였다. 같은 설계서 스크린샷으로 실측한 결과, 스키마를 붙이면 `gemini-3.5-flash` 는 쉬운 영역(title/description/search)까지는 정확히 만들고 **첫 그리드의 컬럼을 시작해야 하는 지점에서 붕괴**해, 화면과 무관한 문장을 끝없이 생성하며 토큰 예산을 전부 소진했다.
+
+| 조건 (2026-09-17, 같은 이미지) | 결과 |
+|---|---|
+| responseSchema on, 한국어 description | 붕괴 (62,085자, 341초) |
+| responseSchema on, description 제거 | 붕괴 (40,012자, 184초) |
+| responseSchema on, 영어 description | 붕괴 (15,003자) |
+| responseSchema on, thinkingLevel=MEDIUM | 붕괴 (15,035자) |
+| responseSchema on, temperature=0.3 | 붕괴 (15,013자) |
+| **responseSchema off** | **성공 (17초, 출력 1,121토큰, 그리드 2개, 컬럼 14개)** |
+
+그래서 `exconverter.gemini.responseSchema` 기본값은 **false** 다. `responseMimeType=application/json` 만으로도 JSON 은 강제되고, 형식 흔들림은 원래 소형 모델용으로 만든 `UiIrParser` + `UiIrNormalizer` 가 흡수한다. 스키마 생성 코드(`uiIrResponseSchema()`)와 `schemaDescriptions` 스위치는 남겨 뒀으니, 더 새로운 모델에서 근거를 확보하면 켜면 된다.
+스키마를 켤 때 주의할 점 두 가지: `description` 을 넣으면 붕괴가 더 심해지므로 `schemaDescriptions=false` 를 함께 쓸 것, 그리고 `maxItems` 는 넣지 말 것(이 문서 크기에서 400 `INVALID_ARGUMENT` 로 거부된다).
+
+**비결정성에 대한 방어: 온도를 올려 재시도한다.** 스키마를 끈 뒤에도 같은 요청이 실행마다 성공/붕괴로 갈렸다(`maxOutputTokens=32768` 일 때 65,336자 반복 붕괴 1건). 그리디 디코딩은 반복 루프에서 스스로 빠져나오지 못하므로, 같은 요청을 다시 보내는 재시도는 의미가 없다. 그래서 두 종류의 재시도를 구분한다.
+
+- 전송 실패(429/5xx/연결 끊김): 같은 요청 + 지수 백오프
+- 비정상 출력(반복 루프, `MAX_TOKENS`): **온도를 바꿔** 재요청. 1회차는 설정값(0), 2회차 0.4, 3회차 0.8
+
+여기에 `maxOutputTokens=8192`(정상 출력의 약 7배)와 스트리밍 중 문자수 상한 `maxResponseChars=20000` 을 둬서, 붕괴가 나도 수 분이 아니라 수십 초 안에 판정되고 재시도로 넘어간다.
+
+**추론 토큰은 출력 예산을 공유한다.** Gemini 문서상 `maxOutputTokens` 는 답변만이 아니라 추론(thought) 토큰까지 포함한 상한이다. 3.x Flash 의 기본 추론 깊이는 MEDIUM 이라, 예산이 작으면 모델이 추론만 하다 예산을 소진하고 `finishReason=MAX_TOKENS` 로 빈 답변을 낸다. 그래서 이 엔진은 `thinkingLevel=MINIMAL` + `maxOutputTokens=32768` 을 기본값으로 둔다. Gemini 3.x 는 `thinkingBudget`(정수) 대신 `thinkingLevel`(열거형)을 쓰며, 두 필드를 같이 보내면 400 이다.
+
+**API 표면 선택**: 구현은 Generate Content REST API(`:generateContent` / `:streamGenerateContent`)를 쓴다. Google 문서가 이제 "legacy" 로 표시하지만 폐기 일정이 없고 필드 이름이 전부 문서화되어 있다. 후속 API는 `POST /v1beta/interactions` 이며 요청은 `input` 배열, 응답은 `steps[]` 구조다. 옮길 때 바꿀 곳은 `buildRequest()` 와 `readResponse()` 두 메서드뿐이다.
+
+### 15.2 엔드포인트
+
+| 메서드/경로 | 설명 |
+|---|---|
+| `POST /EXConverter/gemini/uploadAndGenerate.do` | 기존 `uploadAndGenerate.do` 와 **동일한 multipart 계약**(필드명 무관, 첫 번째 파일 파트를 이미지로 사용, 20MB). 응답도 같은 필드 + `engine`, `usage`, `elapsedSeconds`. 키 미설정 시 503 |
+| `GET /EXConverter/gemini/status.do` | `{engine, configured, model, url, apiVersion, stream, responseSchema, maxOutputTokens, maxImageSide, thinkingBudget, timeoutSeconds, maxRetries}`. **키 값은 반환하지 않음.** 클라이언트 버튼 활성화 판단용 |
+
+클라이언트(eXBuilder6)는 `convertTest.clx` 의 Submission `action` 만 `../EXConverter/gemini/uploadAndGenerate.do` 로 바꾸면 된다. `convertTest.js` 는 수정 불필요하다. 동기 응답이다.
+
+전체 URL 예(§3 대로 배포 컨텍스트가 루트 `/` 인 현재 환경 기준. 컨텍스트를 `/eXCoverter-AI` 로 바꾸면 그 접두어를 붙인다):
+```
+http://localhost:8080/EXConverter/gemini/uploadAndGenerate.do
+http://localhost:8080/EXConverter/gemini/status.do
+```
+
+### 15.3 설정 (`exconverter.properties`, 우선순위는 §10 과 동일: `-D` > 환경변수 > properties)
+
+| 키 | 기본값 | 설명 |
+|---|---|---|
+| `exconverter.gemini.apiKey` | (빈값) | 비면 환경변수 `GEMINI_API_KEY` → `GOOGLE_API_KEY` 순으로 읽음. properties 에 키를 커밋하지 말 것 |
+| `exconverter.gemini.model` | `gemini-3.5-flash` | 무료 등급 + 이미지 입력 가능 모델: `gemini-3.5-flash`, `gemini-3.5-flash-lite`(더 빠르고 쿼터 여유), `gemini-2.5-flash`, `gemini-2.5-flash-lite` |
+| `exconverter.gemini.url` | `https://generativelanguage.googleapis.com` | 프록시/게이트웨이 사용 시 변경 |
+| `exconverter.gemini.stream` | true | SSE 스트리밍(콘솔 진행 로그 10초 주기). false 면 단일 JSON 응답 |
+| `exconverter.gemini.responseSchema` | **false** | UI-IR 구조 강제. **켜지 말 것.** 근거는 §15.1 "스키마를 쓰지 않는 이유" |
+| `exconverter.gemini.schemaDescriptions` | false | 스키마 필드별 설명문. `responseSchema=true` 일 때만 의미가 있고, 켜면 붕괴가 심해진다 |
+| `exconverter.gemini.maxOutputTokens` | 8192 | **추론 토큰이 이 예산을 같이 쓴다.** 정상 출력이 1,103~1,121토큰이라 약 7배 여유. 일부러 좁게 잡아 반복 루프를 빨리 판정한다. `gemini-3.5-flash` 는 65000 까지 허용 |
+| `exconverter.gemini.maxResponseChars` | 20000 | 스트리밍 중 문자수 상한. 넘으면 즉시 중단하고 온도를 올려 재시도한다. 정상 UI-IR 은 수천 자 |
+| `exconverter.gemini.temperature` | 0 | 1회차 온도. 비정상 출력 재시도는 0.4 → 0.8 로 올린다(그리디 디코딩은 반복 루프에서 스스로 못 빠져나온다) |
+| `exconverter.gemini.maxImageSide` | 1536 | 768 배수라 타일 4개로 끝난다. 작은 글자가 안 읽히면 상향, 토큰을 줄이려면 1152 |
+| `exconverter.gemini.thinkingLevel` | `MINIMAL` | Gemini 3.x 추론 깊이: `MINIMAL`/`LOW`/`MEDIUM`/`HIGH` (모델 기본값은 MEDIUM). 레이아웃 판독은 추론보다 추출이라 MINIMAL 이면 충분하고 출력 예산을 답변에 남긴다. 판독 정확도가 아쉬우면 LOW→MEDIUM. `NONE`(또는 `OFF`)이면 `thinkingConfig` 를 아예 생략해 모델 기본값에 맡긴다 |
+| `exconverter.gemini.thinkingBudget` | -1 | `thinkingLevel` 이전 모델용 레거시 정수 예산. -1 은 전송하지 않음. **두 값을 같이 보내면 400** 이므로 `thinkingLevel` 이 우선하고, 이 값을 쓰려면 `thinkingLevel=NONE` 으로 둘 것 |
+
+`gemini-2.5-flash` 등 구형 모델은 `thinkingLevel` 자체를 거부한다(`400 Thinking level is not supported for this model`). 이 400 을 만나면 코드가 `thinkingConfig` 없이 **자동으로 한 번 재요청**하므로, 모델만 바꿔도 그대로 동작한다.
+| `exconverter.gemini.timeoutSeconds` | 600 | 읽기 타임아웃 |
+| `exconverter.gemini.maxRetries` | 2 | 429/5xx/연결오류 재시도. 지수 백오프이며 오류의 `retryDelay` 를 우선 존중 |
+| `exconverter.gemini.proxyHost` / `proxyPort` | (빈값) / 8080 | 사내 HTTP 프록시 |
+
+SDK 대신 `HttpURLConnection` 을 쓰는 이유: Maven 이 없어 jar 를 수동 관리하는데 Google client library 는 gRPC/Guava/protobuf/신형 Jackson 등 의존성이 많고 기존 Jackson 2.11 과 충돌한다. Gemini 호출은 POST 1개라 Ollama 호출부와 같은 방식으로 구현했다.
+
+### 15.4 실제 호출을 위한 설정 절차
+
+개발 PC 점검 결과(2026-09-17): `GEMINI_API_KEY`/`GOOGLE_API_KEY` 환경변수 없음. `generativelanguage.googleapis.com` 외부 연결은 확인됨이므로 프록시 설정은 불필요하다. 필요한 것은 API 키 하나다.
+
+1. **API 키 발급**: [Google AI Studio](https://aistudio.google.com/apikey) 로그인 → **Get API key → Create API key** → 프로젝트 선택 → `AIza...` 값 복사. 무료 등급은 결제수단 등록이 필요 없다. 키는 담당자가 직접 입력한다.
+2. **키를 Tomcat 에 전달** — 둘 중 하나
+   - 권장: Eclipse `Servers` 뷰 → Tomcat 더블클릭 → `Open launch configuration` → `Arguments` 탭 → `VM arguments` 끝에 추가
+     ```
+     -Dexconverter.gemini.apiKey=AIza...
+     ```
+   - 대안: Windows 사용자 환경변수 등록 후 **Eclipse 완전 재시작**(Tomcat 이 Eclipse 프로세스의 환경을 상속)
+     ```
+     setx GEMINI_API_KEY "AIza..."
+     ```
+3. **재배포**: 새 클래스 2개(`GeminiUiIrAnalyzer`, `GeminiConversionController`), 프롬프트, properties 가 배포되도록 `Publish` 후 Tomcat 재시작.
+4. **설정 확인**: `configured: true` 면 준비 완료. `false` 면 키가 Tomcat JVM 에 전달되지 않은 것이고, 변환 요청은 **503** 으로 떨어진다.
+   ```
+   curl http://localhost:8080/EXConverter/gemini/status.do
+   ```
+5. **호출**
+   - 화면: Submission `action` 을 `../EXConverter/gemini/uploadAndGenerate.do` 로 변경 후 전송
+   - 클라이언트 수정 없이: `curl -X POST http://localhost:8080/EXConverter/gemini/uploadAndGenerate.do -F "image=@<이미지경로>"`
+   - Tomcat 없이: §15.6 의 `GeminiHarness`
+6. **결과 확인**: Eclipse 콘솔 `[Gemini] 설계서 → CLX 변환 시작` ~ `변환 완료` 로그, 응답 JSON 의 `usage`, 파일은 `clx-src/result/<오늘날짜>/`, 모델 원본 출력은 `generated/ui-ir/<파일명>.ui-ir.json`.
+
+### 15.5 콘솔 로그와 오류 매핑
+
+```
+[eXConverter 14:02:10] ===== [Gemini] 설계서 → CLX 변환 시작: 스크린샷.png (75 KB) =====
+[eXConverter 14:02:10] 이미지 확인: 스크린샷.png (1578x818)
+[eXConverter 14:02:10] Gemini 분석 시작: model=gemini-3.5-flash, 전송 이미지 1536x796 (image/png 316 KB, 타일 약 4개), 스트리밍
+[eXConverter 14:02:20] Gemini 분석 중... 10s 경과 - 이미지 처리/추론 단계 (아직 응답 토큰 없음)
+[eXConverter 14:02:23] Gemini 첫 응답 토큰 수신 (13s) - UI-IR 생성 시작
+[eXConverter 14:02:35] Gemini 분석 완료: 25s, 입력 1290토큰, 출력 1420토큰(추론 210), 종료사유=STOP, 응답 모델=gemini-3.5-flash
+[eXConverter 14:02:35] UI-IR 영역: title → search(필드 2) → grid(컬럼 10) → ...
+[eXConverter 14:02:35] ===== [Gemini] 변환 완료: 총 26s, 분석모드=gemini:gemini-3.5-flash =====
+```
+
+| 증상 | 원인과 대응 |
+|---|---|
+| 503 `key is not configured` | 키가 Tomcat JVM 에 없음. §15.4 2번. `status.do` 의 `configured` 로 확인. eXBuilder6 Submission 은 상태코드만 보여주므로 이유는 응답 본문(`error` 필드)이나 콘솔에서 확인 |
+| 404 (컨트롤러 로그가 아예 안 찍힘) | URL 에 `/eXCoverter-AI` 접두어를 붙였거나 Publish/재시작을 안 함. §3 의 컨텍스트 설명 참고 |
+| 500 `HTTP 400 INVALID_ARGUMENT: API key not valid` | 키 오타 또는 폐기. 재발급 |
+| 500 `HTTP 400` + 스키마 관련 메시지 | `exconverter.gemini.responseSchema=false` 로 끄고 재시도 |
+| 500 `HTTP 404` 모델 없음 | `exconverter.gemini.model` 이 오타이거나 해당 키에서 못 쓰는 모델 |
+| 재시도 로그 후 `HTTP 429 RESOURCE_EXHAUSTED` | 무료 등급 분당/일일 쿼터 초과. 오류의 `retryDelay` 를 존중해 재시도하며, 계속 나면 `gemini-3.5-flash-lite` 로 낮추거나 시간을 두고 재시도 |
+| `HTTP 503 UNAVAILABLE` 반복 | 모델 과부하. `maxRetries` 상향 |
+| `Gemini 가 N회 모두 비정상 출력을 냈습니다` | 반복 루프가 재시도 3회를 모두 버텼다. `generated/ui-ir/<파일명>.gemini-failed.raw.txt` 에 마지막 원본 출력이 저장되니 먼저 그걸 볼 것. `responseSchema` 가 켜져 있으면 끄고, `maxRetries` 를 올리거나 모델을 바꿔 본다 |
+| `maxOutputTokens=... 에서 잘림` | 오류 메시지의 `추론 N토큰 + 답변 M토큰` 으로 구분한다. 추론이 크면 `thinkingLevel` 을 `MINIMAL` 로 낮추고, 답변만 길면 반복 루프이므로 위 항목을 따른다. 2026-09-17 실측: `thinkingLevel` 미전송(모델 기본 MEDIUM) + `maxOutputTokens=8192` 조합에서는 추론이 예산을 다 써 답변이 비었다 |
+| `400 Thinking level is not supported` | 구형 모델(2.5 등). 코드가 `thinkingConfig` 없이 자동 재요청하므로 보통 그냥 통과한다. 로그에 재요청 줄이 찍힌다 |
+| `blocked the prompt (blockReason=...)` / `finishReason=SAFETY` | 안전 필터. 이미지 내용 확인, 필요하면 로컬 엔진 사용 |
+| `connection failed` | 사내망 차단. `exconverter.gemini.proxyHost/proxyPort` 설정 |
+| 결과가 로컬 모델보다 이상함 | `generated/ui-ir/*.ui-ir.json` 을 `GenHarness` 로 재생성해 프롬프트 문제와 생성기 문제를 분리. 프롬프트는 `prompts/gemini-vision-ui-ir.txt` |
+
+### 15.6 테스트
+
+```powershell
+$cp = ((Get-ChildItem src\main\webapp\WEB-INF\lib\*.jar).FullName) -join ';'
+javac -encoding UTF-8 -d out -cp "$cp;ci-lib\clx\cleopatra_server.jar" (Get-ChildItem -Recurse src\main\java\com\tomatosystem -Filter *.java).FullName
+javac -encoding UTF-8 -d out -cp "out;$cp" tools\harness\GeminiHarness.java tools\harness\GeminiStreamHarness.java
+
+# (1) 오프라인: 가짜 Gemini API(SSE)로 요청 형식/스트림 파서/CLX 생성 확인 (키 불필요)
+#     콘솔에 실제로 보낸 엔드포인트, 헤더, inline_data, responseSchema 가 출력된다
+java -Dexconverter.gemini.url=http://127.0.0.1:18436 -Dexconverter.gemini.apiKey=test -Dfile.encoding=UTF-8 `
+  -cp "out;$cp;src\main\resources" GeminiStreamHarness docs\samples\crypto-sample.ui-ir.json `
+  "clx-src\result\2026-09-13\스크린샷 2026-09-13 110550.png" out\gemini-fake.clx
+
+# (2) 실제 API: 이미지 → Gemini → CLX. out\gemini.ui-ir.json 에 모델 원본 출력 저장
+$env:GEMINI_API_KEY = "AIza..."
+java -Dfile.encoding=UTF-8 -cp "out;$cp;src\main\resources" GeminiHarness `
+  "clx-src\result\2026-09-13\스크린샷 2026-09-13 110550.png" out\gemini.clx
+```
+
+검증 이력 1 — 가짜 API(2026-09-17):
+- 스트리밍/비스트리밍 양쪽에서 엔드포인트 경로, `x-goog-api-key` 헤더, `systemInstruction`, `inline_data(image/png)`, `responseMimeType`, `responseSchema` 전송 확인
+- `thought:true` 파트를 건너뛰고 답변 텍스트만 누적하는지 확인
+- `usageMetadata` 4개 카운터 수집, 템플릿 P4-6 선택, ClxValidator 오류 0, CLX 18,815 bytes
+- 오류 경로 5종 확인: 429 두 번 후 성공(`retryDelay` 1초 존중), 400 즉시 실패, `MAX_TOKENS` 처리, `blockReason=SAFETY`, 503 재시도 소진
+- 추론 설정 4가지 확인: 기본 `{"thinkingLevel":"MINIMAL"}`, `HIGH` 전달, `NONE` 이면 `thinkingConfig` 생략, `NONE`+`thinkingBudget=0` 이면 레거시 필드 전송
+- 최종 기본값(스키마 off, maxOutputTokens 8192)으로 재확인
+
+검증 이력 2 — 실제 Gemini API(2026-09-17, `스크린샷 2026-09-13 110550.png`, `gemini-3.5-flash`):
+
+기본값을 찾는 과정에서 실패 6회를 거쳤다. 순서대로 `maxOutputTokens=8192` + 추론 기본(MEDIUM) → 추론이 예산 소진, `maxOutputTokens=32768` → 반복 루프 62,085자, MEDIUM/temperature 0.3/영어 description/description 제거 → 모두 붕괴, 스키마 off + `maxOutputTokens=32768` → 반복 루프 65,336자. 원인과 대응은 §15.1 에 정리했다.
+
+최종 기본값으로 3회 연속 실행한 결과:
+
+| 실행 | 소요 | 출력 토큰 | 종료사유 | 결과 |
+|---|---|---|---|---|
+| 1 | 25초 | 1,103 | STOP | 템플릿 P4-6, ClxValidator 오류 0 |
+| 2 | 19초 | 1,103 | STOP | 동일 |
+| 3 | 11초 | 1,103 | STOP | 동일 |
+
+세 번 모두 재시도 없이 1회차에 성공했고, region 구성은 `title → description → description → search → grid → grid → buttons`, **컬럼 헤더 14개가 정답 샘플(`docs/samples/crypto-sample.ui-ir.json`)과 완전히 일치**했다(빈 헤더 포함). 조회영역의 `김길동`/이메일도 라벨이 아니라 `value` 로 올바르게 들어갔고, 그리드 제목은 설명문 없이 빈 문자열이었다. 로컬 `qwen3-vl:4b` 가 같은 이미지에 9~11분 걸리고 표 구조를 자주 틀리는 것과 비교된다(§11).
+
+아직 안 한 것: 생성 CLX 를 e6-compiler 로 컴파일해 `BUILD SUCCESS` 확인(§9.2). `ClxGenerator` 를 수정하지 않았고 ClxValidator 는 통과했으므로 위험은 낮지만, 확인은 남아 있다.
+
+### 15.7 변경 파일 목록 (2026-09-17)
+
+| 파일 | 변경 |
+|---|---|
+| `service/GeminiUiIrAnalyzer.java` | 신규. Gemini 호출(SSE/비스트리밍), responseSchema 생성, 재시도, 오류 매핑, 이미지 축소·인코딩, 설정 조회 |
+| `web/GeminiConversionController.java` | 신규. `/EXConverter/gemini/uploadAndGenerate.do`, `/status.do` |
+| `resources/exconverter/prompts/gemini-vision-ui-ir.txt` | 신규. Gemini 시스템 프롬프트 |
+| `resources/exconverter/exconverter.properties` | `exconverter.gemini.*` 추가 |
+| `tools/harness/GeminiHarness.java`, `GeminiStreamHarness.java` | 신규. 실제 API / 가짜 API 하니스 |
+| `README.md` | §1 원칙, §2 Phase 9, §3 환경, §4 구조, §10, §12 규칙 3, §13, §15 |
+| 기존 로컬 경로 (`ImageUiIrAnalyzer`, `ImageConversionController`, `vision-ui-ir.txt`) | **변경 없음** |
