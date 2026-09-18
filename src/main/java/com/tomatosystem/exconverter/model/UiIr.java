@@ -83,6 +83,8 @@ public class UiIr {
 		private String align = "";
 		private int columnsPerRow;
 		private String side = "";
+		private boolean inTab;
+		private boolean paging;
 		private final List<Field> fields = new ArrayList<Field>();
 		private final List<Column> columns = new ArrayList<Column>();
 		private final List<String> buttons = new ArrayList<String>();
@@ -101,6 +103,12 @@ public class UiIr {
 		/** {@link UiIr#LEFT}, {@link UiIr#RIGHT} or "" for full width. */
 		public String getSide() { return side; }
 		public void setSide(String side) { this.side = side == null ? "" : side; }
+		/** Drawn inside the panel of the selected tab of the closest preceding tabs region. */
+		public boolean isInTab() { return inTab; }
+		public void setInTab(boolean inTab) { this.inTab = inTab; }
+		/** Grid only: a page-number bar (pageindexer) is drawn under the table. */
+		public boolean isPaging() { return paging; }
+		public void setPaging(boolean paging) { this.paging = paging; }
 		public List<Field> getFields() { return fields; }
 		public List<Column> getColumns() { return columns; }
 		public List<String> getButtons() { return buttons; }

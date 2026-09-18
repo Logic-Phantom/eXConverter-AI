@@ -377,6 +377,8 @@ public class GeminiUiIrAnalyzer {
 				.put("title", type("string", "Heading attached to this grid, form or textarea, copied exactly, or empty"))
 				.put("align", enumType(new String[] { "left", "right", "center" }))
 				.put("side", enumType(new String[] { "", "left", "right" }))
+				.put("inTab", type("boolean", "True for regions drawn inside the selected tab panel"))
+				.put("paging", type("boolean", "Grid only: a page-number bar is drawn under the table"))
 				.put("columnsPerRow", type("integer", "Label and input pairs per row in a form"))
 				.put("fields", array(field).put("description", "Label and input pairs of a search or form region"))
 				.put("columns", array(column).put("description", "Required for every grid region: one entry per visible column header, left to right"))

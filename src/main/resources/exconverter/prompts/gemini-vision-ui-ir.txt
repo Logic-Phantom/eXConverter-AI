@@ -16,11 +16,11 @@ Region types
 - "title": the page title line at the very top of the page, the application header line. Use "text".
 - "description": a box or paragraph of explanatory sentences. Use "text", with "\n" between lines.
 - "sectionTitle": a short heading above a group of controls, for example "암호화 데이터 송수신". Use "text".
-- "search": a search or filter bar, label and input pairs on one or more rows with buttons such as 조회, 초기화, 검색 at the right end. Use "fields" and "buttons".
-- "form": a detail or edit form, label and input pairs arranged in rows. Use "fields", "columnsPerRow" and optionally "title".
-- "grid": a data table. Use "columns", one entry per visible column header from left to right, and optionally "title". Text buttons in the table's own title row, such as 행추가, 행삭제 or 엑셀, go into that grid's "buttons".
-- "tabs": tab headers. Use "tabs".
-- "tree": a tree view. Optionally use "title".
+- "search": a search or filter bar, label and input pairs on one or more rows with buttons such as 조회, 초기화, 검색 at the right end. Use "fields" and "buttons". A second, smaller filter bar further down the page, for example between two tables, is also a "search" region at its own position.
+- "form": a detail or edit form, label and input pairs arranged in rows. Use "fields", "columnsPerRow" and optionally "title". Text buttons in the form's own title row, such as 추가, 수정 or 삭제, go into that form's "buttons".
+- "grid": a data table. Use "columns", one entry per visible column header from left to right, and optionally "title". Text buttons in the table's own title row, such as 행추가, 행삭제 or 엑셀, go into that grid's "buttons". Set "paging": true when a page-number bar (1 2 3 ... with arrows) is drawn right under the table.
+- "tabs": tab headers. Use "tabs", the tab captions from left to right.
+- "tree": a tree view (folders or menu items with expand arrows or indentation). Use "title" for its heading and "buttons" for text buttons in its title row.
 - "buttons": a row of buttons that is not inside a search bar, typically a footer with 저장, 삭제 or 닫기. Use "buttons" and "align" ("left", "right" or "center").
 - "textarea": a large multi-line text box, optionally with a small title and buttons row above it. Use "title" and "buttons".
 
@@ -65,3 +65,8 @@ Side-by-side layout
 - When the page body below the search bar is split into a left column and a right column, set "side" on every region inside them: "left" or "right". Regions spanning the full width, such as the title, the search bar and a footer, have no "side".
 - Still list regions in reading order, but finish the whole left column before starting the right column: all "left" regions first, top to bottom, then all "right" regions, top to bottom.
 - A small input or button that sits on the same line as a table's title belongs to that column too.
+- Arrow buttons (◀ ▶) standing between the left and the right column, used to move rows from one list to the other, are one "buttons" region with no "side", listed after the last "left" region and before the first "right" region. Arrow buttons (▲ ▼) between two tables of the same column belong to that column and keep its "side".
+- A tree on the left with a table or form on the right is a side-by-side layout: the tree is "left".
+
+Tabs
+- The content drawn inside the panel of the selected tab (tables, forms, a tree) follows the "tabs" region directly, and every one of those regions has "inTab": true. Regions below or outside the tab panel have no "inTab".

@@ -27,6 +27,8 @@
           "title": { "type": "string" },
           "align": { "enum": ["left", "right", "center"] },
           "side": { "enum": ["", "left", "right"], "description": "Pane of a screen split into left and right columns; empty or absent = full width" },
+          "inTab": { "type": "boolean", "description": "Drawn inside the selected tab panel of the preceding tabs region" },
+          "paging": { "type": "boolean", "description": "Grid only: a page-number bar (pageindexer) under the table" },
           "columnsPerRow": { "type": "integer", "minimum": 1, "maximum": 6 },
           "fields": {
             "type": "array",

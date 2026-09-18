@@ -91,6 +91,7 @@ eXConverter-AI/
 │   │   │   ├── UiIrNormalizer.java             소형 모델의 표 인식 오류 구조 보정 (행 분할 그리드 병합 등)
 │   │   │   ├── ColumnNames.java                한글 라벨 ↔ 컬럼 코드 사전 (보정기/생성기 공용)
 │   │   │   ├── TemplateCatalog.java            템플릿 프로파일링 + 점수 기반 선택
+│   │   │   ├── LayoutShape.java                본문 레이아웃 블록열(G/F/T/DIV/TAB …) + 편집거리 — §7
 │   │   │   ├── ClxGenerator.java               UI-IR + 템플릿 → CLX (결정적 컴파일러)
 │   │   │   ├── ClxValidator.java               생성 CLX 구조 검증
 │   │   │   ├── CompanionJsGenerator.java       .clx 와 같은 이름의 .js 생성
@@ -124,7 +125,8 @@ eXConverter-AI/
     ├── GenHarness.java                 UI-IR 파일 → CLX 생성 + 검증
     ├── StreamHarness.java              가짜 Ollama 스트림으로 분석기 검증
     ├── GeminiHarness.java              이미지 → 실제 Gemini API → CLX (서버 없이, API 키 필요)
-    └── GeminiStreamHarness.java        가짜 Gemini API(SSE)로 Gemini 분석기 오프라인 검증
+    ├── GeminiStreamHarness.java        가짜 Gemini API(SSE)로 Gemini 분석기 오프라인 검증 (--lite: lite 모델)
+    └── TemplateMatchHarness.java       템플릿 77개 역분석 → 자동 선택 정확도 + 생성 재현도 측정 — §7
 ```
 
 실행 시 생성되는 폴더(작업 디렉터리 기준, Eclipse 실행 시 보통 `C:\eclipse_AI\eclipse\generated`):
@@ -229,6 +231,9 @@ eXBuilder6에 종속되지 않는다. **영역(region)은 화면 위→아래 �
 | `tree` | - | `cl:tree` |
 | `buttons` | buttons[], align(left/right/center) | **마지막 영역이면** `content-footer` 버튼, 아니면 본문 버튼 그룹. center 는 1fr 좌우 여백 formlayout(P7-3 과 같은 방식) |
 
+`inTab`(boolean): 바로 앞 `tabs` 영역의 선택된 탭 패널 **안에** 그려진 영역. `paging`(boolean, grid): 표 아래 페이지 번호 막대(pageindexer).
+좌우 분할 사이(가운데 열)의 ◀▶ 버튼은 `side` 없는 `buttons` 영역으로, 좌측 영역들과 우측 영역들 사이에 나열한다(P7 셔틀). 같은 칸 안 그리드 사이의 ▲▼ 는 그 칸의 `side` 를 가진다.
+
 모든 영역 공통 `side`(`left`/`right`, 생략 = 전체 폭): 본문이 좌/우 2단으로 나뉜 화면. 첫 `side` 영역부터 마지막 `side` 영역까지가 `division-group` 1행(좌/우 pane)이 되고, 그 사이의 `side` 없는 영역은 바로 위 영역의 pane 에 붙는다. 모델에는 좌측 영역을 모두 나열한 뒤 우측을 나열하도록 요구한다.
 
 버튼 캡션 `▲ ▼ ◀ ▶` 은 테마 아이콘 버튼 `btn-up/btn-down/btn-left/btn-right`(20×24, 캡션 없음)로 생성한다.
@@ -273,21 +278,25 @@ eXBuilder6에 종속되지 않는다. **영역(region)은 화면 위→아래 �
 
 ## 7. 템플릿 저장소와 선택 규칙 (`TemplateCatalog`)
 
-`templates/**/*.clx` 전체를 읽어 문자열 기반 **구조 프로파일**을 만든다(파일 수정시간 기준 캐시).
+`templates/**/*.clx` 전체를 DOM 으로 읽어 **구조 프로파일**을 만든다(파일 수정시간 기준 캐시). `content-body`/`pop-content-body` 가 없는 템플릿(P0)은 생성기가 본문을 넣을 곳이 없으므로 후보에서 제외한다.
 
-| 프로파일 항목 | 판별 방법 |
+핵심은 **본문 레이아웃 블록열**(`LayoutShape`)이다. 개수가 아니라 순서와 배치를 비교한다. 이미지 쪽은 UI-IR 에서, 템플릿 쪽은 `content-body` DOM 에서 같은 기호로 만든다.
+
+| 블록 | 의미 |
 |---|---|
-| search | `class="search-box"` 존재 |
-| grids | `<cl:grid ` 개수 |
-| forms | `class="form-base"` 개수 |
-| tabs / tree | `<cl:tabfolder` / `<cl:tree ` |
-| popup | 파일명 `*_P.clx` 또는 `pop-content-body` |
-| shuttle | `shuttle-button-group` |
-| footer | `footer-button-group` |
+| `G` / `F` / `T` | 그리드 / 폼 / 트리. `b` = 제목행 버튼, `p` = 페이지 인덱서 (예: `Gb`, `Gp`) |
+| `A` / `S` / `X` | textarea / 본문 안의 조회영역(P2-3) / 화살표(셔틀) 버튼 |
+| `TAB{…}` | 탭 + 선택된 탭 안의 내용(UI-IR 의 `inTab` 영역) |
+| `DIV{좌 \| 우}`, `DIV{좌 \| X \| 우}` | 좌우 분할(UI-IR 의 `side`), 가운데 ◀▶ 셔틀 열 |
+| `ACC{…}` / `EXT` | 아코디언 / 서드파티 컨트롤 — UI-IR 로 표현 불가 |
 
-점수 = 100 + (search 일치 +40 / 불일치 −40) − |grid 수 차이|×25 − |form 수 차이|×20 − tabs/tree 불일치 60 − popup 불일치 80 − shuttle 50 + footer 일치 5 + (좌우 분할 일치 +40 / 불일치 −40).
-좌우 분할: UI-IR 에 `side` 영역이 있는지 vs 템플릿에 `division-group` 이 있는지(P2-4, P2-5, P3-2, P4-2, P4-3, P6-x, P7-x). 분할 비율(1:1, 2:5, 250px:1)은 템플릿 것을 그대로 쓴다.
+예: P4-4 = `F G`, P4-5 = `G F`, P3-2 = `DIV{G | Fb}`, P4-3 = `DIV{F | G}`, P6-1 = `DIV{T | G}`, P7-1 = `DIV{G | X | G}`, P2-3 = `G S G`, P1-4 = `Gp`, P5-1 = `TAB{G}`.
+
+점수 = 100 + 헤더 조회영역(일치 +40 / 불일치 −40) − popup 불일치 80 + footer 일치 5 − **블록열 편집거리** − tabs/tree 유무 불일치 60 − 셔틀 열 유무 불일치 40.
+편집거리: 블록 삽입·삭제·교체 20, 같은 컨트롤의 플래그(`b`/`p`) 차이 5, `DIV`/`TAB` 은 **중첩 블록**이라 칸 내용끼리만 비교한다(우측 칸의 그리드가 분할 영역 밖 그리드와 짝지어지지 않음). 분할 비율(1:1, 2:5, 250px:1)은 선택된 템플릿 것을 그대로 쓴다.
 동점이면 **파일 크기가 작은(단순한) 템플릿**, 그다음 경로 순. popup 여부는 `screen.type` 에 `POPUP` 포함 시.
+
+측정(`TemplateMatchHarness`, §13.3): 각 템플릿에서 "그 화면을 완벽히 분석했을 때의 UI-IR"을 역으로 만들어 ① 자동 선택이 같은 구조의 템플릿을 고르는지 ② 그 템플릿으로 생성한 CLX 가 같은 구조를 재현하는지 검사한다. 2026-09-18 개선 전 선택 36/68 · 재현 43/68 → 개선 후 **67/67 · 67/67** (P0 1개, 아코디언 P3-4, 서드파티 P8 8개 = 10개는 UI-IR 로 표현 불가라 제외).
 
 템플릿 추가 방법: 표준 구조(`grpHeader/grpSearch/grpData/grpFooter`, 클래스 `content-header/search-box/content-body/content/content-footer/footer-button-group`)를 따르는 CLX를 `templates/` 하위에 넣으면 끝. 코드 수정/재학습 불필요.
 
@@ -303,7 +312,8 @@ UDC `udcComAppHeader`(76), `udcComGridTitle`(86), `udcComFormTitle`(52); 조회 
 1. 템플릿 파싱, 공백 텍스트 노드 제거(재들여쓰기용).
 2. 뼈대 요소 탐색: `udcComAppHeader`, `grpHeader`(content-header/pop-content-header), `grpSearch`(search-box), `grpData`(content-body/pop-content-body), `grpFooter`(content-footer/pop-content-footer).
    id가 없으면 class로 찾는다(팝업 템플릿 대응).
-3. 본문의 첫 "그리드를 포함한 `group.content`" 를 **프로토타입으로 복제 보관**(content-title-box 유무 등 템플릿별 그리드 영역 관례 유지).
+3. 본문의 구성 요소를 **프로토타입으로 모두 복제 보관**: 그리드를 가진 `group.content` 전부, `form-base` 를 가진 content 전부, 트리 content, 본문 안 `search-box`(P2-3), `division-group` 전부.
+   영역마다 제목행 버튼 유무(그리드는 페이지 인덱서 유무도)가 맞는 프로토타입을 고른다. 폼은 템플릿의 `udcComFormTitle`(또는 `form-tit`) 제목행과 제목행 버튼, 폼 열 수(좁은 칸은 2쌍)를 따르고, 제목·버튼이 모두 없으면 제목행을 행째 제거한다.
 4. 영역 배치 결정
    - `title` → 앱헤더 title
    - 첫 `search` → `grpSearch`
@@ -318,8 +328,10 @@ UDC `udcComAppHeader`(76), `udcComGridTitle`(86), `udcComFormTitle`(52); 조회 
    조회/검색 버튼 `btn-primary-02`, 그 외 `btn-secondary-03 btn-md`. 버튼이 없으면 [초기화, 조회] 기본.
    높이 = 행×24 + (행−1)×6 + 20.
 8. 본문: 영역마다 formlayout 행 1개 (grid/tabs/tree = 1fr, 나머지는 px). `content-body` 높이는 필요 높이만큼 늘림(grid 1개당 260px 가정).
-   `side` 영역 구간은 템플릿 `division-group` 을 복제(열 2개·행 1개일 때만, 아니면 1:1 새로 생성)해 1행을 차지하고, 각 pane 은 영역이 1개면 그대로, 여러 개면 세로 formlayout group 으로 쌓는다. 높이는 두 pane 중 큰 쪽.
-   그리드 제목행의 `title-button-group` 자리표시 버튼(행추가/행삭제)은 지우고 grid 영역의 `buttons` 로 채운다.
+   `side` 영역 구간은 템플릿 `division-group` 중 열 수가 같은 것(2열, ◀▶ 셔틀이 있으면 3열)을 복제해 1행을 차지한다(없으면 1:1 또는 1fr/24px/1fr 로 새로 생성). 각 pane 은 영역이 1개면 그대로, 여러 개면 세로 formlayout group 으로 쌓는다. 높이는 pane 중 큰 쪽.
+   `tabs` 영역 뒤의 `inTab` 영역들은 첫(선택된) 탭 안에 쌓는다(P5).
+   그리드/폼/트리 제목행의 `title-button-group` 자리표시 버튼(행추가/행삭제)은 지우고 해당 영역의 `buttons` 로 채운다.
+   `paging` 그리드는 `cl:pageindexer` 행을 유지·추가하고(P1-4 와 같은 `pix1`), 아니면 제거한다. 화살표만 있는 버튼 행은 `shuttle-button-group` 클래스를 붙인다.
 9. 그리드
    - `gridcolumn` 폭 = width × (1408 / sourceWidth), 30~800px. 폭 없으면 editor/헤더 길이로 추정.
    - 헤더 `gridcell text`, 바인딩 컬럼은 `targetcolumnname`.
@@ -415,7 +427,7 @@ OCR 오타(CryptoJS→Cryptops, 번호→변호). 구조 파이프라인은 `doc
 4. Java 11 호환 유지, 새 jar 추가 시 `WEB-INF/lib` + `.classpath` 등록 필요(Maven 없음).
 5. UI-IR 형식 변경 시 `UiIr.java` · `UiIrParser.java` · `ui-ir.schema.json` · `prompts/vision-ui-ir.txt` · `docs/samples` 를 함께 수정.
 6. CLX 문법을 새로 쓰면(새 컨트롤/속성) **반드시 e6-compiler 로 컴파일해 생성 JS를 확인**할 것. 추측 금지.
-7. 생성 로직 수정 후 최소 회귀: `docs/samples/*.ui-ir.json` 전부 × 모든 템플릿에 대해 `ClxValidator` 오류 0 + e6-compiler `BUILD SUCCESS`.
+7. 생성 로직 수정 후 최소 회귀: `docs/samples/*.ui-ir.json` 전부 × 모든 템플릿에 대해 `ClxValidator` 오류 0 + e6-compiler `BUILD SUCCESS`. 선택 규칙·생성기·UI-IR 을 바꾸면 `TemplateMatchHarness` 의 selection/roundtrip 이 떨어지지 않았는지도 확인한다.
 8. id/sid 는 반드시 `uniqueId/uniqueSid` 로 생성(중복 시 eXBuilder6 편집기 오류).
 9. 긴 작업은 `ProgressLog.step` 으로 콘솔에 진행 상황을 남길 것.
 
@@ -455,6 +467,14 @@ java -cp "out;$cp;src\main\resources" GenHarness --all docs\samples templates ou
 
 `StreamHarness <image> <ui-ir.json>` 는 18434 포트에 가짜 Ollama 를 띄워 스트리밍/진행 로그/thinking 필드 처리를 검증한다.
 
+템플릿 매칭 측정(§7):
+```powershell
+javac -encoding UTF-8 -d out -cp "out;$cp" tools\harness\TemplateMatchHarness.java
+java -cp "out;$cp;src\main\resources" TemplateMatchHarness templates          # 요약 + 실패 상세
+java -cp "out;$cp;src\main\resources" TemplateMatchHarness templates -v -o out\rt   # 템플릿별 결과, 재현 CLX 를 out\rt 에 저장(e6-compiler 용)
+```
+마지막 줄 `selection=67/67 roundtrip=67/67` 을 확인한다. 새 템플릿을 추가하면 분모가 늘고, 그 템플릿이 틀리면 `MISS` 로 원하는/실제 구조 키가 출력된다.
+
 샘플(`docs/samples`):
 - `crypto-sample.ui-ir.json` — 첨부 설계서의 정답 UI-IR
 - `crypto-sample.qwen3-vl-4b.ui-ir.json` — 실제 모델 출력 1회차 (그리드를 폼으로 오인)
@@ -466,6 +486,7 @@ java -cp "out;$cp;src\main\resources" GenHarness --all docs\samples templates ou
 
 검증 이력(2026-09-13): 샘플 6종 × 템플릿 77개 = 462건 ClxValidator 오류 0, e6-compiler BUILD SUCCESS.
 검증 이력(2026-09-18, 좌우 분할 추가): 샘플 8종 × 템플릿 77개 = 616건 ClxValidator 오류 0, e6-compiler BUILD SUCCESS(616개 JS). 기존 샘플 6종의 자동 선택 템플릿은 변경 전과 동일, 정답 샘플에 새 보정 규칙 오탐 없음.
+검증 이력(2026-09-18, 블록열 매칭·템플릿 구성요소 재사용): `TemplateMatchHarness` 선택 67/67, 재현 67/67. 샘플 8종 × 77 = 616건 오류 0. 재현 67 + 샘플 616 = 683개 CLX 모두 e6-compiler BUILD SUCCESS. 샘플별 자동 선택은 `popup-form-tabs` 만 P1-7_P → P5-2_P(탭 템플릿)로 바뀌고 나머지 동일. 가짜 Gemini API 로 flash/lite 두 엔진 모두 `user-role` → P2-4, `crypto-sample` → P4-6.
 
 ---
 

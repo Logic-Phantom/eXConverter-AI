@@ -106,7 +106,7 @@ public final class UiIrNormalizer {
 		boolean titlesCompatible = a.getTitle().isEmpty() || b.getTitle().isEmpty() || a.getTitle().equals(b.getTitle());
 		List<String> common = new ArrayList<String>(headers(a));
 		common.retainAll(headers(b));
-		return titlesCompatible && common.size() >= 2 && a.getSide().equals(b.getSide());
+		return titlesCompatible && common.size() >= 2 && a.getSide().equals(b.getSide()) && a.isInTab() == b.isInTab();
 	}
 
 	/** Header-only region, or a column whose "header" is really that row's value. */
@@ -142,6 +142,11 @@ public final class UiIrNormalizer {
 
 		UiIr.Region merged = new UiIr.Region(UiIr.GRID);
 		merged.setSide(run.get(0).getSide());
+		merged.setInTab(run.get(0).isInTab());
+		for (UiIr.Region grid : run) {
+			if (grid.isPaging()) merged.setPaging(true);
+			for (String button : grid.getButtons()) { if (!merged.getButtons().contains(button)) merged.getButtons().add(button); }
+		}
 		for (UiIr.Region grid : run) { if (!grid.getTitle().isEmpty() && !canonical.contains(grid.getTitle())) { merged.setTitle(grid.getTitle()); break; } }
 		if (rowIndex) merged.getColumns().add(new UiIr.Column("", "rowindex", 0, "1"));
 		for (int c = 0; c < canonical.size(); c++) {
@@ -175,7 +180,7 @@ public final class UiIrNormalizer {
 			UiIr.Region grid = regions.get(i + 1);
 			if (!(UiIr.FORM.equals(form.getType()) || UiIr.SEARCH.equals(form.getType())) || !UiIr.GRID.equals(grid.getType())) continue;
 			if (UiIr.SEARCH.equals(form.getType()) && !form.getButtons().isEmpty()) continue;
-			if (!form.getSide().equals(grid.getSide())) continue;
+			if (!form.getSide().equals(grid.getSide()) || form.isInTab() != grid.isInTab()) continue;
 			if (!headersLookLikeCellValues(grid) || form.getFields().size() + 1 < grid.getColumns().size()) continue;
 			UiIr.Region merged = alignLabelsWithCells(form, grid);
 			regions.set(i, merged);
@@ -208,6 +213,8 @@ public final class UiIrNormalizer {
 		}
 		UiIr.Region merged = new UiIr.Region(UiIr.GRID);
 		merged.setSide(grid.getSide());
+		merged.setInTab(grid.isInTab());
+		merged.setPaging(grid.isPaging());
 		merged.getButtons().addAll(grid.getButtons());
 		String title = firstNonBlank(form.getTitle(), grid.getTitle());
 		for (UiIr.Field field : labels) { if (field.getLabel().equals(title)) { title = ""; break; } }

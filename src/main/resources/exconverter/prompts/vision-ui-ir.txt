@@ -28,7 +28,9 @@ Rules for tables:
 - A leading narrow column with 1, 2, 3 ... or # is editor "rowindex". The same button text in every row (e.g. 실행) is editor "button".
 Text typed inside an input box (a person's name, an e-mail address) is that field's "value", never a separate label.
 Side-by-side layout: when the page body is split into a left and a right column, add "side":"left" or "side":"right" to every region inside those columns, and list all left-column regions before the right-column ones. Omit "side" for full-width regions.
-Icon-only arrow buttons are written as "▲", "▼", "◀" or "▶".
+Icon-only arrow buttons are written as "▲", "▼", "◀" or "▶". ◀ ▶ buttons between the left and right columns are one "buttons" region without "side", listed between the left and the right regions.
+Tables, forms or a tree drawn inside the selected tab's panel follow the "tabs" region and carry "inTab":true.
+A grid with a page-number bar (1 2 3 ...) under it has "paging":true. Buttons in a table's or form's title row (행추가, 행삭제) go into that region's "buttons".
 
 Field component values: "inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "radiobutton", "numbereditor", "maskeditor", "textarea", "output".
 Return ONLY the JSON object: {"screen":{"name":"<page title or main heading>"},"regions":[...]}

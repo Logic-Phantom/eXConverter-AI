@@ -50,6 +50,8 @@ public final class UiIrParser {
 		region.setAlign(json.optString("align", ""));
 		region.setColumnsPerRow(json.optInt("columnsPerRow", 0));
 		region.setSide(normalizeSide(json.optString("side", json.optString("pane", ""))));
+		region.setInTab(json.optBoolean("inTab", false));
+		region.setPaging(json.optBoolean("paging", json.optBoolean("pagination", false)));
 		JSONArray fields = json.optJSONArray("fields");
 		if (fields != null) {
 			for (int i = 0; i < fields.length(); i++) {
