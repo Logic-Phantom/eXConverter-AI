@@ -1,7 +1,6 @@
 package com.tomatosystem.exconverter.service;
 
 import com.tomatosystem.exconverter.model.UiIr;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -12,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -29,13 +26,11 @@ import org.w3c.dom.NodeList;
 public class TemplateCatalog {
 	private final Map<String, TemplateProfile> profiles = new ConcurrentHashMap<String, TemplateProfile>();
 
-	public TemplateMatch selectFor(UiIr ir) {
-		File root = resolveTemplateRoot();
-		if (!root.isDirectory()) throw new IllegalStateException("Template directory not found: " + root.getAbsolutePath());
-		List<File> candidates = new ArrayList<File>();
-		try (Stream<java.nio.file.Path> files = Files.walk(root.toPath())) {
-			files.filter(path -> path.toString().toLowerCase().endsWith(".clx")).forEach(path -> candidates.add(path.toFile()));
-		} catch (IOException e) { throw new IllegalStateException("Could not read template directory", e); }
+	public TemplateMatch selectFor(UiIr ir) { return selectFor(ir, templateRoot()); }
+
+	/** Selection among the templates under a given root (the watcher and the harness check a specific folder). */
+	public TemplateMatch selectFor(UiIr ir, File root) {
+		List<File> candidates = templateFiles(root);
 		if (candidates.isEmpty()) throw new IllegalStateException("No CLX template exists under " + root.getAbsolutePath());
 		Features wanted = Features.of(ir);
 		List<TemplateMatch> ranked = new ArrayList<TemplateMatch>();
@@ -43,36 +38,68 @@ public class TemplateCatalog {
 			TemplateProfile profile = profile(file);
 			// Without a content-body (P0 inner pattern) the generator has nowhere to put the regions.
 			if (profile == null || !profile.usable) continue;
-			String id = root.toPath().relativize(file.toPath()).toString().replace(File.separatorChar, '/');
-			ranked.add(new TemplateMatch(file, id, profile.score(wanted), profile.describe()));
+			ranked.add(new TemplateMatch(file, idOf(root, file), profile.score(wanted), profile.describe()));
 		}
 		if (ranked.isEmpty()) throw new IllegalStateException("No readable CLX template exists under " + root.getAbsolutePath());
 		ranked.sort(Comparator.comparingInt(TemplateMatch::getScore).reversed().thenComparingLong((TemplateMatch m) -> m.getFile().length()).thenComparing(TemplateMatch::getId));
 		return ranked.get(0);
 	}
 
-	/** Uses an explicit server path when supplied; otherwise uses templates packaged by WTP. */
-	private File resolveTemplateRoot() {
+	/** Every *.clx under the root, sorted by path. Read on each call, so added files take part immediately. */
+	public static List<File> templateFiles(File root) {
+		if (!root.isDirectory()) throw new IllegalStateException("Template directory not found: " + root.getAbsolutePath());
+		List<File> files = new ArrayList<File>();
+		try (Stream<java.nio.file.Path> walk = Files.walk(root.toPath())) {
+			walk.filter(path -> path.toString().toLowerCase().endsWith(".clx")).forEach(path -> files.add(path.toFile()));
+		} catch (IOException e) { throw new IllegalStateException("Could not read template directory", e); }
+		files.sort(Comparator.comparing(File::getPath));
+		return files;
+	}
+
+	public static String idOf(File root, File file) { return root.toPath().relativize(file.toPath()).toString().replace(File.separatorChar, '/'); }
+
+	private static volatile File projectTemplates;
+
+	/**
+	 * Template root, in order: exconverter.template.root; the project's own templates/ folder (so a CLX added
+	 * there is used at once, without Publish; off with exconverter.template.useProjectFolder=false); the copy
+	 * WTP packages into WEB-INF/classes/exconverter/templates; ./templates.
+	 */
+	public static File templateRoot() {
 		String configuredRoot = ExConverterConfig.get("exconverter.template.root", "");
 		if (!configuredRoot.isEmpty()) return new File(configuredRoot);
+		if (!"false".equalsIgnoreCase(ExConverterConfig.get("exconverter.template.useProjectFolder", "true"))) {
+			File source = projectTemplates;
+			if (source == null) {
+				try { source = new File(ProjectRootResolver.resolve(null), "templates"); } catch (Exception ignored) { source = new File(""); }
+				projectTemplates = source;
+			}
+			if (source.isDirectory()) return source;
+		}
 		try {
 			URL packagedTemplates = Thread.currentThread().getContextClassLoader().getResource("exconverter/templates");
 			if (packagedTemplates != null && "file".equalsIgnoreCase(packagedTemplates.getProtocol())) return new File(packagedTemplates.toURI());
 		} catch (Exception ignored) { /* The local development fallback below remains valid. */ }
-		File local = new File("templates");
-		if (local.isDirectory()) return local;
-		try { return new File(ProjectRootResolver.resolve(null), "templates"); } catch (Exception e) { return local; }
+		return new File("templates");
 	}
 
 	private TemplateProfile profile(File file) {
-		String key = file.getAbsolutePath() + ":" + file.lastModified();
+		String path = file.getAbsolutePath() + ":";
+		String key = path + file.lastModified() + ":" + file.length();
 		TemplateProfile cached = profiles.get(key);
 		if (cached != null) return cached;
-		try {
-			TemplateProfile profile = TemplateProfile.of(file.getName(), Files.readAllBytes(file.toPath()));
-			profiles.put(key, profile);
-			return profile;
-		} catch (Exception e) { return null; }
+		TemplateProfile profile;
+		try { profile = TemplateProfile.of(file.getName(), Files.readAllBytes(file.toPath())); }
+		catch (Exception e) { profile = TemplateProfile.unreadable(e.getMessage()); } // unusable, never selected
+		profiles.keySet().removeIf(k -> k.startsWith(path)); // an edited template replaces its old profile
+		profiles.put(key, profile);
+		return profile;
+	}
+
+	/** Body layout of one template as text (e.g. "DIV{Gb | Gb}"), for reports. */
+	public String describe(File file) {
+		TemplateProfile profile = profile(file);
+		return profile.error != null ? "(읽을 수 없음: " + profile.error + ")" : profile.describe();
 	}
 
 	/** What the design image asks for. */
@@ -99,11 +126,18 @@ public class TemplateCatalog {
 		/** Body layout blocks, see {@link LayoutShape}. */
 		List<LayoutShape.Block> body;
 
+		/** A template that cannot be read; kept in the cache so it is not re-parsed on every request. */
+		static TemplateProfile unreadable(String reason) {
+			TemplateProfile p = new TemplateProfile();
+			p.body = new ArrayList<LayoutShape.Block>();
+			p.error = reason;
+			return p;
+		}
+
+		String error;
+
 		static TemplateProfile of(String fileName, byte[] xml) throws Exception {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setNamespaceAware(true);
-			factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			Document doc = factory.newDocumentBuilder().parse(new ByteArrayInputStream(xml));
+			Document doc = TemplateReverse.parse(xml);
 			TemplateProfile p = new TemplateProfile();
 			Element data = firstGroupByClass(doc, "content-body", "pop-content-body");
 			p.usable = data != null;

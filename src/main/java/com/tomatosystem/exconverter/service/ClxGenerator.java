@@ -79,11 +79,11 @@ public class ClxGenerator {
 				{ "flowlayoutdata", "f-data" }, { "verticaldata", "v-data" }, { "formlayout", "f-layout" }, { "flowlayout", "f-layout" },
 				{ "verticallayout", "v-layout" }, { "udc", "ud-control" }, { "dataset", "d-set" }, { "datacolumn", "d-column" },
 				{ "textarea", "t-area" }, { "checkbox", "c-box" }, { "radiobutton", "r-button" }, { "numbereditor", "n-editor" },
-				{ "maskeditor", "m-editor" }, { "tabfolder", "t-folder" }, { "tabitem", "t-item" }, { "tree", "tree" }, { "pageindexer", "p-indexer" } };
+				{ "maskeditor", "m-editor" }, { "tabfolder", "t-folder" }, { "tabitem", "t-item" }, { "tree", "tree" }, { "pageindexer", "p-indexer" }, { "checkboxgroup", "cb-group" }, { "item", "item" } };
 			for (String[] s : sids) SID_PREFIX.put(s[0], s[1]);
 			String[][] ids = { { "output", "opt" }, { "inputbox", "ipb" }, { "dateinput", "dti" }, { "combobox", "cmb" }, { "searchinput", "sipb" },
 				{ "button", "btn" }, { "grid", "grd" }, { "textarea", "txa" }, { "checkbox", "cbx" }, { "radiobutton", "rdb" },
-				{ "numbereditor", "nbe" }, { "maskeditor", "mse" }, { "tree", "tre" }, { "tabfolder", "tab" }, { "pageindexer", "pix" } };
+				{ "numbereditor", "nbe" }, { "maskeditor", "mse" }, { "tree", "tre" }, { "tabfolder", "tab" }, { "pageindexer", "pix" }, { "checkboxgroup", "cbg" } };
 			for (String[] s : ids) ID_PREFIX.put(s[0], s[1]);
 		}
 
@@ -508,8 +508,17 @@ public class ClxGenerator {
 				return group;
 			}
 			Element control = control(ID_PREFIX.containsKey(component) ? component : "inputbox");
-			if ("checkbox".equals(component) || "radiobutton".equals(component)) control.setAttribute("text", "");
+			if ("checkbox".equals(component)) control.setAttribute("text", "");
 			if ("output".equals(component)) control.setAttribute("value", field.getValue());
+			// Choices as in the templates (P3-1): <cl:item label=".." value="value1"/> per visible option.
+			if ("radiobutton".equals(component) || "checkboxgroup".equals(component)) {
+				for (int i = 0; i < field.getOptions().size(); i++) {
+					Element item = element("item");
+					item.setAttribute("label", field.getOptions().get(i));
+					item.setAttribute("value", "value" + (i + 1));
+					control.appendChild(item);
+				}
+			}
 			return control;
 		}
 

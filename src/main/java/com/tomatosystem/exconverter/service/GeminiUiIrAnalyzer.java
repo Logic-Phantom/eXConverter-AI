@@ -359,8 +359,9 @@ public class GeminiUiIrAnalyzer {
 		JSONObject field = object()
 			.put("properties", new JSONObject()
 				.put("label", type("string", "Label text shown left of the control"))
-				.put("component", enumType(new String[] { "inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "radiobutton", "numbereditor", "maskeditor", "textarea", "output" }))
+				.put("component", enumType(new String[] { "inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "checkboxgroup", "radiobutton", "numbereditor", "maskeditor", "textarea", "output" }))
 				.put("value", type("string", "Text shown inside the input, else empty"))
+				.put("options", array(type("string", "Option caption of a radiobutton or checkboxgroup")))
 				.put("required", type("boolean", "True when the label carries a required mark")))
 			.put("required", new JSONArray().put("label"));
 		JSONObject column = object()

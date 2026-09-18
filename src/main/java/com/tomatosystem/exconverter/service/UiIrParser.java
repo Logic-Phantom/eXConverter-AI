@@ -59,7 +59,10 @@ public final class UiIrParser {
 				if (f == null) continue;
 				String label = f.optString("label", "").trim();
 				if (label.isEmpty()) continue;
-				region.getFields().add(new UiIr.Field(label, normalizeComponent(f.optString("component", f.optString("type", ""))), f.optBoolean("required", false), f.optString("value", "")));
+				UiIr.Field field = new UiIr.Field(label, normalizeComponent(f.optString("component", f.optString("type", ""))), f.optBoolean("required", false), f.optString("value", ""));
+				JSONArray options = f.optJSONArray("options");
+				if (options != null) { for (int o = 0; o < options.length(); o++) { String option = String.valueOf(options.get(o)).trim(); if (!option.isEmpty()) field.getOptions().add(option); } }
+				region.getFields().add(field);
 			}
 		}
 		JSONArray columns = json.optJSONArray("columns");
@@ -132,6 +135,7 @@ public final class UiIrParser {
 		if (c.contains("date") || c.contains("calendar")) return "dateinput";
 		if (c.contains("combo") || c.contains("select") || c.contains("dropdown")) return "combobox";
 		if (c.contains("searchinput") || c.equals("search") || c.contains("popup")) return "searchinput";
+		if (c.contains("checkboxgroup") || c.contains("checkgroup") || c.contains("multicheck")) return "checkboxgroup";
 		if (c.contains("checkbox") || c.equals("check")) return "checkbox";
 		if (c.contains("radio")) return "radiobutton";
 		if (c.contains("number") || c.contains("spin")) return "numbereditor";

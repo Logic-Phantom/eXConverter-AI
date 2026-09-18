@@ -52,6 +52,7 @@ Reading search and form fields
 - Text typed inside an input box, such as a person's name, an e-mail address or a date, is that field's "value". It is never a separate field and never a label.
 - A label followed by two date boxes joined by "~" is one field with component "daterange".
 - A red asterisk or a "*" next to a label means "required": true.
+- Round option buttons after one label are one field with component "radiobutton"; several check boxes with their own captions after one label are one field with component "checkboxgroup". Put the option captions, left to right, in "options", for example ["전체", "사용", "미사용"].
 - Buttons at the right end of a search bar belong to that search region's "buttons", not to a separate "buttons" region.
 
 Placement

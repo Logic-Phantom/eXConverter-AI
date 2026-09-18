@@ -120,7 +120,10 @@ public class UiIr {
 		private final String component;
 		private final boolean required;
 		private final String value;
+		/** Captions of the choices of a radiobutton / checkboxgroup, left to right. */
+		private final List<String> options = new ArrayList<String>();
 		public Field(String label, String component, boolean required) { this(label, component, required, ""); }
+		public List<String> getOptions() { return options; }
 		public Field(String label, String component, boolean required, String value) { this.label = label; this.component = component; this.required = required; this.value = value == null ? "" : value; }
 		public String getLabel() { return label; }
 		public String getComponent() { return component; }

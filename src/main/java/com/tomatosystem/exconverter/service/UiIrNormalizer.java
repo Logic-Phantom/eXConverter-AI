@@ -295,7 +295,9 @@ public final class UiIrNormalizer {
 			if ("output".equals(previous.getComponent()) || "checkbox".equals(previous.getComponent()) || "radiobutton".equals(previous.getComponent())) continue;
 			String text = candidate.getLabel().trim();
 			if (!isValueFor(previous.getLabel().trim(), text)) continue;
-			fields.set(i - 1, new UiIr.Field(previous.getLabel(), previous.getComponent(), previous.isRequired(), text));
+			UiIr.Field repaired = new UiIr.Field(previous.getLabel(), previous.getComponent(), previous.isRequired(), text);
+			repaired.getOptions().addAll(previous.getOptions());
+			fields.set(i - 1, repaired);
 			fields.remove(i);
 			warnings.add("보정: '" + previous.getLabel() + "' 입력칸의 값 '" + text + "' 이(가) 라벨로 인식되어 필드에서 제거");
 			i--;

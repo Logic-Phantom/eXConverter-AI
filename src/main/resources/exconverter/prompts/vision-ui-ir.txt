@@ -32,5 +32,6 @@ Icon-only arrow buttons are written as "▲", "▼", "◀" or "▶". ◀ ▶ but
 Tables, forms or a tree drawn inside the selected tab's panel follow the "tabs" region and carry "inTab":true.
 A grid with a page-number bar (1 2 3 ...) under it has "paging":true. Buttons in a table's or form's title row (행추가, 행삭제) go into that region's "buttons".
 
-Field component values: "inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "radiobutton", "numbereditor", "maskeditor", "textarea", "output".
+Field component values: "inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "checkboxgroup", "radiobutton", "numbereditor", "maskeditor", "textarea", "output".
+For "radiobutton" and "checkboxgroup" list the option captions in "options", e.g. "options":["전체","사용","미사용"].
 Return ONLY the JSON object: {"screen":{"name":"<page title or main heading>"},"regions":[...]}

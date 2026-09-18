@@ -92,6 +92,9 @@ eXConverter-AI/
 │   │   │   ├── ColumnNames.java                한글 라벨 ↔ 컬럼 코드 사전 (보정기/생성기 공용)
 │   │   │   ├── TemplateCatalog.java            템플릿 프로파일링 + 점수 기반 선택
 │   │   │   ├── LayoutShape.java                본문 레이아웃 블록열(G/F/T/DIV/TAB …) + 편집거리 — §7
+│   │   │   ├── TemplateReverse.java            템플릿 CLX → 이상적 UI-IR 역분석, 모르는 컨트롤 탐지 — §16
+│   │   │   ├── TemplateInspector.java          템플릿 1개 점검(선택·재현·중복·미지원) — §16
+│   │   │   ├── TemplateWatcher.java            templates/ 감시: 추가·변경·삭제 자동 분석, 리포트 — §16
 │   │   │   ├── ClxGenerator.java               UI-IR + 템플릿 → CLX (결정적 컴파일러)
 │   │   │   ├── ClxValidator.java               생성 CLX 구조 검증
 │   │   │   ├── CompanionJsGenerator.java       .clx 와 같은 이름의 .js 생성
@@ -103,6 +106,7 @@ eXConverter-AI/
 │   │       ├── ImageConversionController.java  POST /EXConverter/uploadAndGenerate.do (이미지 업로드, 로컬 AI)
 │   │       ├── GeminiConversionController.java POST /EXConverter/gemini/uploadAndGenerate.do (Gemini)
 │   │       ├── GeminiLiteConversionController.java POST /EXConverter/gemini-lite/uploadAndGenerate.do (Gemini Flash-Lite)
+│   │       ├── TemplateController.java         GET /EXConverter/templates/status.do, rescan.do (템플릿 점검 결과)
 │   │       └── GenerationController.java       POST /api/exconverter/generate.do (UI-IR JSON 직접 입력)
 │   ├── exbuilder/web/CleopatraUIController.java  *.clx 요청을 eXBuilder6 페이지로 렌더링 (기존)
 │   └── web/IndexController.java                  /index.do (기존)
@@ -377,7 +381,9 @@ java -jar ci-lib/clx/e6-compiler.jar -s <프로젝트폴더> -o <출력폴더>
 | `exconverter.ollama.numCtx` | 8192 | 컨텍스트 길이 (이미지 토큰 ~1,600 + 출력) |
 | `exconverter.vision.maxImageSide` | 1280 | 모델에 보내는 이미지 긴 변. 작을수록 빠르지만 작은 글자 인식 저하 |
 | `exconverter.vision.command` | (빈값) | 로컬 bridge 실행파일. 인자=이미지 경로, stdout=UI-IR JSON. 설정 시 Ollama보다 우선 |
-| `exconverter.template.root` | (빈값) | 템플릿 루트 강제 지정. 없으면 `WEB-INF/classes/exconverter/templates` → `./templates` |
+| `exconverter.template.root` | (빈값) | 템플릿 루트 강제 지정. 없으면 프로젝트 `templates/`(아래 키) → `WEB-INF/classes/exconverter/templates` → `./templates` |
+| `exconverter.template.useProjectFolder` | true | 프로젝트 소스의 `templates/` 를 직접 읽음 → 추가한 템플릿이 Publish 없이 바로 반영. false 면 배포본(WEB-INF/classes) 사용 |
+| `exconverter.template.scanSeconds` | 30 | 템플릿 감시 주기(초). 0 = 시작 시 1회, -1 = 끔 (§16) |
 | `exconverter.generated.root` | `generated` | 업로드/UI-IR 저장 루트 |
 | `exconverter.project.root` | (자동) | clx-src 를 가진 프로젝트 루트. 결과는 `clx-src/result/날짜` |
 | `exconverter.clx.result.root` | (자동) | 결과 저장 루트 직접 지정 |
@@ -741,3 +747,50 @@ java -Dfile.encoding=UTF-8 -cp "out;$cp;src\main\resources" GeminiHarness `
 - **`regions` 를 최상위가 아니라 `screen` 안에 넣어** `regions is required` 400. `UiIrParser` 가 `screen.regions` 를 허용하도록 보정했다(§6).
 - 보정 후 같은 출력으로: 조회 3필드, 그리드 3개(헤더 5/6/6), 설명문 1개 → 템플릿 P4-6, ClxValidator 오류 0, e6-compiler `BUILD SUCCESS`. 전체 회귀 7샘플 × 77템플릿 = 539건 실패 0.
 - 판독 품질 메모: 그리드 제목에 건수 표시(`사용자 목록  총 0건`)가 그대로 들어옴, 텍스트 없는 아이콘 버튼 2개는 빈 텍스트로 와서 버려짐.
+
+---
+
+## 16. 템플릿 추가와 자동 분석 (`TemplateWatcher`)
+
+`templates/` 하위에 CLX(+ 같은 이름의 JS)를 넣으면 **다음 변환 요청부터 바로 선택 후보**가 된다(`TemplateCatalog` 는 요청마다 폴더를 읽고, 기본값으로 프로젝트 소스 폴더를 직접 읽으므로 Publish 불필요). 재학습·코드 수정은 없다.
+그것만으로는 "그 템플릿이 실제로 선택되고 구조대로 생성되는지"를 알 수 없으므로, 서버가 템플릿을 계속 분석해 알려 준다.
+
+### 16.1 동작
+- 서버 시작 3초 뒤 전체 분석, 이후 `exconverter.template.scanSeconds`(기본 30초)마다 폴더를 확인. 파일 크기/수정시각이 바뀐 것만 다시 분석하고, 변화가 없으면 수 ms 안에 끝난다.
+- 템플릿 1개 점검(`TemplateInspector`) — §7 의 측정과 같은 로직:
+  1. `TemplateReverse` 로 템플릿을 "그 화면 이미지를 완벽히 분석한 UI-IR"로 역변환
+  2. **선택**: 그 UI-IR 로 자동 선택하면 같은 구조의 템플릿이 나오는가
+  3. **재현**: 그 UI-IR + 이 템플릿으로 CLX 를 생성 → ClxValidator → 다시 역변환했을 때 같은 구조인가
+  4. **모르는 컨트롤**: 본문에 생성기가 모르는 `cl:` 요소나 UDC 가 있으면 목록으로 알림(생성 시 제거됨)
+- 템플릿이 추가·삭제되면 나머지 템플릿의 선택 결과도 다시 확인한다(새 템플릿이 기존 것을 가리는 경우 `영향` 으로 로그).
+- Spring 루트/디스패처 컨텍스트가 모두 `com.tomatosystem` 을 스캔해 빈이 2개 생기므로, 감시 상태와 스레드는 static 으로 1개만 둔다.
+
+### 16.2 결과 확인
+Eclipse 콘솔:
+```
+[템플릿] 77개 분석 완료 (C:\eclipse_AI\eXConverter-AI\templates) — 선택 67/67, 재현 67/67, 상태 {DUPLICATE=21, OK=46, UNSUPPORTED=9, UNUSABLE=1}
+[템플릿] 추가: P9_New Pattern/New Pattern P9-1.clx — 본문 G G G — 정상 (선택·재현 OK)
+[템플릿] 추가: P9_New Pattern/Copy of P2-4.clx — 본문 DIV{Gb | Gb} — 주의 | 구조가 같은 P2_Multi Pattern/Multi Pattern P2-4.clx 이(가) 먼저 선택됨(파일이 더 작음) — 이 파일은 사용되지 않음
+[템플릿] 추가: P9_New Pattern/Unknown Control P9-2.clx — 본문 G G — 주의 | 생성기가 모르는 컨트롤 [htmlsnippet] — 화면 생성 시 제거됨 | …
+[템플릿] 추가: P9_New Pattern/Broken P9-3.clx — 본문  — 오류 ERROR | 분석 실패: XML 오류 (줄 131, 열 82): …
+[템플릿] 삭제: P9_New Pattern/Copy of P2-4.clx
+```
+(위는 2026-09-18 템플릿 사본 폴더에 새 구조·사본·모르는 컨트롤·깨진 XML 을 넣어 실측한 로그)
+
+- 파일: `generated/template-report.json` — 템플릿별 `status, body(블록열), structureKey, selected, selectionOk, roundtripOk, unknownControls, twins(구조가 같은 템플릿), messages`
+- API: `GET /EXConverter/templates/status.do`(마지막 결과), `GET|POST /EXConverter/templates/rescan.do`(지금 전체 재분석)
+
+| status | 의미 | 조치 |
+|---|---|---|
+| `OK` | 선택·재현 모두 정상 | 없음 |
+| `DUPLICATE` | 구조가 같은 다른 템플릿이 먼저 선택됨(동점 → 작은 파일). 이 파일은 쓰이지 않음 | 의도한 사본이면 무시. 이 템플릿을 쓰려면 구조를 구별되게(제목행 버튼, 좌우 분할, 페이지 인덱서 등) 하거나 기존 것을 치움 |
+| `UNSUPPORTED` | UI-IR 로 표현할 수 없는 컨트롤(아코디언, 서드파티) | 이미지 분석으로는 선택 불가. 필요하면 UI-IR 영역 유형 추가 개발 |
+| `UNUSABLE` | `content-body`/`pop-content-body` 없음 | 표준 구조(§7 템플릿 추가 방법)로 수정 |
+| `SELECT_FAIL` | 이 구조의 화면에 다른 구조 템플릿이 선택됨 | `LayoutShape` 가 구별 못 하는 요소 → 선택 규칙 보강 필요 |
+| `ROUNDTRIP_FAIL` | 생성기가 이 구조를 재현 못 함 | `ClxGenerator` 보강 필요 (메시지에 기대/실제 구조 키) |
+| `ERROR` | XML 오류 등 | 메시지의 줄/열 확인 |
+
+"모르는 컨트롤" 알림은 상태와 별개로 붙는다. 실제로 이 기능이 기존 템플릿 12개에서 `cl:checkboxgroup` 을 찾아내, 필드 `component: "checkboxgroup"` 과 `options`(라디오 버튼·체크박스 그룹의 선택지 → `cl:item`) 를 추가했다.
+
+### 16.3 명령줄
+서버 없이 같은 점검: `TemplateMatchHarness`(§13.3). 새 템플릿을 커밋하기 전에 돌려 `MISS` 가 없는지 본다.

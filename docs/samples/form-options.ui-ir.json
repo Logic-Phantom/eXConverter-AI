@@ -1,0 +1,21 @@
+{
+  "screen": { "name": "사용자 권한 관리", "type": "", "sourceWidth": 1440 },
+  "regions": [
+    { "type": "title", "text": "사용자 권한 관리" },
+    { "type": "search", "fields": [
+      { "label": "사용여부", "component": "radiobutton", "options": ["전체", "사용", "미사용"] },
+      { "label": "사용자명", "component": "inputbox" }
+    ], "buttons": ["조회"] },
+    { "type": "grid", "title": "사용자 목록", "buttons": ["행추가", "행삭제"], "paging": true, "columns": [
+      { "header": "No", "editor": "rowindex", "width": 50, "cellText": "" },
+      { "header": "사용자ID", "editor": "output", "width": 140, "cellText": "" },
+      { "header": "사용자명", "editor": "output", "width": 140, "cellText": "" }
+    ] },
+    { "type": "form", "title": "권한 상세", "buttons": ["수정"], "columnsPerRow": 2, "fields": [
+      { "label": "권한", "component": "checkboxgroup", "options": ["조회", "등록", "삭제"] },
+      { "label": "구분", "component": "radiobutton", "options": ["내부", "외부"] },
+      { "label": "비고", "component": "inputbox" }
+    ] },
+    { "type": "buttons", "align": "right", "buttons": ["저장"] }
+  ]
+}

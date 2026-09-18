@@ -37,8 +37,9 @@
               "required": ["label"],
               "properties": {
                 "label": { "type": "string" },
-                "component": { "enum": ["inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "radiobutton", "numbereditor", "maskeditor", "textarea", "output"] },
+                "component": { "enum": ["inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "checkboxgroup", "radiobutton", "numbereditor", "maskeditor", "textarea", "output"] },
                 "value": { "type": "string" },
+                "options": { "type": "array", "items": { "type": "string" }, "description": "radiobutton / checkboxgroup option captions, left to right" },
                 "required": { "type": "boolean" }
               }
             }
