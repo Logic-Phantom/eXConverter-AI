@@ -17,6 +17,9 @@ import java.util.Map;
  *       cell values (FNM, ACNO____, #) → one grid with the labels as headers.</li>
  *   <li>Meaningless uniform column widths → unknown (compiler estimates).</li>
  *   <li>A textarea "title" copied from the preceding grid → removed.</li>
+ *   <li>(rule 5 is mergeValuesReadAsLabels)</li>
+ *   <li>A sectionTitle directly above a grid/form/textarea → folded into that region's title.</li>
+ *   <li>A "총 N건" row counter in a grid title → removed (udcComGridTitle draws it).</li>
  * </ol>
  */
 public final class UiIrNormalizer {
@@ -37,8 +40,50 @@ public final class UiIrNormalizer {
 				if (region.getTitle().equals(grid.getTitle()) || headers(grid).contains(region.getTitle())) region.setTitle("");
 			}
 		}
+		stripRowCountFromTitles(regions, ir.getWarnings());
+		absorbSectionTitles(regions, ir.getWarnings());
 		return ir;
 	}
+
+	// ------------------------------------------------------------------ rules 6, 7
+
+	/** "사용자 목록  총 0건": the counter is drawn by udcComGridTitle itself (총건수 N건), so it is not part of the title. */
+	private static final String ROW_COUNT_SUFFIX = "\\s*[\\[(]?\\s*총\\s*(건수)?\\s*[0-9,]+\\s*건\\s*[\\])]?\\s*$";
+
+	static void stripRowCountFromTitles(List<UiIr.Region> regions, List<String> warnings) {
+		for (UiIr.Region region : regions) {
+			if (!UiIr.GRID.equals(region.getType())) continue;
+			String title = region.getTitle();
+			String stripped = title.replaceAll(ROW_COUNT_SUFFIX, "").trim();
+			if (stripped.equals(title.trim())) continue;
+			region.setTitle(stripped);
+			warnings.add("보정: 그리드 제목의 건수 표시 제거 (" + title.trim() + " → " + stripped + ")");
+		}
+	}
+
+	/**
+	 * A sectionTitle directly above a grid, form or textarea is that region's heading. Emitting both makes the CLX
+	 * show the heading twice (content-title-box output + udcComGridTitle), so fold it into the region's title.
+	 */
+	static void absorbSectionTitles(List<UiIr.Region> regions, List<String> warnings) {
+		for (int i = 0; i + 1 < regions.size(); i++) {
+			UiIr.Region section = regions.get(i);
+			UiIr.Region next = regions.get(i + 1);
+			if (!UiIr.SECTION_TITLE.equals(section.getType())) continue;
+			String type = next.getType();
+			if (!(UiIr.GRID.equals(type) || UiIr.FORM.equals(type) || UiIr.TEXTAREA.equals(type))) continue;
+			if (!section.getSide().isEmpty() && !section.getSide().equals(next.getSide())) continue;
+			String text = firstNonBlank(section.getText(), section.getTitle()).replaceAll(ROW_COUNT_SUFFIX, "").trim();
+			String title = next.getTitle();
+			if (title.isEmpty()) next.setTitle(text);
+			else if (!compact(title).equals(compact(text))) continue;
+			regions.remove(i);
+			i--;
+			warnings.add("보정: 섹션 제목 '" + text + "' 을 바로 아래 " + type + " 제목으로 통합");
+		}
+	}
+
+	private static String compact(String text) { return text.replaceAll("\\s+", ""); }
 
 	// ------------------------------------------------------------------ rule 1
 
@@ -61,7 +106,7 @@ public final class UiIrNormalizer {
 		boolean titlesCompatible = a.getTitle().isEmpty() || b.getTitle().isEmpty() || a.getTitle().equals(b.getTitle());
 		List<String> common = new ArrayList<String>(headers(a));
 		common.retainAll(headers(b));
-		return titlesCompatible && common.size() >= 2;
+		return titlesCompatible && common.size() >= 2 && a.getSide().equals(b.getSide());
 	}
 
 	/** Header-only region, or a column whose "header" is really that row's value. */
@@ -96,6 +141,7 @@ public final class UiIrNormalizer {
 		if (rowIndex) { for (List<String> row : rows) row.remove(0); }
 
 		UiIr.Region merged = new UiIr.Region(UiIr.GRID);
+		merged.setSide(run.get(0).getSide());
 		for (UiIr.Region grid : run) { if (!grid.getTitle().isEmpty() && !canonical.contains(grid.getTitle())) { merged.setTitle(grid.getTitle()); break; } }
 		if (rowIndex) merged.getColumns().add(new UiIr.Column("", "rowindex", 0, "1"));
 		for (int c = 0; c < canonical.size(); c++) {
@@ -129,6 +175,7 @@ public final class UiIrNormalizer {
 			UiIr.Region grid = regions.get(i + 1);
 			if (!(UiIr.FORM.equals(form.getType()) || UiIr.SEARCH.equals(form.getType())) || !UiIr.GRID.equals(grid.getType())) continue;
 			if (UiIr.SEARCH.equals(form.getType()) && !form.getButtons().isEmpty()) continue;
+			if (!form.getSide().equals(grid.getSide())) continue;
 			if (!headersLookLikeCellValues(grid) || form.getFields().size() + 1 < grid.getColumns().size()) continue;
 			UiIr.Region merged = alignLabelsWithCells(form, grid);
 			regions.set(i, merged);
@@ -160,6 +207,8 @@ public final class UiIrNormalizer {
 			}
 		}
 		UiIr.Region merged = new UiIr.Region(UiIr.GRID);
+		merged.setSide(grid.getSide());
+		merged.getButtons().addAll(grid.getButtons());
 		String title = firstNonBlank(form.getTitle(), grid.getTitle());
 		for (UiIr.Field field : labels) { if (field.getLabel().equals(title)) { title = ""; break; } }
 		merged.setTitle(title);

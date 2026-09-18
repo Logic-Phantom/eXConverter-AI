@@ -3,6 +3,7 @@ import com.sun.net.httpserver.HttpServer;
 import com.tomatosystem.exconverter.model.UiIr;
 import com.tomatosystem.exconverter.service.ClxGenerator;
 import com.tomatosystem.exconverter.service.ClxValidator;
+import com.tomatosystem.exconverter.service.GeminiLiteUiIrAnalyzer;
 import com.tomatosystem.exconverter.service.GeminiUiIrAnalyzer;
 import com.tomatosystem.exconverter.service.ImageUiIrAnalyzer;
 import com.tomatosystem.exconverter.service.TemplateCatalog;
@@ -27,10 +28,15 @@ import org.json.JSONObject;
  *
  * Usage:
  *   java -Dexconverter.gemini.url=http://127.0.0.1:18436 -Dexconverter.gemini.apiKey=test
- *        -cp "out;&lt;libs&gt;;src\main\resources" GeminiStreamHarness &lt;ui-ir.json&gt; [image.png] [out.clx]
+ *        -cp "out;&lt;libs&gt;;src\main\resources" GeminiStreamHarness [--lite] &lt;ui-ir.json&gt; [image.png] [out.clx]
+ *
+ * --lite runs the gemini-lite engine's model (exconverter.gemini.lite.model) instead of exconverter.gemini.model.
  */
 public class GeminiStreamHarness {
 	public static void main(String[] args) throws Exception {
+		boolean lite = args.length > 0 && "--lite".equals(args[0]);
+		if (lite) args = java.util.Arrays.copyOfRange(args, 1, args.length);
+		String model = lite ? GeminiLiteUiIrAnalyzer.model() : GeminiUiIrAnalyzer.model();
 		String uiIr = new String(Files.readAllBytes(new File(args[0]).toPath()), StandardCharsets.UTF_8);
 		File image = args.length > 1 ? new File(args[1]) : syntheticImage();
 		File out = new File(args.length > 2 ? args[2] : "gemini-stream-harness.clx");
@@ -38,7 +44,7 @@ public class GeminiStreamHarness {
 		server.createContext("/v1beta", exchange -> serve(exchange, uiIr));
 		server.start();
 		try {
-			ImageUiIrAnalyzer.Analysis analysis = new GeminiUiIrAnalyzer().analyze(image, image.getName());
+			ImageUiIrAnalyzer.Analysis analysis = new GeminiUiIrAnalyzer().analyze(image, image.getName(), model);
 			UiIr ir = analysis.getUiIr();
 			System.out.println("mode=" + analysis.getMode() + " regions=" + ir.getRegions().size() + " warnings=" + ir.getWarnings());
 			TemplateCatalog.TemplateMatch match = new TemplateCatalog().selectFor(ir);

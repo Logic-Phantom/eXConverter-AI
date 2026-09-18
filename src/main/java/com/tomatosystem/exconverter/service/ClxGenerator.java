@@ -93,6 +93,8 @@ public class ClxGenerator {
 		private final Set<String> sids = new HashSet<String>();
 		private final Set<String> ids = new HashSet<String>();
 		private Element model;
+		/** Grids built so far, across panes, for the fallback titles (screen name, then "목록 N"). */
+		private int gridIndex;
 
 		Compiler(Document doc, UiIr ir) { this.doc = doc; this.ir = ir; }
 
@@ -108,6 +110,9 @@ public class ClxGenerator {
 			Element footer = findGroup(body, "grpFooter", "content-footer", "pop-content-footer");
 			Element contentPrototype = data == null ? null : findContentPrototype(data);
 			if (contentPrototype != null) contentPrototype = (Element) contentPrototype.cloneNode(true);
+			// Left/right panes keep the template's column ratio (1:1, 2:5, 250px:1 ...).
+			List<Element> divisions = data == null ? new ArrayList<Element>() : descendantsByClass(data, "division-group");
+			Element divisionPrototype = divisions.isEmpty() ? null : (Element) divisions.get(0).cloneNode(true);
 
 			// Split regions by where the eXBuilder6 skeleton expects them.
 			List<UiIr.Region> headerRegions = new ArrayList<UiIr.Region>();
@@ -140,7 +145,7 @@ public class ClxGenerator {
 			if (searchRegion != null) buildSearch(search, searchRegion);
 			else if (search != null) search.getParentNode().removeChild(search);
 			if (header != null) buildHeaderExtras(header, search, headerRegions);
-			if (data != null) buildBody(data, bodyRegions, contentPrototype);
+			if (data != null) buildBody(data, bodyRegions, contentPrototype, divisionPrototype);
 			else if (!bodyRegions.isEmpty()) ir.getWarnings().add("Template has no content-body; " + bodyRegions.size() + " regions skipped");
 			if (footer != null) {
 				if (footerRegion != null) buildFooter(footer, footerRegion);
@@ -192,28 +197,110 @@ public class ClxGenerator {
 			if (vd != null) vd.setAttribute("height", (total + Math.max(0, children.size() - 1) * 12) + "px");
 		}
 
-		private void buildBody(Element data, List<UiIr.Region> regions, Element contentPrototype) {
+		/**
+		 * Stacks the body regions top to bottom. The run from the first to the last region that has a side
+		 * becomes one division-group row with a left and a right pane; regions before and after it span the width.
+		 */
+		private void buildBody(Element data, List<UiIr.Region> regions, Element contentPrototype, Element divisionPrototype) {
 			Element layout = layoutOf(data);
-			List<String[]> rows = new ArrayList<String[]>();
-			int gridIndex = 0;
-			int fixedHeight = 0;
-			int flexible = 0;
-			for (UiIr.Region region : regions) {
-				Element control = UiIr.GRID.equals(region.getType()) ? buildGridContent(region, contentPrototype, ++gridIndex) : buildRegion(region, contentPrototype);
-				if (control == null) continue;
-				control.insertBefore(formData(rows.size(), 0), control.getFirstChild());
-				data.insertBefore(control, layout);
-				if (isFlexible(region)) { rows.add(new String[] { "1", "FRACTION" }); flexible++; }
-				else { int h = heightOf(region); rows.add(new String[] { String.valueOf(h), "PIXEL" }); fixedHeight += h; }
+			int first = -1;
+			int last = -1;
+			for (int i = 0; i < regions.size(); i++) { if (!regions.get(i).getSide().isEmpty()) { if (first < 0) first = i; last = i; } }
+			Stack stack = new Stack();
+			for (int i = 0; i < regions.size(); i++) {
+				Placed placed = i == first ? buildDivision(regions.subList(first, last + 1), contentPrototype, divisionPrototype) : place(regions.get(i), contentPrototype);
+				if (i == first) i = last;
+				if (placed == null) continue;
+				placed.control.insertBefore(formData(stack.rows.size(), 0), placed.control.getFirstChild());
+				data.insertBefore(placed.control, layout);
+				stack.add(placed);
 			}
-			if (rows.isEmpty()) rows.add(new String[] { "1", "FRACTION" });
-			Element newLayout = formLayout(rows, cols(new String[] { "1", "FRACTION" }), 12, 12);
+			Element newLayout = formLayout(stack.rows(), cols(new String[] { "1", "FRACTION" }), 12, 12);
 			if (layout != null) data.replaceChild(newLayout, layout); else data.appendChild(newLayout);
 			Element vd = firstChildByLocalName(data, "verticaldata");
-			if (vd != null) {
-				int needed = fixedHeight + flexible * 260 + Math.max(0, rows.size() - 1) * 12;
-				vd.setAttribute("height", Math.max(parsePx(vd.getAttribute("height"), 650), needed) + "px");
+			if (vd != null) vd.setAttribute("height", Math.max(parsePx(vd.getAttribute("height"), 650), stack.needed) + "px");
+		}
+
+		/** A built region and the formlayout row it needs: 1fr when flexible (grid/tabs/tree), else its pixel height. */
+		private static final class Placed {
+			final Element control; final boolean flexible; final int height;
+			Placed(Element control, boolean flexible, int height) { this.control = control; this.flexible = flexible; this.height = height; }
+		}
+
+		/** Rows of a vertical formlayout (12px gaps) and the height they need, counting 260px per flexible row. */
+		private static final class Stack {
+			private final List<String[]> rows = new ArrayList<String[]>();
+			int needed;
+			boolean flexible;
+			void add(Placed placed) {
+				rows.add(placed.flexible ? new String[] { "1", "FRACTION" } : new String[] { String.valueOf(placed.height), "PIXEL" });
+				needed += placed.height + (rows.size() > 1 ? 12 : 0);
+				flexible |= placed.flexible;
 			}
+			List<String[]> rows() { return rows.isEmpty() ? rowsOf(new String[] { "1", "FRACTION" }) : rows; }
+		}
+
+		private Placed place(UiIr.Region region, Element contentPrototype) {
+			Element control = UiIr.GRID.equals(region.getType()) ? buildGridContent(region, contentPrototype, ++gridIndex) : buildRegion(region, contentPrototype);
+			return control == null ? null : new Placed(control, isFlexible(region), heightOf(region));
+		}
+
+		private Placed buildDivision(List<UiIr.Region> split, Element contentPrototype, Element divisionPrototype) {
+			List<UiIr.Region> left = new ArrayList<UiIr.Region>();
+			List<UiIr.Region> right = new ArrayList<UiIr.Region>();
+			String side = UiIr.LEFT;
+			for (UiIr.Region region : split) {
+				// A full-width region between two paned ones is read as part of the pane above it.
+				if (!region.getSide().isEmpty()) side = region.getSide();
+				(UiIr.RIGHT.equals(side) ? right : left).add(region);
+			}
+			Element division;
+			Element prototypeLayout = divisionPrototype == null ? null : layoutOf(divisionPrototype);
+			if (prototypeLayout != null && tracks(prototypeLayout, "columns") == 2 && tracks(prototypeLayout, "rows") == 1) {
+				division = (Element) divisionPrototype.cloneNode(true);
+				stripLayoutData(division);
+				removeControls(division);
+				reassign(division);
+			} else {
+				// Shuttle templates have a third (button) column; a plain 1:1 split is the safe default.
+				division = element("group");
+				division.setAttribute("class", "division-group");
+				division.appendChild(formLayout(rowsOf(new String[] { "1", "FRACTION" }), cols(new String[] { "1", "FRACTION" }, new String[] { "1", "FRACTION" }), 16, 12));
+			}
+			Element layout = layoutOf(division);
+			Placed[] panes = { pane(left, contentPrototype), pane(right, contentPrototype) };
+			boolean flexible = false;
+			int height = 0;
+			for (int col = 0; col < panes.length; col++) {
+				panes[col].control.insertBefore(formData(0, col), panes[col].control.getFirstChild());
+				division.insertBefore(panes[col].control, layout);
+				flexible |= panes[col].flexible;
+				height = Math.max(height, panes[col].height);
+			}
+			return new Placed(division, flexible, height);
+		}
+
+		/** One pane: a lone region goes in directly (as the templates do), several are stacked in a plain group. */
+		private Placed pane(List<UiIr.Region> regions, Element contentPrototype) {
+			List<Placed> placed = new ArrayList<Placed>();
+			for (UiIr.Region region : regions) { Placed p = place(region, contentPrototype); if (p != null) placed.add(p); }
+			if (placed.size() == 1) return placed.get(0);
+			Element group = element("group");
+			group.setAttribute("id", uniqueId("grp"));
+			Stack stack = new Stack();
+			for (Placed p : placed) {
+				p.control.insertBefore(formData(stack.rows.size(), 0), p.control.getFirstChild());
+				group.appendChild(p.control);
+				stack.add(p);
+			}
+			group.appendChild(formLayout(stack.rows(), cols(new String[] { "1", "FRACTION" }), 12, 12));
+			return new Placed(group, stack.flexible, stack.needed);
+		}
+
+		private static int tracks(Element layout, String name) {
+			int n = 0;
+			for (Element child : childElements(layout, false)) { if (name.equals(child.getLocalName())) n++; }
+			return n;
 		}
 
 		private boolean isFlexible(UiIr.Region region) {
@@ -227,7 +314,8 @@ public class ClxGenerator {
 			if (UiIr.SECTION_TITLE.equals(type)) return 24;
 			if (UiIr.BUTTONS.equals(type)) return 28;
 			if (UiIr.TEXTAREA.equals(type)) return 160;
-			if (UiIr.FORM.equals(type)) {
+			// A second search region in the body is drawn by buildForm, so it is sized like one.
+			if (UiIr.FORM.equals(type) || UiIr.SEARCH.equals(type)) {
 				int rows = (int) Math.ceil(region.getFields().size() / (double) perRow(region));
 				return (hasText(region.getTitle()) ? 36 : 0) + Math.max(1, rows) * 29 + 4;
 			}
@@ -239,7 +327,10 @@ public class ClxGenerator {
 			if (UiIr.DESCRIPTION.equals(type)) return buildDescription(region);
 			if (UiIr.SECTION_TITLE.equals(type)) return buildSectionTitle(firstNonBlank(region.getText(), region.getTitle()));
 			if (UiIr.FORM.equals(type)) return buildForm(region);
-			if (UiIr.BUTTONS.equals(type)) return buttonGroup(region.getButtons(), "left".equalsIgnoreCase(region.getAlign()) ? "left" : "right", 28, false);
+			if (UiIr.BUTTONS.equals(type)) {
+				if ("center".equalsIgnoreCase(region.getAlign())) return centeredButtonGroup(region.getButtons(), 28);
+				return buttonGroup(region.getButtons(), "left".equalsIgnoreCase(region.getAlign()) ? "left" : "right", 28, false);
+			}
 			if (UiIr.TEXTAREA.equals(type)) return buildTextArea(region);
 			if (UiIr.TABS.equals(type)) return buildTabs(region);
 			if (UiIr.TREE.equals(type)) { Element tree = control("tree"); return tree; }
@@ -341,6 +432,12 @@ public class ClxGenerator {
 			for (int i = 1; i < grids.size(); i++) grids.get(i).getParentNode().removeChild(grids.get(i));
 			for (Element udc : descendantsByLocalName(content, "udc")) {
 				if (udc.getAttribute("type").endsWith("udcComGridTitle")) setUdcProperty(udc, "title", firstNonBlank(region.getTitle(), index == 1 ? ir.getScreenName() : "목록 " + index));
+			}
+			// The template's title-row buttons (행추가/행삭제 ...) are placeholders; the grid's own buttons replace them.
+			for (Element titleButtons : descendantsByClass(content, "title-button-group")) {
+				removeControls(titleButtons);
+				Element flow = layoutOf(titleButtons);
+				for (String text : region.getButtons()) titleButtons.insertBefore(button(text, 24, true), flow);
 			}
 			for (Element child : childElements(grid, false)) { if (!isLayoutData(child)) grid.removeChild(child); }
 			grid.setAttribute("id", grid.getAttribute("id").isEmpty() ? uniqueId("grd") : grid.getAttribute("id"));
@@ -585,9 +682,54 @@ public class ClxGenerator {
 			return group;
 		}
 
+		/**
+		 * Centered buttons, done the way the shuttle templates (P7-3) center their arrow buttons: a formlayout
+		 * with 1fr side margins. flowlayout halign="center" appears in no template, so it is not used.
+		 */
+		private Element centeredButtonGroup(List<String> buttons, int height) {
+			Element group = element("group");
+			group.setAttribute("id", uniqueId("grp"));
+			List<String[]> columns = new ArrayList<String[]>();
+			for (int i = 0; i < buttons.size(); i++) {
+				String text = buttons.get(i);
+				Element button = button(text, height, false);
+				stripLayoutData(button);
+				group.appendChild(withFormData(button, 0, i));
+				columns.add(iconClass(text) != null ? new String[] { "24", "PIXEL" } : new String[] { String.valueOf(buttonWidth(text)), "PIXEL", "auto" });
+			}
+			if (columns.isEmpty()) columns.add(new String[] { "1", "FRACTION" });
+			Element layout = formLayout(rowsOf(new String[] { String.valueOf(height), "PIXEL" }), columns, 6, 0);
+			layout.setAttribute("left-margin", "1fr");
+			layout.setAttribute("right-margin", "1fr");
+			group.appendChild(layout);
+			return group;
+		}
+
+		/** Arrow-only buttons map to the theme's icon buttons (P7 shuttle templates); the model writes them as ▲ ▼ ◀ ▶. */
+		private static String iconClass(String text) {
+			String t = text.trim();
+			if (t.matches("[▲△↑⬆⏶]")) return "btn-up";
+			if (t.matches("[▼▽↓⬇⏷]")) return "btn-down";
+			if (t.matches("[◀◁←⬅]")) return "btn-left";
+			if (t.matches("[▶▷→➡]")) return "btn-right";
+			return null;
+		}
+
+		private static int buttonWidth(String text) { return Math.max(40, text.length() * 14 + 16); }
+
 		/** Button style classes follow the template repository conventions. */
 		private Element button(String text, int height, boolean compact) {
 			Element button = control("button");
+			String icon = iconClass(text);
+			if (icon != null) {
+				button.setAttribute("class", icon);
+				Element data = element("flowlayoutdata");
+				data.setAttribute("width", "20px");
+				data.setAttribute("height", "24px");
+				data.setAttribute("autosize", "none");
+				button.appendChild(data);
+				return button;
+			}
 			String t = text.replace(" ", "");
 			String cls;
 			if (compact) cls = t.matches(".*(조회|검색|찾기|Search|search).*") ? "btn-primary-02" : "btn-secondary-03 btn-md";
@@ -597,7 +739,7 @@ public class ClxGenerator {
 			button.setAttribute("class", cls);
 			button.setAttribute("value", text);
 			Element data = element("flowlayoutdata");
-			data.setAttribute("width", Math.max(40, text.length() * 14 + 16) + "px");
+			data.setAttribute("width", buttonWidth(text) + "px");
 			data.setAttribute("height", height + "px");
 			data.setAttribute("autosize", "width");
 			button.appendChild(data);

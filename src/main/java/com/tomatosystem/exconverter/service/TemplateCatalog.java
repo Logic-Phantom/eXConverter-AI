@@ -70,9 +70,10 @@ public class TemplateCatalog {
 
 	/** What the design image asks for. */
 	static final class Features {
-		boolean search; int grids; int forms; boolean tabs; boolean tree; boolean popup; boolean footer;
+		boolean search; int grids; int forms; boolean tabs; boolean tree; boolean popup; boolean footer; boolean split;
 		static Features of(UiIr ir) {
 			Features f = new Features();
+			f.split = ir.isSplit();
 			f.search = ir.firstRegion(UiIr.SEARCH) != null;
 			f.grids = ir.regionsOf(UiIr.GRID).size();
 			f.forms = ir.regionsOf(UiIr.FORM).size();
@@ -87,9 +88,12 @@ public class TemplateCatalog {
 	/** Structural fingerprint of a template CLX. */
 	static final class TemplateProfile {
 		boolean search; int grids; int forms; boolean tabs; boolean tree; boolean popup; boolean shuttle; boolean footer;
+		/** Left/right panes: a division-group inside the body (P2-4, P2-5, P3-2, P4-2, P4-3, P6-x). */
+		boolean division;
 
 		static TemplateProfile of(String fileName, String xml) {
 			TemplateProfile p = new TemplateProfile();
+			p.division = xml.contains("division-group");
 			p.search = xml.contains("class=\"search-box\"");
 			p.grids = count(xml, "<cl:grid ");
 			p.forms = count(xml, "class=\"form-base\"");
@@ -111,11 +115,13 @@ public class TemplateCatalog {
 			score += w.popup == popup ? 0 : -80;
 			score -= shuttle ? 50 : 0;
 			score += w.footer == footer ? 5 : 0;
+			// Side-by-side panes are the most visible layout trait, so they outweigh a one-grid difference.
+			score += w.split == division ? (w.split ? 40 : 0) : -40;
 			return score;
 		}
 
 		String describe() {
-			return "search=" + search + ", grids=" + grids + ", forms=" + forms + ", tabs=" + tabs + ", tree=" + tree + ", popup=" + popup;
+			return "search=" + search + ", grids=" + grids + ", forms=" + forms + ", tabs=" + tabs + ", tree=" + tree + ", popup=" + popup + ", split=" + division;
 		}
 
 		private static int count(String text, String token) {

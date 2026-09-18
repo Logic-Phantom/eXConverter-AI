@@ -19,6 +19,9 @@ public class UiIr {
 	public static final String TREE = "tree";
 	public static final String BUTTONS = "buttons";
 	public static final String TEXTAREA = "textarea";
+	/** Region.side values for a screen split into a left and a right pane; "" means full width. */
+	public static final String LEFT = "left";
+	public static final String RIGHT = "right";
 
 	private String screenName;
 	private String screenType = "";
@@ -53,6 +56,12 @@ public class UiIr {
 		return null;
 	}
 
+	/** True when at least one region sits in a left or right pane rather than spanning the full width. */
+	public boolean isSplit() {
+		for (Region region : regions) { if (!region.getSide().isEmpty()) return true; }
+		return false;
+	}
+
 	/** Legacy accessor: fields of the first search region. */
 	public List<Field> getSearchFields() {
 		Region search = firstRegion(SEARCH);
@@ -73,6 +82,7 @@ public class UiIr {
 		private String title = "";
 		private String align = "";
 		private int columnsPerRow;
+		private String side = "";
 		private final List<Field> fields = new ArrayList<Field>();
 		private final List<Column> columns = new ArrayList<Column>();
 		private final List<String> buttons = new ArrayList<String>();
@@ -88,6 +98,9 @@ public class UiIr {
 		public void setAlign(String align) { this.align = align == null ? "" : align; }
 		public int getColumnsPerRow() { return columnsPerRow; }
 		public void setColumnsPerRow(int columnsPerRow) { this.columnsPerRow = columnsPerRow; }
+		/** {@link UiIr#LEFT}, {@link UiIr#RIGHT} or "" for full width. */
+		public String getSide() { return side; }
+		public void setSide(String side) { this.side = side == null ? "" : side; }
 		public List<Field> getFields() { return fields; }
 		public List<Column> getColumns() { return columns; }
 		public List<String> getButtons() { return buttons; }

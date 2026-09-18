@@ -129,11 +129,14 @@ public class GeminiUiIrAnalyzer {
 	private static int thinkingBudget() { return ExConverterConfig.getInt("exconverter.gemini.thinkingBudget", -1); }
 
 	/** Effective settings for the status endpoint. Never includes the key itself. */
-	public static JSONObject describe() {
+	public static JSONObject describe() { return describe("gemini", model()); }
+
+	/** Same settings for another engine that shares this analyzer with a different model (e.g. gemini-lite). */
+	public static JSONObject describe(String engine, String model) {
 		JSONObject status = new JSONObject();
-		status.put("engine", "gemini");
+		status.put("engine", engine);
 		status.put("configured", isConfigured());
-		status.put("model", model());
+		status.put("model", model);
 		status.put("url", baseUrl());
 		status.put("apiVersion", API_VERSION);
 		status.put("stream", streaming());
@@ -151,7 +154,13 @@ public class GeminiUiIrAnalyzer {
 
 	// ---------------------------------------------------------------- public API
 
-	public ImageUiIrAnalyzer.Analysis analyze(File image, String originalName) {
+	public ImageUiIrAnalyzer.Analysis analyze(File image, String originalName) { return analyze(image, originalName, model()); }
+
+	/**
+	 * Same pipeline with an explicit model, so another engine (GeminiLiteUiIrAnalyzer) can reuse every setting
+	 * except exconverter.gemini.model. Quota is counted per model, so each engine draws on its own daily limit.
+	 */
+	public ImageUiIrAnalyzer.Analysis analyze(File image, String originalName, String model) {
 		try {
 			if (!isConfigured()) throw new IllegalStateException("Gemini API key is not configured. Set exconverter.gemini.apiKey (properties / -D / EXCONVERTER_GEMINI_APIKEY) or the GEMINI_API_KEY environment variable.");
 			BufferedImage buffered = ImageIO.read(image);
@@ -162,13 +171,22 @@ public class GeminiUiIrAnalyzer {
 			partialText.remove();
 			ModelOutput output;
 			try {
-				output = callGemini(scaled);
+				output = callGemini(scaled, model);
 			} catch (Exception e) {
 				// Whatever the model did produce is the only evidence for why it failed, so keep it.
 				dumpRaw(originalName, partial());
 				throw e;
 			}
-			UiIr ir = UiIrParser.parse(output.text);
+			UiIr ir;
+			try {
+				ir = UiIrParser.parse(output.text);
+			} catch (RuntimeException e) {
+				// The call succeeded but the JSON breaks a UI-IR rule; without the raw text the cause is a guess.
+				File raw = dumpRaw(originalName, output.text);
+				String where = raw == null ? "" : " (모델 원본 출력: " + raw.getAbsolutePath() + ")";
+				if (e instanceof IllegalArgumentException) throw new IllegalArgumentException("Gemini 출력이 UI-IR 규칙에 맞지 않습니다: " + e.getMessage() + where, e);
+				throw new IllegalStateException("Gemini 출력을 UI-IR 로 파싱하지 못했습니다: " + e.getMessage() + where, e);
+			}
 			if (ir.getSourceWidth() <= 0) ir.setSourceWidth(scaled.getWidth());
 			if ("생성 화면".equals(ir.getScreenName())) ir.setScreenName(baseName(originalName));
 			lastUsage.set(output.usage());
@@ -186,17 +204,22 @@ public class GeminiUiIrAnalyzer {
 	private static final ThreadLocal<StringBuilder> partialText = new ThreadLocal<StringBuilder>();
 	private static String partial() { StringBuilder sb = partialText.get(); return sb == null ? "" : sb.toString(); }
 
-	/** Writes the model's raw output next to the successful ones, suffixed .raw.txt so it is never mistaken for UI-IR. */
-	private static void dumpRaw(String originalName, String text) {
-		if (text == null || text.trim().isEmpty()) return;
+	/**
+	 * Writes the model's raw output next to the successful ones, suffixed .raw.txt so it is never mistaken for UI-IR.
+	 * Returns the file, or null when there was nothing to save or the write failed.
+	 */
+	private static File dumpRaw(String originalName, String text) {
+		if (text == null || text.trim().isEmpty()) return null;
 		try {
 			File dir = new File(ExConverterConfig.get("exconverter.generated.root", "generated"), "ui-ir");
-			if (!dir.exists() && !dir.mkdirs()) return;
+			if (!dir.exists() && !dir.mkdirs()) return null;
 			File file = new File(dir, baseName(originalName) + ".gemini-failed.raw.txt");
 			java.nio.file.Files.write(file.toPath(), text.getBytes(StandardCharsets.UTF_8));
 			ProgressLog.step("실패한 Gemini 원본 출력 저장: {} ({}자)", file.getAbsolutePath(), text.length());
+			return file;
 		} catch (Exception e) {
 			LOGGER.warn("Could not save the failed Gemini output: {}", e.getMessage());
+			return null;
 		}
 	}
 
@@ -226,8 +249,7 @@ public class GeminiUiIrAnalyzer {
 	 * only useful retry is one that changes the decode path. Temperatures walk 0 (or the configured value),
 	 * then 0.4, then 0.8.
 	 */
-	private ModelOutput callGemini(BufferedImage image) throws Exception {
-		String model = model();
+	private ModelOutput callGemini(BufferedImage image, String model) throws Exception {
 		boolean stream = streaming();
 		EncodedImage encoded = encode(image);
 		String prompt = loadPrompt();
@@ -353,7 +375,8 @@ public class GeminiUiIrAnalyzer {
 				.put("type", enumType(new String[] { "title", "description", "sectionTitle", "search", "form", "grid", "tabs", "tree", "buttons", "textarea" }))
 				.put("text", type("string", "Text of a title, description or sectionTitle region"))
 				.put("title", type("string", "Heading attached to this grid, form or textarea, copied exactly, or empty"))
-				.put("align", enumType(new String[] { "left", "right" }))
+				.put("align", enumType(new String[] { "left", "right", "center" }))
+				.put("side", enumType(new String[] { "", "left", "right" }))
 				.put("columnsPerRow", type("integer", "Label and input pairs per row in a form"))
 				.put("fields", array(field).put("description", "Label and input pairs of a search or form region"))
 				.put("columns", array(column).put("description", "Required for every grid region: one entry per visible column header, left to right"))

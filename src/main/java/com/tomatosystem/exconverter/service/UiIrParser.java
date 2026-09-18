@@ -28,6 +28,8 @@ public final class UiIrParser {
 		result.setSourceWidth(screen.optInt("sourceWidth", 0));
 		if (result.getWidth() < 320 || result.getHeight() < 320) throw new IllegalArgumentException("screen width and height must be at least 320");
 		JSONArray regions = root.optJSONArray("regions");
+		// gemini-3.5-flash-lite nested regions inside screen (2026-09-18, docs/samples/user-role.gemini-3.5-flash-lite.ui-ir.json).
+		if (regions == null) regions = screen.optJSONArray("regions");
 		if (regions == null) throw new IllegalArgumentException("regions is required");
 		for (int i = 0; i < regions.length(); i++) {
 			JSONObject region = regions.optJSONObject(i);
@@ -47,6 +49,7 @@ public final class UiIrParser {
 		region.setTitle(json.optString("title", json.optString("label", "")).trim());
 		region.setAlign(json.optString("align", ""));
 		region.setColumnsPerRow(json.optInt("columnsPerRow", 0));
+		region.setSide(normalizeSide(json.optString("side", json.optString("pane", ""))));
 		JSONArray fields = json.optJSONArray("fields");
 		if (fields != null) {
 			for (int i = 0; i < fields.length(); i++) {
@@ -95,6 +98,14 @@ public final class UiIrParser {
 			if ("search".equalsIgnoreCase(label)) label = "조회";
 			if (!label.isEmpty()) region.getButtons().add(label);
 		}
+	}
+
+	/** left/right pane of a split screen; anything else (full, center, "") means full width. */
+	static String normalizeSide(String raw) {
+		String s = raw == null ? "" : raw.trim().toLowerCase(Locale.ROOT);
+		if (s.equals("left") || s.equals("l") || s.equals("왼쪽") || s.equals("좌") || s.equals("좌측")) return UiIr.LEFT;
+		if (s.equals("right") || s.equals("r") || s.equals("오른쪽") || s.equals("우") || s.equals("우측")) return UiIr.RIGHT;
+		return "";
 	}
 
 	static String normalizeRegionType(String raw) {

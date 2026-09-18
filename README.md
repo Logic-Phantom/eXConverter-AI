@@ -86,6 +86,7 @@ eXConverter-AI/
 │   │   ├── service/
 │   │   │   ├── ImageUiIrAnalyzer.java          이미지 → UI-IR (Ollama 스트리밍 / bridge / fallback)
 │   │   │   ├── GeminiUiIrAnalyzer.java         이미지 → UI-IR (Gemini API, SSE + responseSchema) — §15
+│   │   │   ├── GeminiLiteUiIrAnalyzer.java     같은 분석기를 gemini-3.5-flash-lite 모델로 호출 — §15.8
 │   │   │   ├── UiIrParser.java                 UI-IR JSON 파싱 + 이름 정규화
 │   │   │   ├── UiIrNormalizer.java             소형 모델의 표 인식 오류 구조 보정 (행 분할 그리드 병합 등)
 │   │   │   ├── ColumnNames.java                한글 라벨 ↔ 컬럼 코드 사전 (보정기/생성기 공용)
@@ -100,6 +101,7 @@ eXConverter-AI/
 │   │   └── web/
 │   │       ├── ImageConversionController.java  POST /EXConverter/uploadAndGenerate.do (이미지 업로드, 로컬 AI)
 │   │       ├── GeminiConversionController.java POST /EXConverter/gemini/uploadAndGenerate.do (Gemini)
+│   │       ├── GeminiLiteConversionController.java POST /EXConverter/gemini-lite/uploadAndGenerate.do (Gemini Flash-Lite)
 │   │       └── GenerationController.java       POST /api/exconverter/generate.do (UI-IR JSON 직접 입력)
 │   ├── exbuilder/web/CleopatraUIController.java  *.clx 요청을 eXBuilder6 페이지로 렌더링 (기존)
 │   └── web/IndexController.java                  /index.do (기존)
@@ -225,7 +227,11 @@ eXBuilder6에 종속되지 않는다. **영역(region)은 화면 위→아래 �
 | `grid` | title, columns[] | `group.content` > `udcComGridTitle` + `cl:grid` + `cl:dataset` |
 | `tabs` | tabs[] | `cl:tabfolder.tab-filled` > `tabitem` |
 | `tree` | - | `cl:tree` |
-| `buttons` | buttons[], align | **마지막 영역이면** `content-footer` 버튼, 아니면 본문 버튼 그룹 |
+| `buttons` | buttons[], align(left/right/center) | **마지막 영역이면** `content-footer` 버튼, 아니면 본문 버튼 그룹. center 는 1fr 좌우 여백 formlayout(P7-3 과 같은 방식) |
+
+모든 영역 공통 `side`(`left`/`right`, 생략 = 전체 폭): 본문이 좌/우 2단으로 나뉜 화면. 첫 `side` 영역부터 마지막 `side` 영역까지가 `division-group` 1행(좌/우 pane)이 되고, 그 사이의 `side` 없는 영역은 바로 위 영역의 pane 에 붙는다. 모델에는 좌측 영역을 모두 나열한 뒤 우측을 나열하도록 요구한다.
+
+버튼 캡션 `▲ ▼ ◀ ▶` 은 테마 아이콘 버튼 `btn-up/btn-down/btn-left/btn-right`(20×24, 캡션 없음)로 생성한다.
 | `textarea` | title, buttons[] | `group.content` > 제목/버튼 행 + `cl:textarea` |
 
 - field.component: `inputbox, dateinput, daterange(시작~종료), combobox, searchinput, checkbox, radiobutton, numbereditor, maskeditor, textarea, output`
@@ -241,6 +247,7 @@ eXBuilder6에 종속되지 않는다. **영역(region)은 화면 위→아래 �
 - 헤더가 `번호/순번/No/#` 인 텍스트 컬럼 → `rowindex`
 - 헤더 시퀀스가 주기적으로 반복되면(행 데이터를 컬럼으로 나열한 오류) 한 주기만 남김
 - 코드펜스/앞뒤 잡음 제거, 빈 grid/search/buttons 영역은 버림
+- 최상위 `regions` 가 없으면 `screen.regions` 를 사용 (gemini-3.5-flash-lite 가 regions 를 screen 안에 넣음, 2026-09-18)
 
 ### 6.1 구조 보정 (`UiIrNormalizer`) — "AI는 의미, 규칙은 구조"
 
@@ -254,6 +261,10 @@ eXBuilder6에 종속되지 않는다. **영역(region)은 화면 위→아래 �
 | 3. 무의미한 폭 제거 | 폭이 지정된 컬럼이 2개 이상이고 모두 같은 값 ≤ 40px | 폭 0(미지정) → 생성기가 헤더/셀 텍스트 길이로 추정 |
 | 4. textarea 제목 중복 | textarea 제목이 직전 grid 제목/헤더와 같음 | 제목 제거 |
 | 5. 입력값을 라벨로 읽은 경우 | search/form 에서 **앞 필드 값이 비어 있고** 현재 필드 값도 비어 있으며, 현재 "라벨"이 앞 필드의 값 모양일 때. 항상 값: 이메일, 전화번호(`010-1234-5678`), 날짜, 숫자, URL. 사람 이름: 앞 라벨이 성명/이름/성함/담당자/작성자/사용자명/고객명 등일 때만, 한글 3자(흔한 성씨 시작) 또는 4자(남궁·황보 등 복성)이고, 사전 단어나 라벨 접미어(…명, 번호, 여부, 구분, 권한, 사용자, 담당자 …)가 아닐 때 | 앞 필드의 value 로 옮기고 해당 필드 삭제 (예: `[성명, 김길동, 이메일]` → `[성명(값 김길동), 이메일]`). 2음절 이름은 `권한` 같은 라벨과 구분이 안 되어 보정하지 않음 |
+| 6. 섹션 제목 중복 | sectionTitle 바로 뒤 grid/form/textarea 의 제목이 비었거나 같은 글자(공백 무시) | sectionTitle 을 그 영역 제목으로 흡수. 그대로 두면 `form-tit` + `udcComGridTitle` 로 제목이 두 번 나온다 |
+| 7. 그리드 제목의 건수 | grid 제목 끝이 `총 N건`, `[총건수 N건]` 등 | 제거. `udcComGridTitle` 이 `총건수 N건` 을 스스로 그린다 |
+
+규칙 1·2 는 `side` 가 다른 영역끼리는 병합하지 않으며, 병합 결과는 원래 `side` 를 유지한다.
 
 정상 UI-IR(샘플 `crypto-sample.ui-ir.json` 등)에는 아무 보정도 적용되지 않음을 확인했다.
 새 규칙을 추가할 때는 반드시 **실패한 실제 모델 출력**을 `docs/samples` 에 넣고, 정상 샘플에서 오탐이 없는지 함께 확인할 것.
@@ -274,7 +285,8 @@ eXBuilder6에 종속되지 않는다. **영역(region)은 화면 위→아래 �
 | shuttle | `shuttle-button-group` |
 | footer | `footer-button-group` |
 
-점수 = 100 + (search 일치 +40 / 불일치 −40) − |grid 수 차이|×25 − |form 수 차이|×20 − tabs/tree 불일치 60 − popup 불일치 80 − shuttle 50 + footer 일치 5.
+점수 = 100 + (search 일치 +40 / 불일치 −40) − |grid 수 차이|×25 − |form 수 차이|×20 − tabs/tree 불일치 60 − popup 불일치 80 − shuttle 50 + footer 일치 5 + (좌우 분할 일치 +40 / 불일치 −40).
+좌우 분할: UI-IR 에 `side` 영역이 있는지 vs 템플릿에 `division-group` 이 있는지(P2-4, P2-5, P3-2, P4-2, P4-3, P6-x, P7-x). 분할 비율(1:1, 2:5, 250px:1)은 템플릿 것을 그대로 쓴다.
 동점이면 **파일 크기가 작은(단순한) 템플릿**, 그다음 경로 순. popup 여부는 `screen.type` 에 `POPUP` 포함 시.
 
 템플릿 추가 방법: 표준 구조(`grpHeader/grpSearch/grpData/grpFooter`, 클래스 `content-header/search-box/content-body/content/content-footer/footer-button-group`)를 따르는 CLX를 `templates/` 하위에 넣으면 끝. 코드 수정/재학습 불필요.
@@ -306,6 +318,8 @@ UDC `udcComAppHeader`(76), `udcComGridTitle`(86), `udcComFormTitle`(52); 조회 
    조회/검색 버튼 `btn-primary-02`, 그 외 `btn-secondary-03 btn-md`. 버튼이 없으면 [초기화, 조회] 기본.
    높이 = 행×24 + (행−1)×6 + 20.
 8. 본문: 영역마다 formlayout 행 1개 (grid/tabs/tree = 1fr, 나머지는 px). `content-body` 높이는 필요 높이만큼 늘림(grid 1개당 260px 가정).
+   `side` 영역 구간은 템플릿 `division-group` 을 복제(열 2개·행 1개일 때만, 아니면 1:1 새로 생성)해 1행을 차지하고, 각 pane 은 영역이 1개면 그대로, 여러 개면 세로 formlayout group 으로 쌓는다. 높이는 두 pane 중 큰 쪽.
+   그리드 제목행의 `title-button-group` 자리표시 버튼(행추가/행삭제)은 지우고 grid 영역의 `buttons` 로 채운다.
 9. 그리드
    - `gridcolumn` 폭 = width × (1408 / sourceWidth), 30~800px. 폭 없으면 editor/헤더 길이로 추정.
    - 헤더 `gridcell text`, 바인딩 컬럼은 `targetcolumnname`.
@@ -446,9 +460,12 @@ java -cp "out;$cp;src\main\resources" GenHarness --all docs\samples templates ou
 - `crypto-sample.qwen3-vl-4b.ui-ir.json` — 실제 모델 출력 1회차 (그리드를 폼으로 오인)
 - `crypto-sample.qwen3-vl-4b-run2.ui-ir.json` — 실제 모델 출력 2회차 (이벤트 그리드가 행마다 5개로 분할, 헤더 행이 폼으로 분리) → 보정 후 그리드 2개
 - `search-grid-legacy.ui-ir.json`, `popup-form-tabs.ui-ir.json` — 레거시 형식 / 팝업+폼+탭
+- `user-role.gemini-3.5-flash-lite.ui-ir.json` — 실제 gemini-3.5-flash-lite 출력. `regions` 가 `screen` 안에 중첩됨(파서가 보정), 버튼이 `{text,type}` 객체, 그리드 제목에 `총 0건`(규칙 7)
+- `user-role.ui-ir.json` — 같은 화면(`스크린샷 2026-09-17 175014.png`, 좌 1그리드 / 우 2그리드 + ▲▼)의 정답 UI-IR. `side` 사용 → P2-4 선택
 - `value-as-label.ui-ir.json` — 규칙 5 검증: 조회영역은 김길동/메일/전화번호 3건 보정, 폼은 사용자·권한·담당자명·구분 등 모두 라벨 유지(오탐 없음)
 
 검증 이력(2026-09-13): 샘플 6종 × 템플릿 77개 = 462건 ClxValidator 오류 0, e6-compiler BUILD SUCCESS.
+검증 이력(2026-09-18, 좌우 분할 추가): 샘플 8종 × 템플릿 77개 = 616건 ClxValidator 오류 0, e6-compiler BUILD SUCCESS(616개 JS). 기존 샘플 6종의 자동 선택 템플릿은 변경 전과 동일, 정답 샘플에 새 보정 규칙 오탐 없음.
 
 ---
 
@@ -678,3 +695,28 @@ java -Dfile.encoding=UTF-8 -cp "out;$cp;src\main\resources" GeminiHarness `
 | `tools/harness/GeminiHarness.java`, `GeminiStreamHarness.java` | 신규. 실제 API / 가짜 API 하니스 |
 | `README.md` | §1 원칙, §2 Phase 9, §3 환경, §4 구조, §10, §12 규칙 3, §13, §15 |
 | 기존 로컬 경로 (`ImageUiIrAnalyzer`, `ImageConversionController`, `vision-ui-ir.txt`) | **변경 없음** |
+
+### 15.8 Gemini Flash-Lite 엔진 (2026-09-18 추가)
+
+무료 등급 쿼터는 **모델별**로 따로 계산된다. 2026-09-02 실측(429 응답의 QuotaFailure 값): `gemini-3.5-flash` 분당 5회 / **하루 20회**, `gemini-3.5-flash-lite` 분당 15회 / **하루 500회**. 하루 한도는 태평양 시간 자정에 초기화되고, API 키가 아니라 Google Cloud 프로젝트 단위로 계산된다. Google 은 이 수치를 공식 문서에 싣지 않고 예고 없이 바꾸므로 실제 값은 AI Studio 의 Rate limit 화면에서 확인한다.
+
+그래서 `gemini-3.5-flash` 엔진(§15.1~15.7, 실측 검증 완료)은 그대로 두고, 모델만 다른 엔드포인트를 하나 더 둔다.
+
+| 메서드/경로 | 설명 |
+|---|---|
+| `POST /EXConverter/gemini-lite/uploadAndGenerate.do` | `/EXConverter/gemini/uploadAndGenerate.do` 와 같은 multipart 계약, 같은 응답 필드. `engine:"gemini-lite"` |
+| `GET /EXConverter/gemini-lite/status.do` | `/gemini/status.do` 와 같은 형식, `model` 만 lite |
+
+- 모델: `exconverter.gemini.lite.model` (기본 `gemini-3.5-flash-lite`). **나머지 설정(키, url, maxOutputTokens, thinkingLevel, 재시도, 이미지 크기, 프록시)은 `exconverter.gemini.*` 를 그대로 공유한다.** 키도 같은 키 하나로 된다.
+- 구조: `GeminiLiteUiIrAnalyzer` 는 `GeminiUiIrAnalyzer.analyze(image, name, model)` 오버로드에 모델만 넘기는 얇은 서비스다. 하위 클래스로 만들지 않은 이유: `GeminiUiIrAnalyzer` 타입의 빈이 2개가 되면 `GeminiConversionController` 의 타입 기반 `@Autowired` 가 깨진다.
+- 기존 flash 경로의 변경은 `analyze(image, name)` 가 `analyze(image, name, model())` 에 위임하도록 바뀐 것뿐이며 동작은 같다.
+- 화면: `convertTest.clx` Submission `action` 을 `../EXConverter/gemini-lite/uploadAndGenerate.do` 로 바꾼다.
+- 콘솔 로그 머리말은 `[Gemini-Lite]`, 응답의 `usage.model` / `analysisMode` 로 실제 응답 모델을 확인한다.
+- 오프라인 확인: `GeminiStreamHarness --lite <ui-ir.json> [image] [out.clx]` → 가짜 API 로그에 `path=/v1beta/models/gemini-3.5-flash-lite:streamGenerateContent?alt=sse` 가 찍힌다(2026-09-18 확인, P4-6 선택, ClxValidator 오류 0).
+- 호출은 성공했는데 UI-IR 파싱이 실패하면 모델 원본 출력을 `generated/ui-ir/<파일명>.gemini-failed.raw.txt` 에 저장하고, 400 사유를 콘솔에 `변환 실패(400): ...` 로 남긴다(flash/lite 공통).
+
+실제 API 1차 결과(2026-09-18, `스크린샷 2026-09-17 175014.png` 1611x688, 기본 설정 그대로):
+- `thinkingLevel=MINIMAL` 을 거부하지 않았다. 9초, 입력 2,504토큰, 출력 992토큰(추론 0), `STOP`.
+- **`regions` 를 최상위가 아니라 `screen` 안에 넣어** `regions is required` 400. `UiIrParser` 가 `screen.regions` 를 허용하도록 보정했다(§6).
+- 보정 후 같은 출력으로: 조회 3필드, 그리드 3개(헤더 5/6/6), 설명문 1개 → 템플릿 P4-6, ClxValidator 오류 0, e6-compiler `BUILD SUCCESS`. 전체 회귀 7샘플 × 77템플릿 = 539건 실패 0.
+- 판독 품질 메모: 그리드 제목에 건수 표시(`사용자 목록  총 0건`)가 그대로 들어옴, 텍스트 없는 아이콘 버튼 2개는 빈 텍스트로 와서 버려짐.

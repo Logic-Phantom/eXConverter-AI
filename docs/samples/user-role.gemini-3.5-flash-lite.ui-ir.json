@@ -1,0 +1,178 @@
+{
+  "screen": {
+    "name": "사용자업무역할",
+    "type": "",
+    "sourceWidth": 1536,
+    "regions": [
+      {
+        "type": "title",
+        "text": "사용자업무역할"
+      },
+      {
+        "type": "search",
+        "fields": [
+          {
+            "label": "사용자구분",
+            "component": "combobox",
+            "required": true,
+            "value": "어드민"
+          },
+          {
+            "label": "사용자ID/명",
+            "component": "inputbox",
+            "value": ""
+          },
+          {
+            "label": "상태",
+            "component": "combobox",
+            "value": "전체"
+          }
+        ],
+        "buttons": [
+          {
+            "text": "조회",
+            "type": "button"
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "title": "사용자 목록  총 0건",
+        "columns": [
+          {
+            "header": "No",
+            "width": 60,
+            "editor": "rowindex",
+            "cellText": ""
+          },
+          {
+            "header": "구분",
+            "width": 100,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "사용자ID",
+            "width": 120,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "사용자명",
+            "width": 120,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "상태",
+            "width": 100,
+            "editor": "output",
+            "cellText": ""
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "title": "등록된 업무역할 목록  총 0건",
+        "columns": [
+          {
+            "header": "",
+            "width": 40,
+            "editor": "checkbox",
+            "cellText": ""
+          },
+          {
+            "header": "No",
+            "width": 50,
+            "editor": "rowindex",
+            "cellText": ""
+          },
+          {
+            "header": "업무역할ID",
+            "width": 120,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "업무역할명",
+            "width": 180,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "시작일자",
+            "width": 100,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "종료일자",
+            "width": 100,
+            "editor": "output",
+            "cellText": ""
+          }
+        ]
+      },
+      {
+        "type": "description",
+        "text": "※ 업무역할 시작일자가 현재보다 미래인 경우 등록할 수 없음"
+      },
+      {
+        "type": "buttons",
+        "align": "center",
+        "buttons": [
+          {
+            "text": "",
+            "type": "button"
+          },
+          {
+            "text": "",
+            "type": "button"
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "title": "잔여 업무역할 목록  총 0건",
+        "columns": [
+          {
+            "header": "",
+            "width": 40,
+            "editor": "checkbox",
+            "cellText": ""
+          },
+          {
+            "header": "No",
+            "width": 50,
+            "editor": "rowindex",
+            "cellText": ""
+          },
+          {
+            "header": "업무역할ID",
+            "width": 120,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "업무역할명",
+            "width": 180,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "시작일자",
+            "width": 100,
+            "editor": "output",
+            "cellText": ""
+          },
+          {
+            "header": "종료일자",
+            "width": 100,
+            "editor": "output",
+            "cellText": ""
+          }
+        ]
+      }
+    ]
+  }
+}

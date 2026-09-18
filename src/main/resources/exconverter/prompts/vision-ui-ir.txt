@@ -27,6 +27,8 @@ Rules for tables:
 - Data rows are not columns; only the first data row is described, through cellText.
 - A leading narrow column with 1, 2, 3 ... or # is editor "rowindex". The same button text in every row (e.g. 실행) is editor "button".
 Text typed inside an input box (a person's name, an e-mail address) is that field's "value", never a separate label.
+Side-by-side layout: when the page body is split into a left and a right column, add "side":"left" or "side":"right" to every region inside those columns, and list all left-column regions before the right-column ones. Omit "side" for full-width regions.
+Icon-only arrow buttons are written as "▲", "▼", "◀" or "▶".
 
 Field component values: "inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "radiobutton", "numbereditor", "maskeditor", "textarea", "output".
 Return ONLY the JSON object: {"screen":{"name":"<page title or main heading>"},"regions":[...]}

@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-fd082531" version="1.0.6190">
+  <head std:sid="head-078742c9">
+    <screen std:sid="screen-27b3e4e6" id="default" name="default" width="1024px" height="768px"/>
+    <screen std:sid="screen-043aba18" id="tablet" name="tablet" width="500px" height="667px"/>
+    <screen std:sid="screen-58055358" id="mobile" name="mobile" width="350px" height="525px"/>
+    <cl:model std:sid="model-b86b4d21">
+      <cl:submission std:sid="submission-ab756e18" id="subSend" action="../EXConverter/gemini-lite/uploadAndGenerate.do" mediatype="multipart/form-data;simple"/>
+    </cl:model>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-8d7bc625">
+    <cl:fileupload std:sid="f-upload-8c0976e2" id="fud1">
+      <cl:listener std:sid="listener-1467d495" name="add-file" handler="onFud1AddFile"/>
+      <cl:xylayoutdata std:sid="xyl-data-24787fd9" top="116px" left="109px" width="443px" height="291px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:fileupload>
+    <cl:button std:sid="button-a6014302" value="전송">
+      <cl:listener std:sid="listener-20c2a998" name="click" handler="onButtonClick"/>
+      <cl:xylayoutdata std:sid="xyl-data-dfd26e08" top="187px" left="562px" width="191px" height="85px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:button>
+    <cl:xylayout std:sid="xylayout-259a4d38"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

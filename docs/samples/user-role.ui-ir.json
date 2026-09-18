@@ -1,0 +1,39 @@
+{
+  "screen": { "name": "사용자업무역할", "type": "", "sourceWidth": 1611 },
+  "regions": [
+    { "type": "title", "text": "사용자업무역할" },
+    { "type": "search", "fields": [
+      { "label": "사용자구분", "component": "combobox", "required": true, "value": "어드민" },
+      { "label": "사용자ID/명", "component": "inputbox", "value": "" },
+      { "label": "상태", "component": "combobox", "value": "전체" }
+    ], "buttons": ["조회"] },
+    { "type": "grid", "side": "left", "title": "사용자 목록", "columns": [
+      { "header": "No", "editor": "rowindex", "width": 36, "cellText": "" },
+      { "header": "구분", "editor": "output", "width": 162, "cellText": "" },
+      { "header": "사용자ID", "editor": "output", "width": 202, "cellText": "" },
+      { "header": "사용자명", "editor": "output", "width": 202, "cellText": "" },
+      { "header": "상태", "editor": "output", "width": 183, "cellText": "" }
+    ] },
+    { "type": "grid", "side": "right", "title": "등록된 업무역할 목록", "columns": [
+      { "header": "", "editor": "checkbox", "width": 34, "cellText": "" },
+      { "header": "No", "editor": "rowindex", "width": 38, "cellText": "" },
+      { "header": "업무역할ID", "editor": "output", "width": 162, "cellText": "" },
+      { "header": "업무역할명", "editor": "output", "width": 250, "cellText": "" },
+      { "header": "시작일자", "editor": "output", "width": 150, "cellText": "" },
+      { "header": "종료일자", "editor": "output", "width": 150, "cellText": "" }
+    ] },
+    { "type": "description", "side": "right", "text": "※ 업무역할 시작일자가 현재보다 미래인 경우 등록할 수 없음" },
+    { "type": "buttons", "side": "right", "align": "center", "buttons": ["▲", "▼"] },
+    { "type": "search", "side": "right", "fields": [
+      { "label": "업무역할ID/명 검색", "component": "inputbox", "value": "" }
+    ], "buttons": [] },
+    { "type": "grid", "side": "right", "title": "잔여 업무역할 목록", "columns": [
+      { "header": "", "editor": "checkbox", "width": 34, "cellText": "" },
+      { "header": "No", "editor": "rowindex", "width": 38, "cellText": "" },
+      { "header": "업무역할ID", "editor": "output", "width": 196, "cellText": "" },
+      { "header": "업무역할명", "editor": "output", "width": 302, "cellText": "" },
+      { "header": "시작일자", "editor": "output", "width": 108, "cellText": "" },
+      { "header": "종료일자", "editor": "output", "width": 108, "cellText": "" }
+    ] }
+  ]
+}
